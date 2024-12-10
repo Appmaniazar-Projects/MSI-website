@@ -4,6 +4,11 @@ import { notFound } from 'next/navigation';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
+// Updated type definition to match Next.js expectations
+type PageProps = {
+  params: Promise<{ slug: string }>;
+};
+
 export function generateStaticParams() {
   const posts = getBlogPosts();
   return posts.map((post) => ({
@@ -11,7 +16,11 @@ export function generateStaticParams() {
   }));
 }
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
+export default async function BlogPostPage({ 
+  params 
+}: { 
+  params: { slug: string } 
+}) {
   const post = getBlogPostBySlug(params.slug);
 
   if (!post) {
