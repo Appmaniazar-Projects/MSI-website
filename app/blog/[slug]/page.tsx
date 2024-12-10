@@ -4,19 +4,15 @@ import { notFound } from 'next/navigation';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
-interface PageProps {
-  params: { slug: string };
-}
-
-export async function generateStaticParams() {
-  const posts = await getBlogPosts();
+export function generateStaticParams() {
+  const posts = getBlogPosts();
   return posts.map((post) => ({
     slug: post.slug,
   }));
 }
 
-export default async function BlogPostPage({ params }: PageProps) {
-  const post = await getBlogPostBySlug(params.slug);
+export default function BlogPostPage({ params }: { params: { slug: string } }) {
+  const post = getBlogPostBySlug(params.slug);
 
   if (!post) {
     notFound();
