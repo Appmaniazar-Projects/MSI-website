@@ -62,12 +62,12 @@ Artificial Intelligence is revolutionizing education in unprecedented ways.
   }
 ];
 
-export const getBlogPosts = cache(() => {
+export const getBlogPosts = cache(async () => {
   return BLOG_POSTS.sort((a, b) => 
     new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime()
   );
 });
 
-export const getBlogPostBySlug = cache((slug: string) => {
+export const getBlogPostBySlug = cache(async (slug: string) => {
   return BLOG_POSTS.find(post => post.slug === slug) || null;
 });
