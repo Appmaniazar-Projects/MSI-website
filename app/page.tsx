@@ -7,12 +7,28 @@ import Footer from '../components/Footer'
 import Testimonials from '../components/Testimonials'
 import Gallery from '../components/Gallery'
 import { Button } from "@/components/ui/button"
-import { getBlogPosts } from '@/lib/blog'
+import { getBlogPosts, type BlogPost } from '@/lib/blog'
 import { motion } from 'framer-motion'
 import { GraduationCap, Microscope, Tent } from 'lucide-react'
+import { useState, useEffect } from 'react'
 
 export default function Home() {
-  const latestPosts = getBlogPosts().slice(0, 3);
+  const [latestPosts, setLatestPosts] = useState<BlogPost[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const posts = await getBlogPosts();
+        setLatestPosts(posts.slice(0, 3));
+      } catch (error) {
+        console.error('Error fetching blog posts:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchPosts();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -185,39 +201,45 @@ export default function Home() {
             </h2>
 
             <div className="grid md:grid-cols-3 gap-8">
-              {latestPosts.map((post) => (
-                <motion.div
-                  key={post.slug}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all transform hover:-translate-y-2 duration-300"
-                >
-                  <Link href={`/blog/${post.slug}`}>
-                    {post.frontmatter.image && (
-                      <Image
-                        src={post.frontmatter.image}
-                        alt={post.frontmatter.title}
-                        width={400}
-                        height={250}
-                        className="w-full h-48 object-cover"
-                      />
-                    )}
-                    <div className="p-6">
-                      <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                        {post.frontmatter.title}
-                      </h3>
-                      <p className="text-gray-600 mb-4 line-clamp-3">
-                        {post.frontmatter.excerpt}
-                      </p>
-                      <div className="flex justify-between items-center text-sm text-gray-500">
-                        <span>{post.frontmatter.author}</span>
-                        <span>{post.frontmatter.date}</span>
+              {isLoading ? (
+                <div className="col-span-3 text-center text-gray-600">Loading blog posts...</div>
+              ) : latestPosts.length > 0 ? (
+                latestPosts.map((post) => (
+                  <motion.div
+                    key={post.slug}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all transform hover:-translate-y-2 duration-300"
+                  >
+                    <Link href={`/blog/${post.slug}`}>
+                      {post.frontmatter.image && (
+                        <Image
+                          src={post.frontmatter.image}
+                          alt={post.frontmatter.title}
+                          width={400}
+                          height={250}
+                          className="w-full h-48 object-cover"
+                        />
+                      )}
+                      <div className="p-6">
+                        <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                          {post.frontmatter.title}
+                        </h3>
+                        <p className="text-gray-600 mb-4 line-clamp-3">
+                          {post.frontmatter.excerpt}
+                        </p>
+                        <div className="flex justify-between items-center text-sm text-gray-500">
+                          <span>{post.frontmatter.author}</span>
+                          <span>{post.frontmatter.date}</span>
+                        </div>
                       </div>
-                    </div>
-                  </Link>
-                </motion.div>
-              ))}
+                    </Link>
+                  </motion.div>
+                ))
+              ) : (
+                <div className="col-span-3 text-center text-gray-600">No blog posts found.</div>
+              )}
             </div>
 
             <div className="text-center">

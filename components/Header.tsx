@@ -1,13 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import dynamic from 'next/dynamic'
+import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { PhoneIcon, EnvelopeIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { PhoneIcon, EnvelopeIcon, Bars3Icon, XMarkIcon, ChevronDownIcon } from '@heroicons/react/24/outline'
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { motion, AnimatePresence } from 'framer-motion'
 import { 
   DropdownMenu, 
   DropdownMenuTrigger, 
@@ -15,27 +15,19 @@ import {
   DropdownMenuItem 
 } from "@/components/ui/dropdown-menu"
 
-// Dynamically import Framer Motion components
-const Motion = {
-  motion: dynamic(() => import('framer-motion').then(mod => mod.motion), { ssr: false }),
-  AnimatePresence: dynamic(() => import('framer-motion').then(mod => mod.AnimatePresence), { ssr: false })
-}
-
 const menuVariants = {
   closed: {
     x: "100%",
     transition: {
-      type: "spring",
-      stiffness: 400,
-      damping: 40
+      type: "tween",
+      duration: 0.2
     }
   },
   open: {
     x: "0%",
     transition: {
-      type: "spring",
-      stiffness: 400,
-      damping: 40
+      type: "tween",
+      duration: 0.2
     }
   }
 }
@@ -63,13 +55,30 @@ const Header = () => {
   const pathname = usePathname()
   const isResourcePage = pathname.startsWith('/resources')
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 0)
+  const handleScroll = useCallback(() => {
+    // Only update state if the value would actually change
+    const shouldBeScrolled = window.scrollY > 0
+    if (isScrolled !== shouldBeScrolled) {
+      setIsScrolled(shouldBeScrolled)
     }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  }, [isScrolled])
+
+  useEffect(() => {
+    // Throttle scroll events to fire at most once every 100ms
+    let ticking = false
+    const scrollListener = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          handleScroll()
+          ticking = false
+        })
+        ticking = true
+      }
+    }
+
+    window.addEventListener('scroll', scrollListener, { passive: true })
+    return () => window.removeEventListener('scroll', scrollListener)
+  }, [handleScroll])
 
   useEffect(() => {
     if (isOpen) {
@@ -99,13 +108,21 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-4">
           <Link href="/">
-            <Image src="/images/msi_logo.png" alt="MSI Logo" width={100} height={50} className="h-12 w-auto" />
+            <Image 
+              src="/images/msi_logo.png" 
+              alt="MSI Logo" 
+              width={100} 
+              height={50} 
+              className="h-12 w-auto"
+              priority
+              loading="eager"
+            />
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
             {navItems.map((item) => {
-              const itemPath = item === 'Home' ? '/' : item.toLowerCase()
+              const itemPath = item === 'Home' ? '/' : `/${item.toLowerCase()}`
               const isActive = pathname === itemPath
 
               return (
@@ -124,7 +141,7 @@ const Header = () => {
             })}
 
             {/* Resources Dropdown */}
-            <DropdownMenu 
+            <DropdownMenu
               trigger={
                 <span className={cn(
                   "text-sm font-medium transition-colors hover:text-gray-900",
@@ -134,14 +151,13 @@ const Header = () => {
                   Resources
                 </span>
               }
+              align="right"
             >
-              <DropdownMenuContent align="end">
-                {resourcesItems.map((item) => (
-                  <DropdownMenuItem key={item.name} href={item.href}>
-                    {item.name}
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
+              {resourcesItems.map((item) => (
+                <DropdownMenuItem key={item.name} href={item.href}>
+                  {item.name}
+                </DropdownMenuItem>
+              ))}
             </DropdownMenu>
           </nav>
 
@@ -182,11 +198,11 @@ const Header = () => {
         </div>
 
         {/* Mobile Navigation Overlay */}
-        <Motion.AnimatePresence>
+        <AnimatePresence>
           {isOpen && (
             <>
               {/* Backdrop */}
-              <Motion.motion.div
+              <motion.div
                 className="fixed inset-0 bg-black/50 z-40"
                 variants={backdropVariants}
                 initial="closed"
@@ -196,7 +212,7 @@ const Header = () => {
               />
 
               {/* Menu */}
-              <Motion.motion.div
+              <motion.div
                 className="fixed top-0 right-0 bottom-0 w-[250px] bg-white z-50 p-6"
                 variants={menuVariants}
                 initial="closed"
@@ -266,10 +282,10 @@ const Header = () => {
                     </Button>
                   </div>
                 </div>
-              </Motion.motion.div>
+              </motion.div>
             </>
           )}
-        </Motion.AnimatePresence>
+        </AnimatePresence>
       </div>
     </header>
   )
