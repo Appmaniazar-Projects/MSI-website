@@ -3,14 +3,14 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { cache } from 'react';
 
-// Updated type definition to match Next.js expectations
 type PageProps = {
-  params: Promise<{ slug: string }>;
+  params: { slug: string };
 };
 
-export function generateStaticParams() {
-  const posts = getBlogPosts();
+export async function generateStaticParams() {
+  const posts = await getBlogPosts();
   return posts.map((post) => ({
     slug: post.slug,
   }));
@@ -18,10 +18,8 @@ export function generateStaticParams() {
 
 export default async function BlogPostPage({ 
   params 
-}: { 
-  params: { slug: string } 
-}) {
-  const post = getBlogPostBySlug(params.slug);
+}: PageProps) {
+  const post = await getBlogPostBySlug(params.slug);
 
   if (!post) {
     notFound();

@@ -9,7 +9,7 @@ import Gallery from '../components/Gallery'
 import { Button } from "@/components/ui/button"
 import { getBlogPosts, type BlogPost } from '@/lib/blog'
 import { motion } from 'framer-motion'
-import { GraduationCap, Microscope, Tent } from 'lucide-react'
+import { Briefcase, School, Laptop, TestTube, User } from 'lucide-react'
 import { useState, useEffect } from 'react'
 
 export default function Home() {
@@ -47,7 +47,7 @@ export default function Home() {
           <div className="absolute inset-0 bg-black opacity-50"></div>
         </div>
         <div className="container mx-auto px-4 text-center relative z-10">
-          <motion.h1 
+          <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ 
@@ -59,7 +59,7 @@ export default function Home() {
             className="text-5xl md:text-7xl font-bold mb-6"
           >
             Empowering Future Leaders Through Innovative STEM Education
-          </motion.h1>
+          </motion.h2>
           
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -86,7 +86,7 @@ export default function Home() {
               size="lg"
               className="bg-red-600 text-white hover:bg-red-700"
             >
-              <Link href="#about">
+              <Link href="/about">
                 Learn More
               </Link>
             </Button>
@@ -131,35 +131,46 @@ export default function Home() {
           <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Our Services</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
-  { 
-  title: 'Tutoring', 
-  icon: <GraduationCap className="text-4xl text-red-600" />, 
-  description: 'Providing one-on-one and group tutoring sessions to enhance students’ understanding of mathematics and science, with a focus on personalized learning.' 
-},
-{ 
-  title: 'Workshops', 
-  icon: <Microscope className="text-4xl text-red-600" />, 
-  description: 'Organizing interactive STEM workshops that offer practical applications of mathematical and scientific concepts, aiming to engage and inspire students.' 
-},
-{ 
-  title: 'STEM Camps', 
-  icon: <Tent className="text-4xl text-red-600" />, 
-  description: 'Hosting immersive STEM camps that combine educational activities with outdoor experiences, providing students with a hands-on approach to learning.' 
-}
+            { 
+              title: 'Student Development', 
+              icon: <User className="text-4xl text-red-600" />, 
+              description: 'Providing customized support for students struggling in mathematics and science, helping them build confidence and achieve academic success.' 
+            },
+            { 
+              title: 'Professional Development', 
+              icon: <School className="text-4xl text-red-600" />, 
+              description: 'Enhancing the skills of maths and science tutors and teachers through targeted training and professional development programs.' 
+            },
+            { 
+              title: 'Career Guidance & Role Modelling', 
+              icon: <Briefcase className="text-4xl text-red-600" />, 
+              description: 'Inspiring students with career guidance and exposure to role models in STEM fields, opening doors to future opportunities.' 
+            },
 
-].map((service, index) => (
-  <motion.div 
-    key={service.title}
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.5, delay: index * 0.1 }}
-    className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
-  >
-    <div className="mb-4">{service.icon}</div>
-    <h3 className="text-xl font-semibold mb-4 text-gray-800">{service.title}</h3>
-    <p className="text-gray-600">{service.description}</p>
-  </motion.div>
-))}
+            ].map((service, index) => (
+              <motion.div 
+                key={service.title}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
+              >
+                <div className="mb-4">{service.icon}</div>
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">{service.title}</h3>
+                <p className="text-gray-600">{service.description}</p>
+              </motion.div>
+            ))}
+          </div>
+          <div className="text-center mt-12">
+            <Button
+              asChild
+              size="lg"
+              className="bg-red-600 text-white hover:bg-red-700"
+            >
+              <Link href="/services">
+                View All Services
+              </Link>
+            </Button>
           </div>
         </div>
       </section>
@@ -198,67 +209,67 @@ export default function Home() {
 
       {/* Blog Section */}
       <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="space-y-12">
-            <h2 className="text-3xl font-bold text-center text-gray-800">
-              Latest Blog Posts
-            </h2>
+      <div className="container mx-auto px-4">
+        <div className="space-y-12">
+          <h2 className="text-3xl font-bold text-center text-gray-800">
+            Latest Blog Posts
+          </h2>
 
-            <div className="grid md:grid-cols-3 gap-8">
-              {isLoading ? (
-                <div className="col-span-3 text-center text-gray-600">Loading blog posts...</div>
-              ) : latestPosts.length > 0 ? (
-                latestPosts.map((post) => (
-                  <motion.div
-                    key={post.slug}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all transform hover:-translate-y-2 duration-300"
-                  >
-                    <Link href={`/blog/${post.slug}`}>
-                      {post.frontmatter.image && (
-                        <Image
-                          src={post.frontmatter.image}
-                          alt={post.frontmatter.title}
-                          width={400}
-                          height={250}
-                          className="w-full h-48 object-cover"
-                        />
-                      )}
-                      <div className="p-6">
-                        <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                          {post.frontmatter.title}
-                        </h3>
-                        <p className="text-gray-600 mb-4 line-clamp-3">
-                          {post.frontmatter.excerpt}
-                        </p>
-                        <div className="flex justify-between items-center text-sm text-gray-500">
-                          <span>{post.frontmatter.author}</span>
-                          <span>{post.frontmatter.date}</span>
-                        </div>
+          <div className="grid md:grid-cols-3 gap-8">
+            {isLoading ? (
+              <div className="col-span-3 text-center text-gray-600">Loading blog posts...</div>
+            ) : latestPosts.length > 0 ? (
+              latestPosts.map((post) => (
+                <motion.div
+                  key={post.slug}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all transform hover:-translate-y-2 duration-300"
+                >
+                  <Link href={`/blog/${post.slug}`}>
+                    {post.frontmatter.image && (
+                      <Image
+                        src={post.frontmatter.image}
+                        alt={post.frontmatter.title}
+                        width={400}
+                        height={250}
+                        className="w-full h-48 object-cover"
+                      />
+                    )}
+                    <div className="p-6">
+                      <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                        {post.frontmatter.title}
+                      </h3>
+                      <p className="text-gray-600 mb-4 line-clamp-3">
+                        {post.frontmatter.excerpt}
+                      </p>
+                      <div className="flex justify-between items-center text-sm text-gray-500">
+                        <span>{post.frontmatter.author}</span>
+                        <span>{post.frontmatter.date}</span>
                       </div>
-                    </Link>
-                  </motion.div>
-                ))
-              ) : (
-                <div className="col-span-3 text-center text-gray-600">No blog posts found.</div>
-              )}
-            </div>
+                    </div>
+                  </Link>
+                </motion.div>
+              ))
+            ) : (
+              <div className="col-span-3 text-center text-gray-600">No blog posts found.</div>
+            )}
+          </div>
 
-            <div className="text-center">
-              <Button
-                asChild
-                size="lg"
-                className="bg-red-600 text-white hover:bg-red-700"
-              >
-                <Link href="/blog">
-                  View All Blog Posts
-                </Link>
-              </Button>
-            </div>
+          <div className="text-center">
+            <Button
+              asChild
+              size="lg"
+              className="bg-red-600 text-white hover:bg-red-700"
+            >
+              <Link href="/blog">
+                View All Blog Posts
+              </Link>
+            </Button>
           </div>
         </div>
+       </div>
       </section>
 
       {/* Call to Action */}
@@ -275,7 +286,7 @@ export default function Home() {
               size="lg"
               className="bg-red-600 text-white hover:bg-red-700"
             >
-              <Link href="#contact">
+              <Link href="/contact">
                 Get Involved
               </Link>
             </Button>

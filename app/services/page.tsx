@@ -13,78 +13,93 @@ const fadeIn = {
 
 const services = [
   {
-    title: "Mathematics Excellence Program",
-    description: "Comprehensive mathematics tutoring from grade 8 to 12, covering all curriculum topics with personalized attention.",
+    title: "Student Development",
+    description: "Providing support to students, especially those struggling with mathematics and science, through customized learning programs.",
     features: [
-      "Practice tests and exam preparation",
-      "Advanced problem-solving techniques",
-      "Regular progress assessments",
-      "Homework assistance and support"
+      "Tailored support for struggling students",
+      "Curriculum-aligned resources",
+      "Focus on building confidence and understanding"
     ],
-    image: "/images/msi-learner.jpg",
-    category: "Mathematics"
+    image: "/images/student-development.jpg",
+    category: "Student Support"
   },
   {
-    title: "Physical Sciences Program",
-    description: "Gain expert guidance in Physics and Chemistry, blending theoretical knowledge with practical experiments.",
+    title: "Tutor Development",
+    description: "Enhancing the skills and effectiveness of maths and science tutors through professional development and training programs.",
     features: [
-      "Interactive laboratory sessions",
-      "Practical experiments and demonstrations",
-      "Comprehensive theory coverage",
-      "Past paper practice sessions",
-      "Scientific calculator training"
+      "Training in advanced teaching techniques",
+      "Focused workshops for science and mathematics",
+      "Ongoing mentorship and evaluation"
     ],
-    image: "/images/msi-learner.jpg",
-    category: "Science"
+    image: "/images/tutor-development.jpg",
+    category: "Professional Development"
   },
   {
-    title: "Holiday Programs",
-    description: "Intensive revision and preparation programs during school holidays to boost understanding and performance.",
+    title: "Teacher Development",
+    description: "Supporting teachers in their professional growth, ensuring they have the necessary skills and resources to teach maths and science effectively.",
     features: [
-      "Concentrated learning sessions",
-      "Exam preparation workshops",
-      "Study skills development",
-      "Group projects and activities",
-      "Mock exams and assessments"
+      "Access to innovative teaching resources",
+      "Workshops on effective classroom strategies",
+      "Regular assessment and feedback"
     ],
-    image: "/images/msi-learner.jpg",
-    category: "Special Programs"
+    image: "/images/teacher-development.jpg",
+    category: "Professional Development"
   },
   {
-    title: "Online Learning Platform",
-    description: "Access to digital learning resources and virtual tutoring sessions for flexible learning.",
+    title: "Career Guidance & Role Modelling",
+    description: "Offering guidance and role models in the fields of maths and science to inspire and inform students about potential career paths.",
     features: [
-      "24/7 access to learning materials",
-      "Video tutorials and explanations",
-      "Interactive quizzes and exercises",
-      "Virtual one-on-one sessions",
-      "Progress tracking dashboard"
+      "Career counseling sessions",
+      "Exposure to STEM role models",
+      "Workshops on future career opportunities"
     ],
-    image: "/images/msi-learner.jpg",
+    image: "/images/career-guidance.jpg",
+    category: "Student Support"
+  },
+  {
+    title: "Mobile Laboratories",
+    description: "Bringing science education to underserved areas through mobile labs that provide hands-on learning experiences.",
+    features: [
+      "Fully equipped mobile labs",
+      "Practical experiments for students",
+      "Community outreach programs"
+    ],
+    image: "/images/mobile-laboratories.jpg",
+    category: "Science Outreach"
+  },
+  {
+    title: "Online Tutorial Sessions",
+    description: "Providing flexible, structured online tutorials to support students in their studies.",
+    features: [
+      "Structured lesson plans",
+      "Real-time virtual support",
+      "Progress tracking and feedback"
+    ],
+    image: "/images/online-tutorial.jpg",
     category: "Digital Learning"
   }
 ]
 
 const categories = [
   {
-    name: "Mathematics",
-    icon: "📐",
-    description: "From basic algebra to advanced calculus, we've got you covered."
-  },
-  {
-    name: "Science",
-    icon: "🔬",
-    description: "Hands-on experiments and comprehensive theory coverage."
-  },
-  {
-    name: "Special Programs",
+    name: "Student Support",
     icon: "📚",
-    description: "Intensive holiday courses and exam preparation workshops."
+    description: "Tailored programs to help students excel in mathematics and science."
+  },
+  {
+    name: "Professional Development",
+    icon: "🎓",
+    description: "Empowering tutors and teachers to achieve excellence in STEM education."
+  },
+  {
+    name: "Science Outreach",
+    icon: "🔬",
+    description: "Bringing hands-on science education to underserved areas."
   },
   {
     name: "Digital Learning",
     icon: "💻",
-    description: "Modern e-learning solutions for flexible studying."
+    description: "Flexible, online learning solutions to support education anywhere."
   }
 ]
 
