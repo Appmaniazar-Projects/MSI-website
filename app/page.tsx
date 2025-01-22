@@ -58,7 +58,7 @@ export default function Home() {
             }}
             className="text-5xl md:text-7xl font-bold mb-6"
           >
-            Empowering Through Education
+            Empowering Future Leaders Through Innovative STEM Education
           </motion.h1>
           
           <motion.p 
@@ -96,31 +96,34 @@ export default function Home() {
 
       {/* About Section */}
       <section id="about" className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="flex flex-col md:flex-row items-center"
-          >
-            <div className="md:w-1/2 mb-8 md:mb-0">
-              <Image src="/images/Outdoor.jpg" alt="Students learning" width={600} height={400} className="rounded-lg shadow-lg" />
-            </div>
-            <div className="md:w-1/2 md:pl-12">
-              <h2 className="text-3xl font-bold mb-6 text-gray-800">About Maths and Science Infinity</h2>
-              <p className="text-gray-600 mb-6">
-                We are dedicated to bridging the gap between classroom learning and real-life application of Maths and Science. Our mission is to inspire and empower the youth through innovative educational programs.
-              </p>
-              <ul className="list-disc list-inside text-gray-600 space-y-2">
-                <li>Hands-on learning experiences</li>
-                <li>Mentorship programs</li>
-                <li>STEM workshops and events</li>
-                <li>Community outreach initiatives</li>
-              </ul>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+  <div className="container mx-auto px-4">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="flex flex-col md:flex-row items-center"
+    >
+      <div className="md:w-1/2 mb-8 md:mb-0">
+        <Image src="/images/Outdoor.jpg" alt="Students learning" width={600} height={400} className="rounded-lg shadow-lg" />
+      </div>
+      <div className="md:w-1/2 md:pl-12">
+        <h2 className="text-3xl font-bold mb-6 text-gray-800">About Maths and Science Infinity</h2>
+        <p className="text-gray-600 mb-6">
+          Maths and Science Infinity (MSI) is committed to pioneering STEM educational initiatives that foster global leaders. Our mission is to empower students, particularly those facing challenges in maths and science, through:
+        </p>
+        <ul className="list-disc list-inside text-gray-600 space-y-2">
+          <li>Hands-on learning experiences</li>
+          <li>Tutor and teacher development</li>
+          <li>Career guidance and role modelling</li>
+          <li>Innovative programs</li>
+          <li>Mobile laboratories</li>
+          <li>Online tutorial sessions</li>
+        </ul>
+      </div>
+    </motion.div>
+  </div>
+</section>
+
 
       {/* Services Section */}
       <section className="py-20 bg-gray-100">
@@ -129,20 +132,21 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
   { 
-    title: 'Tutoring', 
-    icon: <GraduationCap className="text-4xl text-red-600" />, 
-    description: 'One-on-one and group tutoring sessions in mathematics and science subjects.' 
-  },
-  { 
-    title: 'Workshops', 
-    icon: <Microscope className="text-4xl text-red-600" />, 
-    description: 'Interactive workshops focusing on practical applications of STEM concepts.' 
-  },
-  { 
-    title: 'STEM Camps', 
-    icon: <Tent className="text-4xl text-red-600" />, 
-    description: 'Immersive camps that combine learning with fun outdoor activities.' 
-  }
+  title: 'Tutoring', 
+  icon: <GraduationCap className="text-4xl text-red-600" />, 
+  description: 'Providing one-on-one and group tutoring sessions to enhance students’ understanding of mathematics and science, with a focus on personalized learning.' 
+},
+{ 
+  title: 'Workshops', 
+  icon: <Microscope className="text-4xl text-red-600" />, 
+  description: 'Organizing interactive STEM workshops that offer practical applications of mathematical and scientific concepts, aiming to engage and inspire students.' 
+},
+{ 
+  title: 'STEM Camps', 
+  icon: <Tent className="text-4xl text-red-600" />, 
+  description: 'Hosting immersive STEM camps that combine educational activities with outdoor experiences, providing students with a hands-on approach to learning.' 
+}
+
 ].map((service, index) => (
   <motion.div 
     key={service.title}

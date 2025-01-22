@@ -16,7 +16,6 @@ const services = [
     title: "Mathematics Excellence Program",
     description: "Comprehensive mathematics tutoring from grade 8 to 12, covering all curriculum topics with personalized attention.",
     features: [
-      "Small group sessions for personalized attention",
       "Practice tests and exam preparation",
       "Advanced problem-solving techniques",
       "Regular progress assessments",
@@ -27,7 +26,7 @@ const services = [
   },
   {
     title: "Physical Sciences Program",
-    description: "Expert guidance in Physics and Chemistry, combining theoretical knowledge with practical experiments.",
+    description: "Gain expert guidance in Physics and Chemistry, blending theoretical knowledge with practical experiments.",
     features: [
       "Interactive laboratory sessions",
       "Practical experiments and demonstrations",

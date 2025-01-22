@@ -154,7 +154,14 @@ const Header = () => {
               align="right"
             >
               {resourcesItems.map((item) => (
-                <DropdownMenuItem key={item.name} href={item.href}>
+                <DropdownMenuItem 
+                  key={item.name} 
+                  href={item.href}
+                  className={cn(
+                    "text-gray-600 hover:text-gray-900",
+                    pathname === item.href && "text-red-600"
+                  )}
+                >
                   {item.name}
                 </DropdownMenuItem>
               ))}

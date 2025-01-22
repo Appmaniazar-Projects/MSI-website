@@ -35,25 +35,35 @@ const teamMembers = [
 
 const values = [
   {
-    title: 'Excellence',
-    description: 'Striving for the highest standards in education and service delivery.',
+    title: 'Equity and Inclusion',
+    description: 'We ensure every student has equal access to education, regardless of their background.',
+    icon: '👥',
+  },
+  {
+    title: 'Excellence in Education',
+    description: 'We strive for the highest standards in both our teaching and service delivery.',
     icon: '🌟',
   },
   {
-    title: 'Innovation',
-    description: 'Embracing new teaching methods and technologies to enhance learning.',
+    title: 'Innovation and Creativity',
+    description: 'Embracing new methods and technologies to enhance learning.',
     icon: '💡',
   },
   {
-    title: 'Inclusivity',
-    description: 'Ensuring education is accessible to all, regardless of background.',
+    title: 'Collaboration and Partnership',
+    description: 'Working with educators, communities, and students to achieve success.',
     icon: '🤝',
   },
   {
-    title: 'Impact',
-    description: 'Making a measurable difference in students\' academic success.',
-    icon: '📈',
+    title: 'Accountability and Transparency',
+    description: 'We hold ourselves accountable and maintain transparency in all our actions.',
+    icon: '👁️',
   },
+  {
+    title: 'Continuous Improvement',
+    description: 'We are committed to constant growth and development to better serve our students.',
+    icon: '🔄',
+  },  
 ]
 
 export default function About() {
@@ -72,7 +82,7 @@ export default function About() {
               variants={fadeIn}
               className="text-4xl md:text-6xl font-bold mb-6 tracking-tight"
             >
-              About Maths and Science Infinity
+              About MSI
             </motion.h1>
             <motion.p 
               initial="hidden"
@@ -103,8 +113,12 @@ export default function About() {
                   <div className="text-4xl mb-6">🎯</div>
                   <h2 className="text-3xl font-bold mb-6 text-gray-900">Our Mission</h2>
                   <p className="text-gray-600 leading-relaxed text-lg">
-                    To empower youth through innovative and accessible STEM education, fostering critical thinking, 
-                    problem-solving skills, and a passion for lifelong learning in mathematics and science.
+                  We aim to revolutionize STEM education by offering tailored support to 
+                  students and educators. Our goal is to empower students, particularly 
+                  those facing challenges in maths and science, with the tools to excel 
+                  and become future global leaders. Through innovative programs, 
+                  career guidance, mobile labs, and flexible online tutorials, 
+                  we ensure equitable access to learning opportunities.
                   </p>
                 </CardContent>
               </Card>
@@ -122,8 +136,9 @@ export default function About() {
                   <div className="text-4xl mb-6">🔭</div>
                   <h2 className="text-3xl font-bold mb-6 text-gray-900">Our Vision</h2>
                   <p className="text-gray-600 leading-relaxed text-lg">
-                    To be the leading organization in transforming STEM education in South Africa, creating a 
-                    future where every young person has the opportunity to excel in mathematics and science.
+                  Leading the way in pioneering premier STEM educational initiatives 
+                  that foster the development of future global leaders by providing 
+                  equitable access to education and promoting excellence, creativity, and innovation.
                   </p>
                 </CardContent>
               </Card>
@@ -149,17 +164,17 @@ export default function About() {
             {[
               {
                 title: 'Expert Instructors',
-                description: 'Our team consists of experienced educators and industry professionals.',
+                description: 'Our dedicated team of experienced educators and industry professionals is committed to providing the best learning experience, ensuring that every student receives the guidance they need to succeed.',
                 icon: '👨‍🏫',
               },
               {
                 title: 'Proven Results',
-                description: 'Track record of improving student performance and understanding.',
+                description: 'With a track record of improving student performance and understanding, MSI helps students overcome challenges and build a strong foundation in maths and science—opening doors to exciting future opportunities.',
                 icon: '📊',
               },
               {
                 title: 'Innovative Approach',
-                description: 'Combining traditional teaching with modern technology and hands-on learning.',
+                description: 'We blend traditional teaching with the latest technology and hands-on experiences, creating an engaging and interactive learning environment that fosters curiosity and deep understanding.',
                 icon: '🔬',
               },
             ].map((item, index) => (
