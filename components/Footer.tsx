@@ -6,10 +6,10 @@ import { fadeInUp, staggerContainer } from '@/utils/animations'
 
 const Footer = () => {
   const socialLinks = [
-    { icon: FaFacebookF, href: 'https://facebook.com', label: 'Facebook' },
-    { icon: FaTwitter, href: 'https://twitter.com', label: 'Twitter' },
-    { icon: FaInstagram, href: 'https://instagram.com', label: 'Instagram' },
-    { icon: FaLinkedinIn, href: 'https://linkedin.com', label: 'LinkedIn' }
+    { icon: FaFacebookF, href: 'https://www.facebook.com/share/14mdGpX89G/', label: 'Facebook' },
+    { icon: FaTwitter, href: 'https://twitter.com/maths_sciencesa', label: 'Twitter' },
+    { icon: FaInstagram, href: 'https://www.instagram.com/maths_and_science_infinity?igsh=a3J0dzh2ZzF0ZjJs', label: 'Instagram' },
+    { icon: FaLinkedinIn, href: 'https://www.linkedin.com/company/maths-and-science-infinity/', label: 'LinkedIn' }
   ]
 
   const quickLinks = [
@@ -94,11 +94,17 @@ const Footer = () => {
             <ul className="space-y-3">
               <li className="flex items-start space-x-3">
                 <FaMapMarkerAlt className="w-5 h-5 text-red-500 mt-1" />
-                <span>123 Main St, East London, Eastern Cape, South Africa</span>
+                <a href="https://maps.app.goo.gl/CiouhET31DgDygem9" 
+                className="hover:text-red-500 transition-colors duration-300">
+                <span>East London, Eastern Cape, South Africa</span>
+                </a>
               </li>
               <li className="flex items-center space-x-3">
                 <FaPhone className="w-4 h-4 text-red-500" />
+                <a href="tel:+27437262171" 
+                className="hover:text-red-500 transition-colors duration-300">
                 <span>+27 43 726 2171</span>
+                </a>
               </li>
               <li className="flex items-center space-x-3">
                 <FaEnvelope className="w-4 h-4 text-red-500" />
