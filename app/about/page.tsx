@@ -23,13 +23,13 @@ const teamMembers = [
   {
     name: 'Jane Smith',
     role: 'Head of Programs',
-    image: '/images/msi-learner.jpg',
+    image: '/images/staff.jpg',
     bio: 'Former high school teacher specializing in mathematics and curriculum development.',
   },
   {
     name: 'Mike Johnson',
     role: 'Community Outreach Director',
-    image: '/images/msi-learner.jpg',
+    image: '/images/staff.jpg',
     bio: 'Dedicated to building strong partnerships with local schools and communities.',
   },
 ]
@@ -346,7 +346,7 @@ export default function About() {
                   a brighter future for our youth."
                 </p>
                 <div>
-                  <h3 className="text-2xl font-bold">John Doe</h3>
+                  <h3 className="text-2xl font-bold">Zenith Yengwa</h3>
                   <p className="text-red-500 text-lg">CEO & Founder</p>
                 </div>
               </div>

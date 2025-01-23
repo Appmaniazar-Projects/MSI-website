@@ -66,7 +66,7 @@ Artificial Intelligence is revolutionizing education in unprecedented ways.
         title: 'Empowering Youth Through STEM Education',
         date: '2024-01-09',
         author: 'MSI Team',
-        image: '/images/blog/stem-education.jpg',
+        image: '/images/blog/The STEM Education Revolution.jpg',
         tags: ['STEM', 'Education', 'Youth Empowerment'],
         excerpt: 'Exploring how innovative educational approaches can transform young minds.'
     },

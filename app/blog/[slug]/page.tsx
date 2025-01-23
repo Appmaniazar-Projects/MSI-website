@@ -3,7 +3,6 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { cache } from 'react';
 
 type PageProps = {
   params: { slug: string };
@@ -16,9 +15,9 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function BlogPostPage({ 
-  params 
-}: PageProps) {
+export default async function BlogPostPage({
+  params,
+}: { params: { slug: string } }) {
   const post = await getBlogPostBySlug(params.slug);
 
   if (!post) {
@@ -54,15 +53,39 @@ export default async function BlogPostPage({
         )}
 
         <div className="prose lg:prose-xl prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-red-600 prose-strong:text-gray-900 space-y-6">
-          <ReactMarkdown 
+          <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             components={{
-              h2: ({node, ...props}) => <h2 className="text-3xl font-bold mt-12 mb-6 text-gray-900 border-b pb-3" {...props} />,
-              h3: ({node, ...props}) => <h3 className="text-2xl font-semibold mt-8 mb-4 text-gray-800" {...props} />,
-              p: ({node, ...props}) => <p className="mb-6 leading-relaxed" {...props} />,
-              ul: ({node, ...props}) => <ul className="list-disc list-inside mb-6 space-y-2" {...props} />,
-              ol: ({node, ...props}) => <ol className="list-decimal list-inside mb-6 space-y-2" {...props} />,
-              blockquote: ({node, ...props}) => <blockquote className="border-l-4 border-red-600 pl-4 italic text-gray-600 my-6" {...props} />
+              h2: ({ node, ...props }) => (
+                <h2
+                  className="text-3xl font-bold mt-12 mb-6 text-gray-900 border-b pb-3"
+                  {...props}
+                />
+              ),
+              h3: ({ node, ...props }) => (
+                <h3
+                  className="text-2xl font-semibold mt-8 mb-4 text-gray-800"
+                  {...props}
+                />
+              ),
+              p: ({ node, ...props }) => (
+                <p className="mb-6 leading-relaxed" {...props} />
+              ),
+              ul: ({ node, ...props }) => (
+                <ul className="list-disc list-inside mb-6 space-y-2" {...props} />
+              ),
+              ol: ({ node, ...props }) => (
+                <ol
+                  className="list-decimal list-inside mb-6 space-y-2"
+                  {...props}
+                />
+              ),
+              blockquote: ({ node, ...props }) => (
+                <blockquote
+                  className="border-l-4 border-red-600 pl-4 italic text-gray-600 my-6"
+                  {...props}
+                />
+              ),
             }}
           >
             {post.content}
