@@ -62,7 +62,7 @@ export default function BlogPage() {
               transition={{ delay: 0.2 }}
               className="text-xl md:text-2xl opacity-90"
             >
-              Capturing moments of learning, growth, and achievement
+              Inspiring stories of innovation, growth, and success in STEM education.
             </motion.p>
           </div>
         </div>

@@ -38,7 +38,6 @@ export default function DonatePage() {
   const [donationType, setDonationType] = useState<'money' | 'other'>('money')
   const [showModal, setShowModal] = useState(false)
 
-  const predefinedAmounts = ['50', '100', '200', '500', '1000']
   const donationTypes = [
     { icon: <BookOpen className="w-8 h-8" />, title: 'Educational Materials', description: 'Books, stationery, and learning resources' },
     { icon: <Laptop className="w-8 h-8" />, title: 'Technology', description: 'Computers, tablets, and educational software' },
@@ -122,21 +121,6 @@ export default function DonatePage() {
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">
                   Make a Monetary Donation
                 </h2>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
-                  {predefinedAmounts.map((value) => (
-                    <Button
-                      key={value}
-                      variant={selectedAmount === value ? "default" : "outline"}
-                      className={cn(
-                        "h-16 text-lg transition-all",
-                        selectedAmount === value && "scale-105"
-                      )}
-                      onClick={() => handleAmountClick(value)}
-                    >
-                      R{value}
-                    </Button>
-                  ))}
-                </div>
                 <div className="space-y-6">
                   <div>
                     <Label htmlFor="custom-amount" className="text-lg mb-2 block">

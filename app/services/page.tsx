@@ -128,7 +128,7 @@ export default function Services() {
               transition={{ delay: 0.2 }}
               className="text-xl md:text-2xl opacity-90"
             >
-              Comprehensive STEM education solutions tailored to your needs
+              Empowering students with tailored STEM education solutions to meet their unique needs.
             </motion.p>
           </div>
         </div>
@@ -149,7 +149,7 @@ export default function Services() {
               What We Offer
             </h2>
             <p className="text-xl text-gray-600">
-              Explore our range of educational services designed to help students excel
+            Innovative educational services designed to inspire future leaders and help students excel.
             </p>
           </motion.div>
 

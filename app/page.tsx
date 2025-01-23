@@ -119,6 +119,15 @@ export default function Home() {
           <li>Mobile laboratories</li>
           <li>Online tutorial sessions</li>
         </ul>
+        <Button
+              asChild
+              size="lg"
+              className="bg-red-600 text-white hover:bg-red-700 mt-6"
+            >
+              <Link href="/about">
+                Learn More
+              </Link>
+      </Button>
       </div>
     </motion.div>
   </div>
