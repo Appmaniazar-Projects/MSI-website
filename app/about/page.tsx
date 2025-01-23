@@ -374,7 +374,7 @@ export default function About() {
             <Button
               asChild
               size="lg"
-              className="bg-red-600 text-white hover:bg-red-700"
+              className="bg-white text-red-600 hover:bg-white-500"
             >
               <Link href="/contact">
                 Enroll Now

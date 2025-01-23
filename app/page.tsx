@@ -207,6 +207,15 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
+          <Button 
+              asChild
+              size="lg"
+              className="bg-white text-red-600 hover:bg-white-500"
+            >
+              <Link href="/contact">
+                Learn More
+              </Link>
+            </Button>
         </div>
       </section>
 
