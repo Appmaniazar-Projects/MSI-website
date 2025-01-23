@@ -4,8 +4,13 @@ import { motion } from 'framer-motion'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { Button } from '@/components/ui/button'
+import Modal from '@/components/Modal'
+import { Construction } from 'lucide-react'
+import { useState } from 'react'
 
 export default function StudentPortal() {
+  const [showModal, setShowModal] = useState(false)
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -23,7 +28,7 @@ export default function StudentPortal() {
             <div className="bg-white rounded-lg shadow-md p-8 mb-8">
               <h2 className="text-2xl font-semibold text-gray-800 mb-6">Login to Access Your Account</h2>
               
-              <form className="space-y-6">
+              <form className="space-y-6" onSubmit={(e) => { e.preventDefault(); setShowModal(true); }}>
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
                     Email Address
@@ -88,6 +93,7 @@ export default function StudentPortal() {
               <Button
                 variant="outline"
                 className="w-full border-red-600 text-red-600 hover:bg-red-50"
+                onClick={() => setShowModal(true)}
               >
                 Register Now
               </Button>
@@ -95,6 +101,19 @@ export default function StudentPortal() {
           </motion.div>
         </div>
       </main>
+
+      <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+        <div className="text-center">
+          <div className="text-4xl mb-4">
+            <Construction className="w-16 h-16 mx-auto text-yellow-500" />
+          </div>
+          <h3 className="text-xl font-semibold mb-4">Feature Coming Soon!</h3>
+          <p className="text-gray-600">
+            We're currently working on integrating our payment system. 
+            This feature will be available soon. Thank you for your patience!
+          </p>
+        </div>
+      </Modal>
 
       <Footer />
     </div>

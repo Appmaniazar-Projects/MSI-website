@@ -9,10 +9,10 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
-  DropdownMenu, 
-  DropdownMenuTrigger, 
-  DropdownMenuContent, 
-  DropdownMenuItem 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  DropdownMenuItem,
 } from "@/components/ui/dropdown-menu"
 
 const menuVariants = {
@@ -54,6 +54,7 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname()
   const isResourcePage = pathname.startsWith('/resources')
+  const isTutorPage = pathname.startsWith('/become-a-tutor')
 
   const handleScroll = useCallback(() => {
     // Only update state if the value would actually change
@@ -101,10 +102,12 @@ const Header = () => {
     { name: 'Study Materials', href: '/resources/study-materials' }
   ]
 
-  const navItems = ['Home', 'About', 'Services', 'Gallery', 'Blog', 'Contact']
+  const navItems = ['Home', 'About', 'Services', 'Gallery', 'Blog', 'Contact', 'Become a Tutor']
 
   return (
-    <header className={`fixed w-full z-50 transition-all duration-300 ${isScrolled || isResourcePage ? 'bg-white shadow-md' : 'bg-transparent'}`}>
+    <header className={`fixed w-full z-50 transition-all duration-300 ${
+      isScrolled || isResourcePage || isTutorPage ? 'bg-white shadow-md' : 'bg-transparent'
+    }`}>
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-4">
           <Link href="/">
@@ -122,7 +125,7 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
             {navItems.map((item) => {
-              const itemPath = item === 'Home' ? '/' : `/${item.toLowerCase()}`
+              const itemPath = item === 'Home' ? '/' : `/${item.toLowerCase().replace(/\s+/g, '-')}`;
               const isActive = pathname === itemPath
 
               return (
@@ -131,8 +134,8 @@ const Header = () => {
                   href={itemPath}
                   className={cn(
                     "text-sm font-medium transition-colors hover:text-gray-900",
-                    isScrolled || isResourcePage ? "text-gray-600" : "text-white",
-                    isActive && (isScrolled || isResourcePage ? "text-red-600" : "text-red-400")
+                    isScrolled || isResourcePage || isTutorPage ? "text-gray-600" : "text-white",
+                    isActive && (isScrolled || isResourcePage || isTutorPage ? "text-red-600" : "text-red-400")
                   )}
                 >
                   {item === 'Blog' ? 'Blog' : item}
@@ -145,8 +148,8 @@ const Header = () => {
               trigger={
                 <span className={cn(
                   "text-sm font-medium transition-colors hover:text-gray-900",
-                  isScrolled || isResourcePage ? "text-gray-600" : "text-white",
-                  pathname.startsWith('/resources') && (isScrolled || isResourcePage ? "text-red-600" : "text-red-400")
+                  isScrolled || isResourcePage || isTutorPage ? "text-gray-600" : "text-white",
+                  pathname.startsWith('/resources') && (isScrolled || isResourcePage || isTutorPage ? "text-red-600" : "text-red-400")
                 )}>
                   Resources
                 </span>
@@ -174,7 +177,7 @@ const Header = () => {
               href="tel:+27437262171" 
               className={cn(
                 "hover:text-gray-900",
-                isScrolled || isResourcePage ? "text-gray-600" : "text-white"
+                isScrolled || isResourcePage || isTutorPage ? "text-gray-600" : "text-white"
               )}
             >
               <PhoneIcon className="h-5 w-5 inline mr-2" />
@@ -184,7 +187,7 @@ const Header = () => {
               asChild 
               className={cn(
                 "bg-red-600 text-white hover:bg-red-700",
-                isScrolled || isResourcePage ? "bg-red-600" : "bg-white/20 text-white hover:bg-white/30"
+                isScrolled || isResourcePage || isTutorPage ? "bg-red-600" : "bg-white/20 text-white hover:bg-white/30"
               )}
             >
               <Link href="/donate">Donate Now</Link>
@@ -197,9 +200,9 @@ const Header = () => {
             className="md:hidden p-2 focus:outline-none"
           >
             {isOpen ? (
-              <XMarkIcon className={`h-6 w-6 ${isScrolled || isResourcePage ? 'text-gray-900' : 'text-white'}`} />
+              <XMarkIcon className={`h-6 w-6 ${isScrolled || isResourcePage || isTutorPage ? 'text-gray-900' : 'text-white'}`} />
             ) : (
-              <Bars3Icon className={`h-6 w-6 ${isScrolled || isResourcePage ? 'text-gray-900' : 'text-white'}`} />
+              <Bars3Icon className={`h-6 w-6 ${isScrolled || isResourcePage || isTutorPage ? 'text-gray-900' : 'text-white'}`} />
             )}
           </button>
         </div>
@@ -228,7 +231,7 @@ const Header = () => {
               >
                 <div className="flex flex-col space-y-4">
                   {navItems.map((item) => {
-                    const itemPath = item === 'Home' ? '/' : `/${item.toLowerCase()}`
+                    const itemPath = item === 'Home' ? '/' : `/${item.toLowerCase().replace(/\s+/g, '-')}`;
                     const isActive = pathname === itemPath
 
                     return (
@@ -274,8 +277,10 @@ const Header = () => {
                   <div className="pt-4 border-t border-gray-200">
                     <a 
                       href="tel:+27437262171" 
-                      className="text-gray-600 hover:text-gray-900 block mb-2"
-                      onClick={toggleMenu}
+                      className={cn(
+                        "hover:text-gray-900",
+                        isScrolled || isResourcePage || isTutorPage ? "text-gray-600" : "text-white"
+                      )}
                     >
                       <PhoneIcon className="h-5 w-5 inline mr-2" />
                       +27 43 726 2171
