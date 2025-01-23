@@ -61,11 +61,15 @@ export const DropdownMenuContent: React.FC<{
 export const DropdownMenuItem: React.FC<{ 
   children: ReactNode, 
   href?: string, 
-  onClick?: () => void 
-}> = ({ children, href, onClick }) => {
+  onClick?: () => void,
+  className?: string
+}> = ({ children, href, onClick, className }) => {
   const content = (
     <div 
-      className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm text-gray-700 hover:text-gray-900"
+      className={cn(
+        "px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm",
+        className
+      )}
       onClick={onClick}
     >
       {children}
@@ -94,7 +98,7 @@ export const DropdownMenuTrigger: React.FC<{
     )}
   >
     {children}
-    <ChevronDown className="h-4 w-4 transition-transform" />
+    <ChevronDown className="h-4 w-4 transition-transform text-current" />
   </button>
 )
 
