@@ -6,6 +6,7 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import Link from 'next/link';
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -211,7 +212,7 @@ export default function About() {
           >
             Our Values
           </motion.h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {values.map((value, index) => (
               <motion.div
                 key={value.title}
@@ -370,11 +371,14 @@ export default function About() {
             <p className="text-xl mb-12 opacity-90">
               Join Maths and Science Infinity today and unlock your potential in STEM.
             </p>
-            <Button 
-              size="lg" 
-              className="bg-white text-red-600 hover:bg-gray-100 text-lg px-12 py-6"
+            <Button
+              asChild
+              size="lg"
+              className="bg-red-600 text-white hover:bg-red-700"
             >
-              Enroll Now
+              <Link href="/contact">
+                Enroll Now
+              </Link>
             </Button>
           </motion.div>
         </div>

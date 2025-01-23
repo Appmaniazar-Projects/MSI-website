@@ -33,10 +33,12 @@ import {
 
 export default function DonatePage() {
   const [amount, setAmount] = useState('')
-  const [message, setMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState('');
   const [selectedAmount, setSelectedAmount] = useState<string | null>(null)
   const [donationType, setDonationType] = useState<'money' | 'other'>('money')
-  const [showModal, setShowModal] = useState(false)
+  const [showFrequencyModal, setShowFrequencyModal] = useState(false)
+  const [donationFrequency, setDonationFrequency] = useState<'monthly' | 'once-off' | null>(null)
+  const [showFeatureModal, setShowFeatureModal] = useState(false)
 
   const donationTypes = [
     { icon: <BookOpen className="w-8 h-8" />, title: 'Educational Materials', description: 'Books, stationery, and learning resources' },
@@ -47,18 +49,32 @@ export default function DonatePage() {
     { icon: <Apple className="w-8 h-8" />, title: 'Food & Nutrition', description: 'Non-perishable food items' }
   ]
 
-  const handleAmountClick = (value: string) => {
-    setSelectedAmount(value)
-    setAmount(value)
-  }
 
   const handleCustomAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedAmount(null)
-    setAmount(e.target.value)
-  }
+    const value = e.target.value;
+  
+    // Allow only numbers and prevent negative values
+    if (/^\d*\.?\d*$/.test(value)) {
+      if (value === '' || parseFloat(value) > 0) {
+        setAmount(value);
+        setErrorMessage('');
+        setSelectedAmount(null);
+      } else {
+        setErrorMessage('Amount must be greater than 0');
+      }
+    } else {
+      setErrorMessage('Only numbers are allowed');
+    }
+  };
 
   const handlePaymentClick = () => {
-    setShowModal(true)
+    setShowFrequencyModal(true)
+  }
+
+  const handleFrequencySelect = (frequency: 'monthly' | 'once-off') => {
+    setDonationFrequency(frequency)
+    setShowFrequencyModal(false)
+    setShowFeatureModal(true)
   }
 
   return (
@@ -122,27 +138,45 @@ export default function DonatePage() {
                   Make a Monetary Donation
                 </h2>
                 <div className="space-y-6">
-                  <div>
-                    <Label htmlFor="custom-amount" className="text-lg mb-2 block">
-                      Custom Amount (R)
-                    </Label>
-                    <Input
-                      id="custom-amount"
-                      type="number"
-                      placeholder="Enter custom amount"
-                      value={amount}
-                      onChange={handleCustomAmount}
-                      className="text-lg h-12"
-                    />
-                  </div>
-                  <Button 
-                    className="w-full h-14 text-lg"
-                    disabled={!amount}
-                    onClick={handlePaymentClick}
-                  >
-                    Continue to Payment
-                  </Button>
-                  <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+                <div>
+                <Label htmlFor="custom-amount" className="text-lg mb-2 block">
+                  Custom Amount (R)
+                </Label>
+                <Input
+                  id="custom-amount"
+                  type="text" // Use type="text" to handle validation in JavaScript
+                  placeholder="Enter custom amount"
+                  value={amount}
+                  onChange={handleCustomAmount}
+                  className="text-lg h-12"
+                />
+                {errorMessage && (
+                  <p className="text-red-600 text-sm mt-2">{errorMessage}</p>
+                )}
+              </div>
+              <Button
+                className="w-full h-14 text-lg"
+                disabled={!amount || parseFloat(amount) <= 0}
+                onClick={handlePaymentClick}
+              >
+                Continue to Payment
+              </Button>
+                  {/* Frequency Modal */}
+                  <Modal isOpen={showFrequencyModal} onClose={() => setShowFrequencyModal(false)}>
+                    <div className="text-center">
+                      <h3 className="text-xl font-semibold mb-4">Choose Donation Frequency</h3>
+                      <div className="flex gap-4 justify-center">
+                        <Button onClick={() => handleFrequencySelect('monthly')} variant="default">
+                          Monthly
+                        </Button>
+                        <Button onClick={() => handleFrequencySelect('once-off')} variant="default">
+                          Once-Off
+                        </Button>
+                      </div>
+                    </div>
+                  </Modal>
+                  {/* Feature Modal */}
+                  <Modal isOpen={showFeatureModal} onClose={() => setShowFeatureModal(false)}>
                     <div className="text-center">
                       <div className="text-4xl mb-4">
                         <Construction className="w-16 h-16 mx-auto text-yellow-500" />
@@ -154,13 +188,11 @@ export default function DonatePage() {
                       </p>
                     </div>
                   </Modal>
-                  <p className="text-sm text-gray-500 text-center">
-                    Secure payment powered by Stripe. Your information is encrypted and secure.
-                  </p>
                 </div>
               </Card>
             ) : (
               <Card className="p-8">
+                {/* Non-Monetary Donation Code*/}
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">
                   Make a Non-Monetary Donation
                 </h2>
@@ -183,17 +215,17 @@ export default function DonatePage() {
                   </p>
                   <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
                     <Button variant="outline" size="lg" asChild>
-                      <a href="mailto:contact@mathsandscienceinfinity.org">
+                      <a href="mailto:info@mathsandscienceinfinity.org.za">
                         <Mail className="w-5 h-5 mr-2" /> Email Us
                       </a>
                     </Button>
                     <Button variant="outline" size="lg" asChild>
-                      <a href="tel:+27123456789">
+                      <a href="tel:+27437262171">
                         <Phone className="w-5 h-5 mr-2" /> Call Us
                       </a>
                     </Button>
                     <Button variant="outline" size="lg" asChild>
-                      <a href="https://wa.me/27123456789">
+                      <a href="https://wa.me/27437262171">
                         <MessageCircle className="w-5 h-5 mr-2" /> WhatsApp
                       </a>
                     </Button>
@@ -206,67 +238,7 @@ export default function DonatePage() {
             )}
           </motion.div>
         </div>
-
-        {/* Impact Section */}
-        <motion.section
-          initial="hidden"
-          animate="visible"
-          variants={fadeInUp}
-          className="max-w-6xl mx-auto mt-20"
-        >
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-            Your Impact
-          </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: <GraduationCap className="w-8 h-8 text-red-600" />,
-                title: "Student Success",
-                description: "Your donation directly supports students in achieving their academic goals through quality STEM education."
-              },
-              {
-                icon: <Boxes className="w-8 h-8 text-red-600" />,
-                title: "Better Resources",
-                description: "Help us provide state-of-the-art learning materials and equipment for hands-on STEM experiences."
-              },
-              {
-                icon: <Sparkles className="w-8 h-8 text-red-600" />,
-                title: "Brighter Future",
-                description: "Contribute to building the next generation of scientists, engineers, and innovators in our community."
-              }
-            ].map((item, index) => (
-              <Card key={index} className="p-8 text-center hover:shadow-lg transition-shadow">
-                <div className="text-4xl mb-4">{item.icon}</div>
-                <h3 className="text-xl font-semibold mb-3">{item.title}</h3>
-                <p className="text-gray-600">{item.description}</p>
-              </Card>
-            ))}
-          </div>
-        </motion.section>
-
-        {/* Trust Indicators */}
-        <motion.section
-          initial="hidden"
-          animate="visible"
-          variants={fadeInUp}
-          className="max-w-4xl mx-auto mt-20 text-center"
-        >
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[
-              { number: '100%', label: 'Funds to Programs' },
-              { number: '1000+', label: 'Students Helped' },
-              { number: '50+', label: 'Schools Reached' },
-              { number: '10+', label: 'Years of Impact' }
-            ].map((stat) => (
-              <div key={stat.label} className="space-y-2">
-                <div className="text-3xl font-bold text-red-600">{stat.number}</div>
-                <div className="text-sm text-gray-600">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </motion.section>
       </main>
-
       <Footer />
     </div>
   )
