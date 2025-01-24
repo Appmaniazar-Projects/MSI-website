@@ -20,7 +20,7 @@ const services = [
       "Curriculum-aligned resources",
       "Focus on building confidence and understanding"
     ],
-    image: "/images/student-development.jpg",
+    image: "/images/msi-learners.jpg",
     category: "Student Support"
   },
   {
@@ -31,7 +31,7 @@ const services = [
       "Focused workshops for science and mathematics",
       "Ongoing mentorship and evaluation"
     ],
-    image: "/images/tutor-development.jpg",
+    image: "/images/msi-talks.jpg",
     category: "Professional Development"
   },
   {
@@ -42,7 +42,7 @@ const services = [
       "Workshops on effective classroom strategies",
       "Regular assessment and feedback"
     ],
-    image: "/images/teacher-development.jpg",
+    image: "/images/learners.jpg",
     category: "Professional Development"
   },
   {
@@ -53,7 +53,7 @@ const services = [
       "Exposure to STEM role models",
       "Workshops on future career opportunities"
     ],
-    image: "images/councelling.jpg",
+    image: "/images/councelling.jpg",
     category: "Student Support"
   },
   {
@@ -75,7 +75,7 @@ const services = [
       "Real-time virtual support",
       "Progress tracking and feedback"
     ],
-    image: "/images/online-tutorial.jpg",
+    image: "/images/online-learning.jpg",
     category: "Digital Learning"
   }
 ]
