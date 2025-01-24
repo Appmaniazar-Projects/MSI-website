@@ -102,7 +102,7 @@ const Header = () => {
     { name: 'Study Materials', href: '/resources/study-materials' }
   ]
 
-  const navItems = ['Home', 'About', 'Services', 'Gallery', 'Blog', 'Become a Tutor', 'Contact']
+  const navItems = ['Home', 'About', 'Services', 'Resources', 'Gallery', 'Blog', 'Become a Tutor', 'Contact'];
 
   return (  
     <header className={`fixed w-full z-50 transition-all duration-300 ${
@@ -125,8 +125,39 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
             {navItems.map((item) => {
+              if (item === 'Resources') {
+                return (
+                  <DropdownMenu
+                    key={item}
+                    trigger={
+                      <span className={cn(
+                        "text-sm font-medium transition-colors hover:text-gray-900",
+                        isScrolled || isResourcePage || isTutorPage ? "text-gray-600" : "text-white",
+                        pathname.startsWith('/resources') && (isScrolled || isResourcePage || isTutorPage ? "text-red-600" : "text-red-400")
+                      )}>
+                        Resources
+                      </span>
+                    }
+                    align="right"
+                  >
+                    {resourcesItems.map((resource) => (
+                      <DropdownMenuItem 
+                        key={resource.name} 
+                        href={resource.href}
+                        className={cn(
+                          "text-gray-600 hover:text-gray-900",
+                          pathname === resource.href && "text-red-600"
+                        )}
+                      >
+                        {resource.name}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenu>
+                );
+              }
+
               const itemPath = item === 'Home' ? '/' : `/${item.toLowerCase().replace(/\s+/g, '-')}`;
-              const isActive = pathname === itemPath
+              const isActive = pathname === itemPath;
 
               return (
                 <Link
@@ -140,36 +171,10 @@ const Header = () => {
                 >
                   {item === 'Blog' ? 'Blog' : item}
                 </Link>
-              )
+              );
             })}
-
-            {/* Resources Dropdown */}
-            <DropdownMenu
-              trigger={
-                <span className={cn(
-                  "text-sm font-medium transition-colors hover:text-gray-900",
-                  isScrolled || isResourcePage || isTutorPage ? "text-gray-600" : "text-white",
-                  pathname.startsWith('/resources') && (isScrolled || isResourcePage || isTutorPage ? "text-red-600" : "text-red-400")
-                )}>
-                  Resources
-                </span>
-              }
-              align="right"
-            >
-              {resourcesItems.map((item) => (
-                <DropdownMenuItem 
-                  key={item.name} 
-                  href={item.href}
-                  className={cn(
-                    "text-gray-600 hover:text-gray-900",
-                    pathname === item.href && "text-red-600"
-                  )}
-                >
-                  {item.name}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenu>
           </nav>
+
 
           {/* Desktop Contact Info and Donate Button */}
           <div className="hidden md:flex items-center space-x-4">
