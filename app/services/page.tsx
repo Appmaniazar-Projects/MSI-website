@@ -42,7 +42,7 @@ const services = [
       "Workshops on effective classroom strategies",
       "Regular assessment and feedback"
     ],
-    image: "/images/learners.jpg",
+    image: "/images/msi-learners.jpg",
     category: "Professional Development"
   },
   {
@@ -53,7 +53,7 @@ const services = [
       "Exposure to STEM role models",
       "Workshops on future career opportunities"
     ],
-    image: "/images/councelling.jpg",
+    image: "/images/msi-councelling.jpg",
     category: "Student Support"
   },
   {
@@ -64,7 +64,7 @@ const services = [
       "Practical experiments for students",
       "Community outreach programs"
     ],
-    image: "/images/mobile-laboratories.jpg",
+    image: "/images/msi-mobile-laboratories.jpg",
     category: "Science Outreach"
   },
   {
@@ -75,7 +75,7 @@ const services = [
       "Real-time virtual support",
       "Progress tracking and feedback"
     ],
-    image: "/images/online-learning.jpg",
+    image: "/images/msi-online-learning.jpg",
     category: "Digital Learning"
   }
 ]

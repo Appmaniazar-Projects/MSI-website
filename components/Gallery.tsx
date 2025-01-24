@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 
 const images = [
-  { src: '/images/Outdoor.jpg', alt: 'Students in a science lab' },
+  { src: '/images/msi-Outdoor.jpg', alt: 'Students in a science lab' },
   { src: '/images/msi-learner.jpg', alt: 'Math tutoring session' },
   { src: '/images/msi-learners.jpg', alt: 'STEM camp outdoor activity' },
   { src: '/images/msi-talks.jpg', alt: 'Robotics workshop' },

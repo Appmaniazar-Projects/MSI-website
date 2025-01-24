@@ -104,7 +104,7 @@ export default function Home() {
       className="flex flex-col md:flex-row items-center"
     >
       <div className="md:w-1/2 mb-8 md:mb-0">
-        <Image src="/images/Outdoor.jpg" alt="Students learning" width={600} height={400} className="rounded-lg shadow-lg" />
+        <Image src="/images/msi-Outdoor.jpg" alt="Students learning" width={600} height={400} className="rounded-lg shadow-lg" />
       </div>
       <div className="md:w-1/2 md:pl-12">
         <h2 className="text-3xl font-bold mb-6 text-gray-800">About Maths and Science Infinity</h2>
