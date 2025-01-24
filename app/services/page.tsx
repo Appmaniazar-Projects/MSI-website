@@ -53,7 +53,7 @@ const services = [
       "Exposure to STEM role models",
       "Workshops on future career opportunities"
     ],
-    image: "/images/career-guidance.jpg",
+    image: "images/councelling.jpg",
     category: "Student Support"
   },
   {

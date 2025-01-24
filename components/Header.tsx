@@ -102,9 +102,9 @@ const Header = () => {
     { name: 'Study Materials', href: '/resources/study-materials' }
   ]
 
-  const navItems = ['Home', 'About', 'Services', 'Gallery', 'Blog', 'Contact', 'Become a Tutor']
+  const navItems = ['Home', 'About', 'Services', 'Gallery', 'Blog', 'Become a Tutor', 'Contact']
 
-  return (
+  return (  
     <header className={`fixed w-full z-50 transition-all duration-300 ${
       isScrolled || isResourcePage || isTutorPage ? 'bg-white shadow-md' : 'bg-transparent'
     }`}>

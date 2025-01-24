@@ -330,7 +330,7 @@ export default function About() {
               <div className="md:w-1/2">
                 <div className="relative h-[600px] w-full rounded-2xl overflow-hidden shadow-2xl">
                   <Image
-                    src="/images/msi-learner.jpg"
+                    src="/images/ZENITHOFICIAL.webp"
                     alt="CEO"
                     fill
                     className="object-cover"
