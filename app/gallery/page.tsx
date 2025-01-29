@@ -13,7 +13,7 @@ const fadeIn = {
 
 // Gallery categories and images
 const categories = [
-  { id: 'all', name: 'Alls' },
+  { id: 'all', name: 'All' }, // Fixed typo from 'Alls' to 'All'
   { id: 'events', name: 'Events' },
   { id: 'classes', name: 'Classes' },
   { id: 'workshops', name: 'Workshops' },
@@ -39,21 +39,44 @@ const galleryImages = [
   },
   {
     id: 3,
-    src: '/images/msi-learner.jpg',
-    alt: 'Award ceremony',
-    category: 'achievements',
-    title: 'Annual Awards',
-    description: 'Celebrating student achievements',
+    src: '/images/msi-Outdoor.jpg',
+    alt: 'Students in outdoor session',
+    category: 'classes',
+    title: 'Outdoor Learning',
+    description: 'Interactive outdoor learning experience',
   },
   {
     id: 4,
-    src: '/images/msi-hero.jpg',
-    alt: 'Community event',
-    category: 'events',
-    title: 'Community Outreach',
-    description: 'Engaging with local communities',
+    src: '/images/msi-learners.jpg',
+    alt: 'STEM camp activity',
+    category: 'workshops',
+    title: 'STEM Camp',
+    description: 'Outdoor learning activities during our STEM summer camp',
   },
-  // Add more images as needed
+  {
+    id: 5,
+    src: '/images/msi-talks.jpg',
+    alt: 'Educational presentation',
+    category: 'events',
+    title: 'Educational Talk',
+    description: 'Expert-led educational presentations',
+  },
+  {
+    id: 6,
+    src: '/images/msi-donations.jpg',
+    alt: 'Community outreach program',
+    category: 'events',
+    title: 'Community Support',
+    description: 'Making a difference in our community through education',
+  },
+  {
+    id: 7,
+    src: '/images/msi-aplicant.jpg',
+    alt: 'Student application process',
+    category: 'events',
+    title: 'Student Registration',
+    description: 'New student enrollment and orientation',
+  }
 ]
 
 export default function Gallery() {
@@ -137,6 +160,7 @@ export default function Gallery() {
                       alt={image.alt}
                       fill
                       className="object-cover transition-transform duration-500 group-hover:scale-110"
+                      onError={(e) => console.error(`Error loading image: ${image.src}`)}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <div className="absolute bottom-0 left-0 right-0 p-6">
@@ -204,3 +228,4 @@ export default function Gallery() {
     </div>
   )
 }
+

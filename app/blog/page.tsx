@@ -92,7 +92,7 @@ export default function BlogPage() {
                     key={post.slug}
                     className="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-all transform hover:-translate-y-2 duration-300"
                   >
-                    <Link href={`/blog/${post.slug}`}>
+                    <Link href={`/blog/post?slug=${post.slug}`}>
                       <div>
                         {post.frontmatter.image && (
                           <Image
