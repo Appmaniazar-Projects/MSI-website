@@ -245,7 +245,7 @@ export default function Home() {
                   transition={{ duration: 0.5 }}
                   className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all transform hover:-translate-y-2 duration-300"
                 >
-                  <Link href={`/blog/${post.slug}`}>
+                  <Link href={`/blog/post?slug=${post.slug}`}>
                     {post.frontmatter.image && (
                       <Image
                         src={post.frontmatter.image}

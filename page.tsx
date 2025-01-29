@@ -3,9 +3,10 @@ import Link from "next/link"
 import Image from "next/image"
 import { getBlogPosts } from '@/lib/blog'
 
-export default function Home() {
+export default async function Home() {
   // Get the latest 3 blog posts
-  const latestPosts = getBlogPosts().slice(0, 3);
+  const posts = await getBlogPosts();
+  const latestPosts = posts.slice(0, 3);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -121,7 +122,7 @@ export default function Home() {
                       {post.frontmatter.date}
                     </span>
                     <Link 
-                      href={`/blog/${post.slug}`} 
+                      href={`/blog/post?slug=${post.slug}`} 
                       className="text-red-600 hover:text-red-800 font-medium"
                     >
                       Read More →
