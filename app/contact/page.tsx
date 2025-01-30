@@ -4,20 +4,42 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import { Button } from "@/components/ui/button"
 
-export default function Contact() {
+export default function ContactPage() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     subject: '',
     message: ''
   })
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Handle form submission here
-    console.log('Form submitted:', formData)
-  }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('sending');
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          to: 'support@appmaniazar.co.za'
+        }),
+      });
+
+      if (!response.ok) throw new Error('Failed to send message');
+      
+      setStatus('success');
+      setFormData({ name: '', email: '', subject: '', message: '' });
+    } catch (error) {
+      console.error('Error sending message:', error);
+      setStatus('error');
+    }
+  };
 
   const socialLinks = [
     {
@@ -183,11 +205,24 @@ export default function Contact() {
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-red-600 text-white py-3 px-6 rounded-lg hover:bg-red-700 transition-colors duration-300"
+                  disabled={status === 'sending'}
+                  className="w-full bg-red-600 text-white py-3 px-6 rounded-lg hover:bg-red-700 transition-colors duration-300 disabled:bg-gray-400"
                 >
-                  Send Message
+                  {status === 'sending' ? 'Sending...' : 'Send Message'}
                 </button>
               </form>
+
+              {status === 'success' && (
+                <div className="mt-4 text-green-600 text-center">
+                  Message sent successfully!
+                </div>
+              )}
+
+              {status === 'error' && (
+                <div className="mt-4 text-red-600 text-center">
+                  Failed to send message. Please try again.
+                </div>
+              )}
             </motion.div>
 
             {/* Contact Information */}

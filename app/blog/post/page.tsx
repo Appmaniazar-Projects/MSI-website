@@ -86,10 +86,14 @@ function BlogPostContent() {
 export default function BlogPost() {
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
-      <Suspense fallback={<div className="text-center py-20">Loading...</div>}>
-        <BlogPostContent />
-      </Suspense>
+      <div className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
+        <Header />
+      </div>
+      <div className="pt-24">
+        <Suspense fallback={<div className="text-center py-20">Loading...</div>}>
+          <BlogPostContent />
+        </Suspense>
+      </div>
       <Footer />
     </div>
   );

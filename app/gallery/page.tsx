@@ -55,6 +55,14 @@ const galleryImages = [
   },
   {
     id: 5,
+    src: '/images/msi-applicant.jpg',
+    alt: 'Students studying together',
+    category: 'classes',
+    title: 'Group Study Session',
+    description: 'Students collaborating and learning together in a classroom setting',
+  },
+  {
+    id: 6,
     src: '/images/msi-talks.jpg',
     alt: 'Educational presentation',
     category: 'events',
@@ -62,20 +70,12 @@ const galleryImages = [
     description: 'Expert-led educational presentations',
   },
   {
-    id: 6,
+    id: 7,
     src: '/images/msi-donations.jpg',
     alt: 'Community outreach program',
     category: 'events',
     title: 'Community Support',
     description: 'Making a difference in our community through education',
-  },
-  {
-    id: 7,
-    src: '/images/msi-aplicant.jpg',
-    alt: 'Student application process',
-    category: 'events',
-    title: 'Student Registration',
-    description: 'New student enrollment and orientation',
   }
 ]
 
