@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { Button } from "@/components/ui/button"
-import emailjs from '@emailjs/browser'
+//import emailjs from '@emailjs/browser'
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -19,8 +19,8 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('sending');
-
-    try {
+  }
+    /*try {
       await emailjs.send(
         process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
         process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
@@ -40,7 +40,7 @@ export default function ContactPage() {
       console.error('Error sending message:', error);
       setStatus('error');
     }
-  };
+  };*/
 
   const socialLinks = [
     {
