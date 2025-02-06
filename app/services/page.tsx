@@ -20,7 +20,7 @@ const services = [
       "Curriculum-aligned resources",
       "Focus on building confidence and understanding"
     ],
-    image: "/images/msi-learners.jpg",
+    image: "/images/msi-classroom-learners.jpg",
     category: "Student Support"
   },
   {
@@ -42,7 +42,7 @@ const services = [
       "Workshops on effective classroom strategies",
       "Regular assessment and feedback"
     ],
-    image: "/images/msi-learners.jpg",
+    image: "/images/msi-tutor workshop.png",
     category: "Professional Development"
   },
   {
@@ -75,7 +75,7 @@ const services = [
       "Real-time virtual support",
       "Progress tracking and feedback"
     ],
-    image: "/images/msi-online-learning.jpg",
+    image: "/images/msi-tutor.jpg",
     category: "Digital Learning"
   }
 ]

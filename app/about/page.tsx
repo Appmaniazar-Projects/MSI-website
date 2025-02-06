@@ -23,13 +23,13 @@ const teamMembers = [
   {
     name: 'Jane Smith',
     role: 'Head of Programs',
-    image: '/images/staff.jpg',
+    image: '/images/ZENITHOFICIAL.webp',
     bio: 'Former high school teacher specializing in mathematics and curriculum development.',
   },
   {
     name: 'Mike Johnson',
     role: 'Community Outreach Director',
-    image: '/images/staff.jpg',
+    image: '/images/ZENITHOFICIAL.webp',
     bio: 'Dedicated to building strong partnerships with local schools and communities.',
   },
 ]

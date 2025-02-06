@@ -5,11 +5,11 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 
 const images = [
-  { src: '/images/msi-Outdoor.jpg', alt: 'Students in a science lab' },
-  { src: '/images/msi-learner.jpg', alt: 'Math tutoring session' },
+  { src: '/images/msi-Outdoor.jpg', alt: 'MSI outdoor signup booth' },
+  { src: '/images/msi-learner.png', alt: 'Student engaged in individual learning' },
   { src: '/images/msi-learners.jpg', alt: 'STEM camp outdoor activity' },
   { src: '/images/msi-talks.jpg', alt: 'Robotics workshop' },
-  { src: '/images/msi-learners.jpg', alt: 'Students presenting their projects' },
+  { src: '/images/msi-classroom-1.jpg', alt: 'Group of students learning together' },
   { src: '/images/msi-donations.jpg', alt: 'Community outreach program' },
 ]
 

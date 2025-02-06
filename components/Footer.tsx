@@ -107,7 +107,7 @@ const Footer = () => {
                 </a>
               </li>
               <li className="flex items-center space-x-3">
-                <FaEnvelope className="w-4 h-4 text-red-500" />
+                <FaEnvelope className="w-5 h-5 text-red-500" />
                 <a 
                   href="mailto:info@mathsandscienceinfinity.org.za" 
                   className="hover:text-red-500 transition-colors duration-300"

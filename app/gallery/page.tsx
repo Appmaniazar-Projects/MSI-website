@@ -23,11 +23,11 @@ const categories = [
 const galleryImages = [
   {
     id: 1,
-    src: '/images/msi-learner.jpg',
-    alt: 'Students in classroom',
+    src: '/images/msi-classroom-1.jpg',
+    alt: 'Students in study session',
     category: 'classes',
-    title: 'Mathematics Class',
-    description: 'Students engaged in advanced mathematics problem-solving',
+    title: 'Collaborative Learning',
+    description: 'Students working together to solve complex problems',
   },
   {
     id: 2,
@@ -127,11 +127,11 @@ const galleryImages = [
   },
   {
     id: 14,
-    src: '/images/msi-classroom-1.jpg',
-    alt: 'Students in study session',
+    src: '/images/msi-learner.png',
+    alt: 'Students in classroom',
     category: 'classes',
-    title: 'Collaborative Learning',
-    description: 'Students working together to solve complex problems',
+    title: 'Mathematics Class',
+    description: 'Students engaged in advanced mathematics problem-solving',
   },
   {
     id: 15,
