@@ -9,7 +9,7 @@ import { scaleUp } from '@/utils/animations'
 const WhatsAppButton = () => {
   const [showNotification, setShowNotification] = useState(false)
 
-  useEffect(() => {
+  /*useEffect(() => {
     // Show notification initially after 3 seconds
     const initialTimeout = setTimeout(() => setShowNotification(true), 3000)
 
@@ -24,7 +24,7 @@ const WhatsAppButton = () => {
       clearTimeout(initialTimeout)
       clearInterval(interval)
     }
-  }, [])
+  }, [])*/
 
   const bubbleVariants = {
     initial: { scale: 0, opacity: 0, y: 20 },
