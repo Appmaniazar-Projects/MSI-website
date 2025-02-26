@@ -255,8 +255,8 @@ export default function Gallery() {
       <Header />
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 bg-red-600 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-black/10"></div>
+      <section className="relative pt-32 pb-20 text-navy-blue overflow-hidden">
+        <div className="absolute inset-0 "></div>
         <div className="container relative mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <motion.h1 

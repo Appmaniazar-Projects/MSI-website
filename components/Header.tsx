@@ -107,9 +107,9 @@ const Header = () => {
   const navItems = ['Home', 'About', 'Services', 'Resources', 'Gallery', 'Blog', 'Become a Tutor', 'Contact'];
 
   return (  
-    <header className={`fixed w-full z-50 transition-all duration-300 ${
-      isScrolled || isResourcePage || isTutorPage || isBlogPost || isErrorPage ? 'bg-white shadow-md' : 'bg-transparent'
-    }`}>
+    <header className={`fixed w-full z-50 transition-all duration-300 bg-white shadow-md`}>
+      {/*isScrolled || isResourcePage || isTutorPage || isBlogPost || isErrorPage ? 'bg-white shadow-md' : 'bg-transparent'*/}
+      
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-4">
           <Link href="/">
@@ -134,8 +134,8 @@ const Header = () => {
                     trigger={
                       <span className={cn(
                         "text-sm font-medium transition-colors hover:text-gray-900",
-                        isScrolled || isResourcePage || isTutorPage || isBlogPost || isErrorPage ? "text-gray-600" : "text-white",
-                        pathname.startsWith('/resources') && (isScrolled || isResourcePage || isTutorPage || isBlogPost || isErrorPage ? "text-red-600" : "text-red-400")
+                        "text-gray-600",
+                        pathname.startsWith('/resources') && (pathname.startsWith('/resources') ? "text-red-600" : "text-red-400")
                       )}>
                         Resources
                       </span>
@@ -167,8 +167,8 @@ const Header = () => {
                   href={itemPath}
                   className={cn(
                     "text-sm font-medium transition-colors hover:text-gray-900",
-                    isScrolled || isResourcePage || isTutorPage || isBlogPost || isErrorPage? "text-gray-600" : "text-white",
-                    isActive && (isScrolled || isResourcePage || isTutorPage || isBlogPost || isErrorPage? "text-red-600" : "text-red-400")
+                    "text-gray-600",
+                    isActive && "text-red-600"
                   )}
                 >
                   {item === 'Blog' ? 'Blog' : item}
@@ -184,7 +184,7 @@ const Header = () => {
               href="tel:+27437262171" 
               className={cn(
                 "hover:text-gray-900",
-                isScrolled || isResourcePage || isTutorPage || isBlogPost || isErrorPage ? "text-gray-600" : "text-white"
+                "text-gray-600"
               )}
             >
               <PhoneIcon className="h-5 w-5 inline mr-2" />
@@ -193,8 +193,7 @@ const Header = () => {
             <Button 
               asChild 
               className={cn(
-                "bg-red-600 text-white hover:bg-red-700",
-                isScrolled || isResourcePage || isTutorPage || isBlogPost || isErrorPage ? "bg-red-600" : "bg-white/20 text-white hover:bg-white/30"
+                "bg-red-600 text-white hover:bg-red-700"
               )}
             >
               <Link href="/donate">Donate Now</Link>
@@ -206,11 +205,7 @@ const Header = () => {
             onClick={toggleMenu}
             className="md:hidden p-2 focus:outline-none"
           >
-            {isOpen ? (
-              <XMarkIcon className={`h-6 w-6 ${isScrolled || isResourcePage || isTutorPage || isBlogPost || isErrorPage ? 'text-gray-900' : 'text-white'}`} />
-            ) : (
-              <Bars3Icon className={`h-6 w-6 ${isScrolled || isResourcePage || isTutorPage || isBlogPost || isErrorPage ? 'text-gray-900' : 'text-white'}`} />
-            )}
+            <Bars3Icon className="h-6 w-6 text-gray-900" />
           </button>
         </div>
 
@@ -286,7 +281,7 @@ const Header = () => {
                       href="tel:+27437262171" 
                       className={cn(
                         "hover:text-gray-900",
-                        isScrolled || isResourcePage || isTutorPage || isBlogPost || isErrorPage ? "text-gray-600" : "text-white"
+                        "text-gray-600"
                       )}
                     >
                       <PhoneIcon className="h-5 w-5 inline mr-2" />

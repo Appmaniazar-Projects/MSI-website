@@ -8,9 +8,11 @@ import Testimonials from '../components/Testimonials'
 import Gallery from '../components/Gallery'
 import { Button } from "@/components/ui/button"
 import { getBlogPosts, type BlogPost } from '@/lib/blog'
-import { motion } from 'framer-motion'
+import { motion, useSpring, useInView } from 'framer-motion'
 import { Briefcase, School, Laptop, TestTube, User } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import Impact from '@/components/Impact'
+import Partners from '@/components/Partners';
 
 export default function Home() {
   const [latestPosts, setLatestPosts] = useState<BlogPost[]>([]);
@@ -94,45 +96,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* About Section */}
-      <section id="about" className="py-20 bg-white">
-  <div className="container mx-auto px-4">
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="flex flex-col md:flex-row items-center"
-    >
-      <div className="md:w-1/2 mb-8 md:mb-0">
-        <Image src="/images/msi-Outdoor.jpg" alt="Students learning" width={600} height={400} className="rounded-lg shadow-lg" />
-      </div>
-      <div className="md:w-1/2 md:pl-12">
-        <h2 className="text-3xl font-bold mb-6 text-gray-800">About Maths and Science Infinity</h2>
-        <p className="text-gray-600 mb-6">
-          Maths and Science Infinity (MSI) is committed to pioneering STEM educational initiatives that foster global leaders. Our mission is to empower students, particularly those facing challenges in maths and science, through:
-        </p>
-        <ul className="list-disc list-inside text-gray-600 space-y-2">
-          <li>Hands-on learning experiences</li>
-          <li>Tutor and teacher development</li>
-          <li>Career guidance and role modelling</li>
-          <li>Innovative programs</li>
-          <li>Mobile laboratories</li>
-          <li>Online tutorial sessions</li>
-        </ul>
-        <Button
-              asChild
-              size="lg"
-              className="bg-red-600 text-white hover:bg-red-700 mt-6"
-            >
-              <Link href="/about">
-                Learn More
-              </Link>
-      </Button>
-      </div>
-    </motion.div>
-  </div>
-</section>
-
+      {/* Impact Counter */}
+      <Impact />
 
       {/* Services Section */}
       <section className="py-20 bg-gray-100">
@@ -184,40 +149,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Impact Counter */}
-      <section className="py-20 bg-red-600 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-12">Our Impact</h2>
-          <div className="flex flex-wrap justify-center">
-            {[
-              { number: '5000+', label: 'Students Reached' },
-              { number: '50+', label: 'Schools Partnered' },
-              { number: '100+', label: 'Workshops Conducted' },
-              { number: '90%', label: 'Student Satisfaction' }
-            ].map((stat, index) => (
-              <motion.div 
-                key={stat.label}
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="w-full sm:w-1/2 md:w-1/4 mb-8"
-              >
-                <div className="text-5xl font-bold mb-2">{stat.number}</div>
-                <div>{stat.label}</div>
-              </motion.div>
-            ))}
-          </div>
-          <Button 
-              asChild
-              size="lg"
-              className="bg-white text-red-600 hover:bg-white-500"
-            >
-              <Link href="/contact">
-                Learn More
-              </Link>
-            </Button>
-        </div>
-      </section>
+    
 
       {/* Testimonials Section */}
       <Testimonials />
@@ -289,6 +221,9 @@ export default function Home() {
         </div>
        </div>
       </section>
+
+      {/* Partners Section */}
+      <Partners />
 
       {/* Call to Action */}
       <section className="py-20 bg-gray-100">

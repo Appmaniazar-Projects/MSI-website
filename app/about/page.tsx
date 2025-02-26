@@ -73,8 +73,8 @@ export default function About() {
       <Header />
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 bg-red-600 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-black/10"></div>
+      <section className="relative pt-32 pb-20 bg-white text-navy-blue">
+        <div className="absolute inset-0"></div>
         <div className="container relative mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <motion.h1 
@@ -352,35 +352,6 @@ export default function About() {
               </div>
             </motion.div>
           </div>
-        </div>
-      </section>
-
-      {/* Call to Action */}
-      <section className="py-24 bg-red-600 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeIn}
-            className="max-w-3xl mx-auto"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Ready to Start Your STEM Journey?
-            </h2>
-            <p className="text-xl mb-12 opacity-90">
-              Join Maths and Science Infinity today and unlock your potential in STEM.
-            </p>
-            <Button
-              asChild
-              size="lg"
-              className="bg-white text-red-600 hover:bg-white-500"
-            >
-              <Link href="/contact">
-                Enroll Now
-              </Link>
-            </Button>
-          </motion.div>
         </div>
       </section>
 
