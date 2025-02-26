@@ -135,11 +135,11 @@ const galleryImages = [
   },
   {
     id: 15,
-    src: '/images/msi-classroom-2.jpg',
-    alt: 'Students in study session',
+    src: '/images/msi-teaching.JPG',
+    alt: 'Educator in action',
     category: 'classes',
-    title: 'Collaborative Learning',
-    description: 'Students working together to solve complex problems',
+    title: 'Inspiring Teaching Moment',
+    description: 'A captivating image highlighting the passion of an educator delivering an interactive lesson to engaged students.',
   },
   {
     id: 16,
@@ -177,9 +177,6 @@ const galleryImages = [
     category: 'workshops',
     title: 'Science Lab',
     description: 'Practical science experiments and demonstrations',
-
-
-
   },
   {
     id: 20,
@@ -223,7 +220,22 @@ const galleryImages = [
     category: 'events',
     title: 'Educational Talk',
     description: 'Expert-led educational presentations',
-
+  },
+  {
+    id: 25,
+    src: '/images/msi-tutor-development.JPG',
+    alt: 'Tutor development session',
+    category: 'workshops',
+    title: 'Tutor Development Workshop',
+    description: 'An engaging session focused on enhancing tutoring skills and pedagogical strategies, fostering professional growth among educators.',
+  },
+  {
+    id: 26,
+    src: '/images/msi-classroom-2.jpg',
+    alt: 'Students in study session',
+    category: 'classes',
+    title: 'Collaborative Learning',
+    description: 'Students working together to solve complex problems',
   },
 ]
 
