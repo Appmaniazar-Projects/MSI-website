@@ -5,8 +5,16 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 
 const Partners = () => {
-  // Duplicate logos to create seamless loop
-  const logos = Array(8).fill('/images/msi_logo.png')
+  // Partner logos
+  const logos = [
+    '/images/partners/msi-partners-barloworld.png',
+    '/images/partners/msi-partners-eastern_cape_edu.png',
+    '/images/partners/msi-partners-standard_bank.png',
+    // Duplicate a few to make the animation smoother
+    '/images/partners/msi-partners-barloworld.png',
+    '/images/partners/msi-partners-eastern_cape_edu.png',
+    '/images/partners/msi-partners-standard_bank.png',
+  ]
   const [shouldAnimate, setShouldAnimate] = useState(true)
 
   useEffect(() => {
@@ -34,40 +42,31 @@ const Partners = () => {
                 x: [0, -1920],
               } : {}}
               transition={{
-                x: {
-                  duration: 30,
-                  repeat: Infinity,
-                  ease: "linear",
-                },
+                duration: 30,
+                ease: "linear",
+                repeat: Infinity,
               }}
-              onHoverStart={() => setShouldAnimate(false)}
-              onHoverEnd={() => setShouldAnimate(true)}
             >
-              {/* Original set of logos */}
               {logos.map((logo, index) => (
-                <div
-                  key={`logo-1-${index}`}
-                  className="flex-none w-32 h-32 relative grayscale hover:grayscale-0 transition-all duration-300"
-                >
+                <div key={index} className="flex-shrink-0 w-48 h-24 relative">
                   <Image
                     src={logo}
-                    alt={`Partner ${index + 1}`}
+                    alt={`Partner logo ${index + 1}`}
                     fill
                     className="object-contain"
+                    sizes="(max-width: 768px) 100vw, 192px"
                   />
                 </div>
               ))}
-              {/* Duplicated set for seamless loop */}
+              {/* Repeat logos for seamless loop */}
               {logos.map((logo, index) => (
-                <div
-                  key={`logo-2-${index}`}
-                  className="flex-none w-32 h-32 relative grayscale hover:grayscale-0 transition-all duration-300"
-                >
+                <div key={`repeat-${index}`} className="flex-shrink-0 w-48 h-24 relative">
                   <Image
                     src={logo}
-                    alt={`Partner ${index + 1}`}
+                    alt={`Partner logo ${index + 1}`}
                     fill
                     className="object-contain"
+                    sizes="(max-width: 768px) 100vw, 192px"
                   />
                 </div>
               ))}
