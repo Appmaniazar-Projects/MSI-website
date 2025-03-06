@@ -13,15 +13,16 @@ const fadeIn = {
 
 const services = [
   {
-    title: "Student Development",
-    description: "Providing support to students, especially those struggling with mathematics and science, through customized learning programs.",
+    title: "Student Support",
+    description: "Providing support to students, especially those struggling with mathematics and science, through customized learning programs and student development initiatives.",
+    highlightTerms: ["student development"],
     features: [
       "Tailored support for struggling students",
       "Curriculum-aligned resources",
       "Focus on building confidence and understanding"
     ],
     image: "/images/msi-classroom-learners.jpg",
-    category: "Student Support"
+    //category: "Student Support"
   },
   {
     title: "Tutor Development",
@@ -32,7 +33,7 @@ const services = [
       "Ongoing mentorship and evaluation"
     ],
     image: "/images/msi-talks.jpg",
-    category: "Professional Development"
+    //category: "Professional Development"
   },
   {
     title: "Teacher Development",
@@ -43,7 +44,7 @@ const services = [
       "Regular assessment and feedback"
     ],
     image: "/images/msi-tutor workshop.png",
-    category: "Professional Development"
+    //category: "Professional Development"
   },
   {
     title: "Career Guidance & Role Modelling",
@@ -54,7 +55,7 @@ const services = [
       "Workshops on future career opportunities"
     ],
     image: "/images/msi-councelling.jpg",
-    category: "Student Support"
+    //category: "Student Support"
   },
   {
     title: "Mobile Laboratories",
@@ -65,7 +66,7 @@ const services = [
       "Community outreach programs"
     ],
     image: "/images/msi-mobile-laboratories.jpg",
-    category: "Science Outreach"
+    //category: "Science Outreach"
   },
   {
     title: "Online Tutorial Sessions",
@@ -76,7 +77,7 @@ const services = [
       "Progress tracking and feedback"
     ],
     image: "/images/msi-tutor.jpg",
-    category: "Digital Learning"
+    //category: "Digital Learning"
   }
 ]
 
@@ -102,6 +103,17 @@ const categories = [
     description: "Flexible, online learning solutions to support education anywhere."
   }
 ]
+
+const highlightText = (text: string, terms: string[] = []) => {
+  if (!terms || terms.length === 0) return text;
+  
+  let result = text;
+  terms.forEach(term => {
+    const regex = new RegExp(`(${term})`, 'gi');
+    result = result.replace(regex, '<strong>$1</strong>');
+  });
+  return <span dangerouslySetInnerHTML={{ __html: result }} />;
+};
 
 export default function Services() {
   return (
@@ -209,14 +221,11 @@ export default function Services() {
                   </div>
                 </div>
                 <div className="lg:w-1/2">
-                  <span className="text-red-600 font-medium text-lg">
-                    {service.category}
-                  </span>
                   <h3 className="text-3xl font-bold mt-2 mb-6 text-gray-900">
                     {service.title}
                   </h3>
                   <p className="text-xl text-gray-600 mb-8">
-                    {service.description}
+                    {highlightText(service.description, service.highlightTerms)}
                   </p>
                   <ul className="space-y-4">
                     {service.features.map((feature, featureIndex) => (
@@ -232,32 +241,6 @@ export default function Services() {
               </motion.div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Call to Action */}
-      <section className="py-24 bg-red-600 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeIn}
-            className="max-w-3xl mx-auto"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Ready to Start Learning?
-            </h2>
-            <p className="text-xl mb-12 opacity-90">
-              Join our programs today and take the first step towards academic excellence.
-            </p>
-            <Button 
-              size="lg"
-              className="bg-white text-red-600 hover:bg-gray-100 text-lg px-12 py-6"
-            >
-              Enroll Now
-            </Button>
-          </motion.div>
         </div>
       </section>
 

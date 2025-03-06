@@ -104,7 +104,7 @@ const Header = () => {
     { name: 'Study Materials', href: '/resources/study-materials' }
   ]
 
-  const navItems = ['Home', 'About', 'Services', 'Resources', 'Gallery', 'Blog', 'Become a Tutor', 'Contact'];
+  const navItems = ['Home', 'About', 'Services', 'Resources', 'Gallery', 'Blog', 'Get Involved', 'Contact'];
 
   return (  
     <header className={`fixed w-full z-50 transition-all duration-300 bg-white shadow-md`}>
