@@ -84,22 +84,22 @@ const services = [
 const categories = [
   {
     name: "Student Support",
-    icon: "📚",
+    icon: <Image src="/images/icons/msi_students_service_page_icon.svg" alt="Student Support" width={100} height={100} />, 
     description: "Tailored programs to help students excel in mathematics and science."
   },
   {
     name: "Professional Development",
-    icon: "🎓",
+    icon: <Image src="/images/icons/msi_profess_ser_page_icon.svg" alt="Professional Development" width={100} height={100} />, 
     description: "Empowering tutors and teachers to achieve excellence in STEM education."
   },
   {
     name: "Science Outreach",
-    icon: "🔬",
+    icon: <Image src="/images/icons/msi_lab_icon.svg" alt="Science Outreach" width={100} height={100} />, 
     description: "Bringing hands-on science education to underserved areas."
   },
   {
     name: "Digital Learning",
-    icon: "💻",
+    icon: <Image src="/images/icons/msi_digital_icon.svg" alt="Digital Learning" width={100} height={100} />, 
     description: "Flexible, online learning solutions to support education anywhere."
   }
 ]

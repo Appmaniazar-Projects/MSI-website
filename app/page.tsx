@@ -107,17 +107,17 @@ export default function Home() {
           {[
             { 
               title: 'Student Development', 
-              icon: <User className="text-4xl text-red-600" />, 
+              icon: <Image src="/images/icons/msi_student_icon.svg" alt="Student Development" width={100} height={100} />, 
               description: 'Providing customized support for students struggling in mathematics and science, helping them build confidence and achieve academic success.' 
             },
             { 
               title: 'Professional Development', 
-              icon: <School className="text-4xl text-red-600" />, 
+              icon: <Image src="/images/icons/msi_developing.svg" alt="Professional Development" width={100} height={100} />, 
               description: 'Enhancing the skills of maths and science tutors and teachers through targeted training and professional development programs.' 
             },
             { 
               title: 'Career Guidance & Role Modelling', 
-              icon: <Briefcase className="text-4xl text-red-600" />, 
+              icon: <Image src="/images/icons/msi_development_icon.svg" alt="Career Guidance" width={100} height={100} />, 
               description: 'Inspiring students with career guidance and exposure to role models in STEM fields, opening doors to future opportunities.' 
             },
 
