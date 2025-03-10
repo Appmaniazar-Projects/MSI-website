@@ -1,65 +1,69 @@
 import { NextResponse } from 'next/server';
+import nodemailer from 'nodemailer';
 
-export async function POST(request: Request) {
+export async function POST(request) {
   try {
-    const { name, email, subject, message } = await request.json();
+    const data = await request.json();
+    const { to, applicationType, ...formData } = data;
+    
+    // Configure nodemailer with your email service
+    const transporter = nodemailer.createTransport({
+      // Use your email service configuration here
+      // Example with Gmail:
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+      // Or SMTP configuration:
+      // host: process.env.SMTP_HOST,
+      // port: process.env.SMTP_PORT,
+      // secure: true, // true for 465, false for other ports
+      // auth: {
+      //   user: process.env.SMTP_USER,
+      //   pass: process.env.SMTP_PASSWORD
+      // }
+    });
 
-    // Log the received data (optional)
-    console.log('Contact Form Submission:', { name, email, subject, message });
+    // Format application data for email
+    const formatApplicationData = () => {
+      let formattedData = '';
+      
+      for (const [key, value] of Object.entries(formData)) {
+        // Format keys from camelCase to Title Case with spaces
+        const formattedKey = key.replace(/([A-Z])/g, ' $1')
+          .replace(/^./, str => str.toUpperCase());
+          
+        formattedData += `<p><strong>${formattedKey}:</strong> ${value}</p>`;
+      }
+      
+      return formattedData;
+    };
 
-    return NextResponse.json({ message: 'Form submission received successfully' });
-  } catch (error) {
-    console.error('Error processing form:', error);
+    // Create email content
+    const mailOptions = {
+      from: `MSI Website <${process.env.EMAIL_USER}>`,
+      to: to || process.env.DEFAULT_EMAIL_TO,
+      subject: `New ${applicationType.charAt(0).toUpperCase() + applicationType.slice(1)} Application from MSI Website`,
+      text: `New ${applicationType} application received. Please check the details in the HTML version.`,
+      html: `
+        <h2>New ${applicationType.charAt(0).toUpperCase() + applicationType.slice(1)} Application</h2>
+        <div>${formatApplicationData()}</div>
+      `,
+    };
+
+    // Send the email
+    await transporter.sendMail(mailOptions);
+
     return NextResponse.json(
-      { error: 'Failed to process form' },
+      { success: true, message: 'Application submitted successfully' },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error('Error processing application:', error);
+    return NextResponse.json(
+      { error: 'Failed to process application' },
       { status: 500 }
     );
   }
-}
-
-
-
-// import { NextResponse } from 'next/server';
-// //import nodemailer from 'nodemailer';
-
-// export async function POST(request: Request) {
-//   try {
-//     const { name, email, subject, message, to } = await request.json();
-
-//     const transporter = nodemailer.createTransport({
-//       service: 'gmail',
-//       auth: {
-//         user: process.env.EMAIL_USER,
-//         pass: process.env.EMAIL_PASS,
-//       },
-//     });
-
-//     await transporter.sendMail({
-//       from: process.env.EMAIL_USER,
-//       to: to,
-//       subject: `Contact Form: ${subject}`,
-//       text: `
-//         Name: ${name}
-//         Email: ${email}
-        
-//         Message:
-//         ${message}
-//       `,
-//       html: `
-//         <h3>New Contact Form Submission</h3>
-//         <p><strong>Name:</strong> ${name}</p>
-//         <p><strong>Email:</strong> ${email}</p>
-//         <p><strong>Message:</strong></p>
-//         <p>${message}</p>
-//       `,
-//     });
-
-//     return NextResponse.json({ message: 'Email sent successfully' });
-//   } catch (error) {
-//     console.error('Error sending email:', error);
-//     return NextResponse.json(
-//       { error: 'Failed to send email' },
-//       { status: 500 }
-//     );
-//   }
-// } 
+} 
