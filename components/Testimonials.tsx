@@ -37,7 +37,7 @@ const Testimonials = () => {
     <section className="py-20 bg-gradient-to-b from-white to-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-800 mb-4">What Our Community Says</h2>
+          <h2 className="text-3xl font-bold mb-12 text-navy-blue">What Our Community Says</h2>
         </div>
 
         {/* Carousel */}
