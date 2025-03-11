@@ -38,6 +38,7 @@ export default function StudentPortal() {
                     id="email"
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500"
                     placeholder="Enter your email"
+                    suppressHydrationWarning
                   />
                 </div>
                 
@@ -50,6 +51,7 @@ export default function StudentPortal() {
                     id="password"
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500"
                     placeholder="Enter your password"
+                    suppressHydrationWarning
                   />
                 </div>
 
@@ -59,6 +61,7 @@ export default function StudentPortal() {
                       type="checkbox"
                       id="remember"
                       className="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded"
+                      suppressHydrationWarning
                     />
                     <label htmlFor="remember" className="ml-2 block text-sm text-gray-700">
                       Remember me
