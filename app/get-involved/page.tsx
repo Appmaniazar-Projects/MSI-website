@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import Modal from '@/components/Modal'
-import { Construction, Upload, Users, GraduationCap, Handshake } from 'lucide-react'
+import { Construction, Upload, Users, GraduationCap, Handshake, CheckCircle } from 'lucide-react'
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -43,10 +43,23 @@ export default function GetInvolved() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [showModal, setShowModal] = useState(false)
   const [applicationType, setApplicationType] = useState<ApplicationType>('tutor')
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
     phone: '',
+    // Initialize all optional fields to prevent uncontrolled/controlled warning
+    mathGrade: '',
+    scienceGrade: '',
+    tertiaryQualification: '',
+    teachingQualification: '',
+    availability: '',
+    interests: '',
+    grade: '',
+    subjects: '',
+    organization: '',
+    sponsorshipType: '',
+    message: '',
   })
   const [files, setFiles] = useState<{ [key: string]: File | null }>({
     cv: null,
@@ -56,10 +69,36 @@ export default function GetInvolved() {
     transcript: null,
     sace: null,
   })
+  const [fileErrors, setFileErrors] = useState<{ [key: string]: string | null }>({
+    cv: null,
+    id: null,
+    workPermit: null,
+    matric: null,
+    transcript: null,
+    sace: null,
+  })
   const [qualificationError, setQualificationError] = useState<string | null>(null)
+  const [submissionSuccess, setSubmissionSuccess] = useState(false)
+  const [submissionError, setSubmissionError] = useState<string | null>(null)
+
+  const validatePdfFile = (file: File | null): boolean => {
+    if (!file) return true; // No file is valid (for optional fields)
+    
+    // Check if file extension is .pdf
+    const fileExtension = file.name.split('.').pop()?.toLowerCase();
+    const isPdf = fileExtension === 'pdf' || file.type === 'application/pdf';
+    
+    return isPdf;
+  }
 
   const handleFileChange = (fieldName: string, file: File | null) => {
-    setFiles(prev => ({ ...prev, [fieldName]: file }))
+    if (file && !validatePdfFile(file)) {
+      setFileErrors(prev => ({ ...prev, [fieldName]: 'Only PDF files are accepted' }));
+      return;
+    }
+    
+    setFiles(prev => ({ ...prev, [fieldName]: file }));
+    setFileErrors(prev => ({ ...prev, [fieldName]: null }));
   }
 
   const handleInputChange = (field: keyof FormData, value: string) => {
@@ -90,9 +129,46 @@ export default function GetInvolved() {
     if (applicationType === 'tutor' && !checkTutorQualifications()) {
       return
     }
+    
+    // Check for any file errors before submission
+    const hasFileErrors = Object.values(fileErrors).some(error => error !== null);
+    if (hasFileErrors) {
+      setSubmissionError('Please fix the file errors before submitting.');
+      return;
+    }
 
-    // Here you would typically send the data to your server
-    setShowModal(true)
+    setIsSubmitting(true)
+    setSubmissionError(null)
+    
+    try {
+      // Prepare form data for submission
+      const dataToSubmit = {
+        ...formData,
+        to: 'appmaniazar@gmail.co.za',
+        applicationType
+      }
+      
+      // Send data to API endpoint
+      const response = await fetch('/api/applications', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataToSubmit),
+      })
+      
+      if (!response.ok) {
+        throw new Error('Failed to submit application')
+      }
+      
+      setSubmissionSuccess(true)
+      setShowModal(true)
+    } catch (error) {
+      console.error('Error submitting application:', error)
+      setSubmissionError('There was a problem submitting your application. Please try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -226,59 +302,83 @@ export default function GetInvolved() {
                     
                     {/* Document Upload Section */}
                     <div className="space-y-4">
-                      <h3 className="text-lg font-semibold">Required Documents</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <h3 className="text-lg font-semibold mb-4">Required Documents <span className="text-sm font-normal text-red-600">(PDF files only)</span></h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                          <Label htmlFor="cv">CV</Label>
+                          <Label htmlFor="cv">CV/Resume</Label>
                           <Input
                             id="cv"
                             type="file"
+                            accept=".pdf,application/pdf"
                             onChange={(e) => handleFileChange('cv', e.target.files?.[0] || null)}
                             required
                           />
+                          {fileErrors.cv && (
+                            <p className="text-red-600 text-sm mt-1">{fileErrors.cv}</p>
+                          )}
                         </div>
                         <div>
                           <Label htmlFor="id">ID Copy/Passport</Label>
                           <Input
                             id="id"
                             type="file"
+                            accept=".pdf,application/pdf"
                             onChange={(e) => handleFileChange('id', e.target.files?.[0] || null)}
                             required
                           />
+                          {fileErrors.id && (
+                            <p className="text-red-600 text-sm mt-1">{fileErrors.id}</p>
+                          )}
                         </div>
                         <div>
                           <Label htmlFor="workPermit">Work Permit (if applicable)</Label>
                           <Input
                             id="workPermit"
                             type="file"
+                            accept=".pdf,application/pdf"
                             onChange={(e) => handleFileChange('workPermit', e.target.files?.[0] || null)}
                           />
+                          {fileErrors.workPermit && (
+                            <p className="text-red-600 text-sm mt-1">{fileErrors.workPermit}</p>
+                          )}
                         </div>
                         <div>
                           <Label htmlFor="matric">Matric Certificate</Label>
                           <Input
                             id="matric"
                             type="file"
+                            accept=".pdf,application/pdf"
                             onChange={(e) => handleFileChange('matric', e.target.files?.[0] || null)}
                             required
                           />
+                          {fileErrors.matric && (
+                            <p className="text-red-600 text-sm mt-1">{fileErrors.matric}</p>
+                          )}
                         </div>
                         <div>
                           <Label htmlFor="transcript">Academic Transcript</Label>
                           <Input
                             id="transcript"
                             type="file"
+                            accept=".pdf,application/pdf"
                             onChange={(e) => handleFileChange('transcript', e.target.files?.[0] || null)}
                             required
                           />
+                          {fileErrors.transcript && (
+                            <p className="text-red-600 text-sm mt-1">{fileErrors.transcript}</p>
+                          )}
                         </div>
                         <div>
                           <Label htmlFor="sace">SACE Certificate (if applicable)</Label>
                           <Input
                             id="sace"
                             type="file"
+                            accept=".pdf,application/pdf"
                             onChange={(e) => handleFileChange('sace', e.target.files?.[0] || null)}
                           />
+                          {fileErrors.sace && (
+                            <p className="text-red-600 text-sm mt-1">{fileErrors.sace}</p>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -375,13 +475,26 @@ export default function GetInvolved() {
                   </div>
                 )}
 
+                {/* Error message display */}
+                {submissionError && (
+                  <div className="p-4 bg-red-50 text-red-600 rounded-md">
+                    {submissionError}
+                  </div>
+                )}
+
                 <div className="space-y-4">
-                  <Button type="submit" className="w-full">Submit Application</Button>
+                  <Button 
+                    type="submit" 
+                    className="w-full"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? 'Submitting...' : 'Submit Application'}
+                  </Button>
                   
                   <div className="text-sm text-gray-600">
                     <p>For inquiries, please contact:</p>
                     <p>073 230 5457 / 073 174 5664</p>
-                    <p>Applications will be sent to: careers@mathsandscienceinfinity.org.za</p>
+                    <p>Applications will be sent to: support@appmaniazar.co.za</p>
                     {applicationType === 'tutor' && (
                       <p className="mt-2">Note: Shortlisted tutor applicants will be invited for an induction and content workshop.</p>
                     )}
@@ -396,7 +509,11 @@ export default function GetInvolved() {
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
         <div className="text-center">
           <div className="text-4xl mb-4">
-            <Construction className="w-16 h-16 mx-auto text-yellow-500" />
+            {submissionSuccess ? (
+              <CheckCircle className="w-16 h-16 mx-auto text-green-500" />
+            ) : (
+              <Construction className="w-16 h-16 mx-auto text-yellow-500" />
+            )}
           </div>
           <h3 className="text-xl font-semibold mb-4">Application Submitted!</h3>
           <p className="text-gray-600">
