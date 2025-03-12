@@ -38,32 +38,32 @@ const values = [
   {
     title: 'Equity and Inclusion',
     description: 'We ensure every student has equal access to education, regardless of their background.',
-    icon: '👥',
+    icon: <Image src="/images/icons/msi_student_icon.svg" alt="Equity and Inclusion" width={100} height={100} />, 
   },
   {
     title: 'Excellence in Education',
     description: 'We strive for the highest standards in both our teaching and service delivery.',
-    icon: '🌟',
+    icon: <Image src="/images/icons/msi_profess_ser_page_icon.svg" alt="Equity and Inclusion" width={100} height={100} />, 
   },
   {
     title: 'Innovation and Creativity',
     description: 'Embracing new methods and technologies to enhance learning.',
-    icon: '💡',
+    icon: <Image src="/images/icons/msi_developing_icon.svg" alt="Innovation and Creativity" width={100} height={100} />, 
   },
   {
     title: 'Collaboration and Partnership',
     description: 'Working with educators, communities, and students to achieve success.',
-    icon: '🤝',
+    icon: <Image src="/images/icons/msi_about_collab_icon.svg" alt="Collaboration and Partnership" width={100} height={100} />,
   },
   {
     title: 'Accountability and Transparency',
     description: 'We hold ourselves accountable and maintain transparency in all our actions.',
-    icon: '👁️',
+    icon: <Image src="/images/icons/msi_about_instructors_icon.svg" alt="Accountability and Transparency" width={100} height={100} />,
   },
   {
     title: 'Continuous Improvement',
     description: 'We are committed to constant growth and development to better serve our students.',
-    icon: '🔄',
+    icon: <Image src="/images/icons/msi_students_service_page_icon.svg" alt="Continuous Improvement" width={100} height={100} />,
   },  
 ]
 
@@ -111,7 +111,9 @@ export default function About() {
             >
               <Card className="h-full bg-white shadow-lg hover:shadow-xl transition-all duration-300">
                 <CardContent className="p-8">
-                  <div className="text-4xl mb-6">🎯</div>
+                  <div className="text-4xl mb-6">
+                  <Image src="/images/icons/msi_developing_icon.svg" alt="Mission" width={100} height={100} />
+                  </div>
                   <h2 className="text-3xl font-bold mb-6 text-gray-900">Our Mission</h2>
                   <p className="text-gray-600 leading-relaxed text-lg">
                   We aim to revolutionize STEM education by offering tailored support to 
@@ -134,7 +136,9 @@ export default function About() {
             >
               <Card className="h-full bg-white shadow-lg hover:shadow-xl transition-all duration-300">
                 <CardContent className="p-8">
-                  <div className="text-4xl mb-6">🔭</div>
+                  <div className="text-4xl mb-6">
+                  <Image src="/images/icons/msi_developing_icon.svg" alt="Vision" width={100} height={100} />
+                  </div>
                   <h2 className="text-3xl font-bold mb-6 text-gray-900">Our Vision</h2>
                   <p className="text-gray-600 leading-relaxed text-lg">
                   Leading the way in pioneering premier STEM educational initiatives 
@@ -166,17 +170,18 @@ export default function About() {
               {
                 title: 'Expert Instructors',
                 description: 'Our dedicated team of experienced educators and industry professionals is committed to providing the best learning experience, ensuring that every student receives the guidance they need to succeed.',
-                icon: '👨‍🏫',
+                icon: <Image src="/images/icons/msi_about_instruct_icon.png" alt="Expert Instructors" width={60} height={60} />,
               },
               {
                 title: 'Proven Results',
                 description: 'With a track record of improving student performance and understanding, MSI helps students overcome challenges and build a strong foundation in maths and science—opening doors to exciting future opportunities.',
-                icon: '📊',
+                icon: <Image src="/images/icons/msi_about_results_transparent.png" alt="Proven Results" width={60} height={60} />,
+
               },
               {
                 title: 'Innovative Approach',
                 description: 'We blend traditional teaching with the latest technology and hands-on experiences, creating an engaging and interactive learning environment that fosters curiosity and deep understanding.',
-                icon: '🔬',
+                icon: <Image src="/images/icons/msi_about_transparen_lab.png" alt="Innovative Approach" width={60} height={60} />,
               },
             ].map((item, index) => (
               <motion.div
@@ -223,8 +228,8 @@ export default function About() {
                 transition={{ delay: index * 0.1 }}
               >
                 <Card className="h-full bg-white shadow-lg hover:shadow-xl transition-all duration-300 border-t-4 border-t-red-600">
-                  <CardContent className="p-8 text-center">
-                    <div className="text-5xl mb-6">{value.icon}</div>
+                  <CardContent className="p-8 flex flex-col items-center text-center">
+                    <div className="text-5xl mb-6 ">{value.icon}</div>
                     <h3 className="text-2xl font-bold mb-4 text-gray-900">{value.title}</h3>
                     <p className="text-gray-600 text-lg leading-relaxed">{value.description}</p>
                   </CardContent>
