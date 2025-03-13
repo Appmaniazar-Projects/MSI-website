@@ -165,46 +165,44 @@ export default function Home() {
             Latest Blog Posts
           </h2>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {isLoading ? (
-              <div className="col-span-3 text-center text-gray-600">Loading blog posts...</div>
-            ) : latestPosts.length > 0 ? (
-              latestPosts.map((post) => (
-                <motion.div
-                  key={post.slug}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all transform hover:-translate-y-2 duration-300"
-                >
-                  <Link href={`/blog/post?slug=${post.slug}`}>
-                    {post.frontmatter.image && (
-                      <Image
-                        src={post.frontmatter.image}
-                        alt={post.frontmatter.title}
-                        width={400}
-                        height={250}
-                        className="w-full h-48 object-cover"
-                      />
-                    )}
-                    <div className="p-6">
-                      <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                        {post.frontmatter.title}
-                      </h3>
-                      <p className="text-gray-600 mb-4 line-clamp-3">
-                        {post.frontmatter.excerpt}
-                      </p>
-                      <div className="flex justify-between items-center text-sm text-gray-500">
-                        <span>{post.frontmatter.author}</span>
-                        <span>{post.frontmatter.date}</span>
-                      </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {latestPosts.map((post) => (
+              <div 
+                key={post.slug} 
+                className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300"
+              >
+                {post.frontmatter.image && (
+                  <Image 
+                    src={post.frontmatter.image} 
+                    alt={post.frontmatter.title}
+                    width={400}
+                    height={250}
+                    className="w-full h-48 object-cover"
+                  />
+                )}
+                <div className="p-6">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                    {post.frontmatter.title}
+                  </h3>
+                  <p className="text-gray-600 mb-4">
+                    {post.frontmatter.excerpt}
+                  </p>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-500">
+                      {post.frontmatter.date}
+                    </span>
+                    <div className="flex space-x-3">
+                      <Link 
+                        href={`/blog/post?slug=${post.slug}`} 
+                        className="text-red-600 hover:text-red-800 font-medium"
+                      >
+                        Read More
+                      </Link>
                     </div>
-                  </Link>
-                </motion.div>
-              ))
-            ) : (
-              <div className="col-span-3 text-center text-gray-600">No blog posts found.</div>
-            )}
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
 
           <div className="text-center">
