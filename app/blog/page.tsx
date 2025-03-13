@@ -66,32 +66,36 @@ export default function BlogPage() {
             <p className="text-lg md:text-xl mb-8 opacity-90">
               Discover articles, success stories, and educational perspectives from the world of mathematics and science education.
             </p>
-            
-            {/* Tag Cloud */}
-            <div className="flex flex-wrap justify-center gap-2 mt-8">
-              {allTags.map(tag => (
-                <button
-                  key={tag}
-                  onClick={() => toggleTag(tag)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                    activeTags.includes(tag)
-                      ? 'bg-red-600 text-white' 
-                      : 'bg-white/10 text-white hover:bg-white/20'
-                  }`}
-                >
-                  {tag}
-                </button>
-              ))}
-              {activeTags.length > 0 && (
-                <button
-                  onClick={() => setActiveTags([])}
-                  className="px-4 py-2 rounded-full text-sm font-medium bg-gray-700 text-white hover:bg-gray-600 transition-colors"
-                >
-                  Clear All
-                </button>
-              )}
-            </div>
           </motion.div>
+        </div>
+      </section>
+      
+      {/* Tag Filters */}
+      <section className="py-8 bg-gray-100">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-wrap justify-center gap-2">
+            {allTags.map(tag => (
+              <button
+                key={tag}
+                onClick={() => toggleTag(tag)}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  activeTags.includes(tag)
+                    ? 'bg-red-600 text-white' 
+                    : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                }`}
+              >
+                {tag}
+              </button>
+            ))}
+            {activeTags.length > 0 && (
+              <button
+                onClick={() => setActiveTags([])}
+                className="px-4 py-2 rounded-full text-sm font-medium bg-gray-700 text-white hover:bg-gray-600 transition-colors"
+              >
+                Clear All
+              </button>
+            )}
+          </div>
         </div>
       </section>
       

@@ -75,8 +75,27 @@ export default function RootLayout({
         {Object.values(siteConfig.links).map((url, index) => (
           <link key={index} rel="me" href={url} />
         ))}
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            (function() {
+              try {
+                // Remove attributes added by browser extensions that might cause hydration errors
+                if (typeof window !== 'undefined') {
+                  window.addEventListener('DOMContentLoaded', function() {
+                    const body = document.body;
+                    if (body.hasAttribute('cz-shortcut-listen')) {
+                      body.removeAttribute('cz-shortcut-listen');
+                    }
+                  });
+                }
+              } catch (e) {
+                console.error('Error in cleanup script:', e);
+              }
+            })();
+          `
+        }} />
       </head>
-      <body className={inter.className}>
+      <body className={inter.className} suppressHydrationWarning>
         <main>
           {children}
         </main>

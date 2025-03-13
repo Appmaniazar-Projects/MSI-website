@@ -3,8 +3,15 @@ import Image from 'next/image'
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa'
 import { motion } from 'framer-motion'
 import { fadeInUp, staggerContainer } from '@/utils/animations'
+import { useState, useEffect } from 'react'
 
 const Footer = () => {
+  const [currentYear, setCurrentYear] = useState('2025')
+  
+  useEffect(() => {
+    setCurrentYear(new Date().getFullYear().toString())
+  }, [])
+
   const socialLinks = [
     { icon: FaFacebookF, href: 'https://www.facebook.com/share/14mdGpX89G/', label: 'Facebook' },
     { icon: FaTwitter, href: 'https://twitter.com/maths_sciencesa', label: 'Twitter' },
@@ -147,7 +154,7 @@ const Footer = () => {
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className="text-sm">
-              &copy; {new Date().getFullYear()} Maths and Science Infinity. All rights reserved.
+              &copy; {currentYear} Maths and Science Infinity. All rights reserved.
             </p>
             <div className="flex space-x-6 text-sm">
               <Link href="/privacy-policy" className="hover:text-red-500 transition-colors duration-300">

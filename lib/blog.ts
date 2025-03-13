@@ -119,9 +119,12 @@ innovators who will shape South Africa's future.
 ];
 
 export const getBlogPosts = cache(async () => {
-  return BLOG_POSTS.sort((a, b) => 
-    new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime()
-  );
+  // Use a stable sorting algorithm that doesn't rely on browser-specific implementations
+  return [...BLOG_POSTS].sort((a, b) => {
+    const dateA = new Date(a.frontmatter.date).getTime();
+    const dateB = new Date(b.frontmatter.date).getTime();
+    return dateB - dateA;
+  });
 });
 
 export const getBlogPostBySlug = cache(async (slug: string) => {

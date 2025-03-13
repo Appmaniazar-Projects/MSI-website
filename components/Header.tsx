@@ -59,14 +59,19 @@ const Header = () => {
   const isErrorPage = pathname.startsWith('/404')
 
   const handleScroll = useCallback(() => {
-    // Only update state if the value would actually change
-    const shouldBeScrolled = window.scrollY > 0
-    if (isScrolled !== shouldBeScrolled) {
-      setIsScrolled(shouldBeScrolled)
+    if (typeof window !== 'undefined') {
+      // Only update state if the value would actually change
+      const shouldBeScrolled = window.scrollY > 0
+      if (isScrolled !== shouldBeScrolled) {
+        setIsScrolled(shouldBeScrolled)
+      }
     }
   }, [isScrolled])
 
   useEffect(() => {
+    // Initial check for scroll position
+    handleScroll()
+    
     // Throttle scroll events to fire at most once every 100ms
     let ticking = false
     const scrollListener = () => {
@@ -79,18 +84,22 @@ const Header = () => {
       }
     }
 
-    window.addEventListener('scroll', scrollListener, { passive: true })
-    return () => window.removeEventListener('scroll', scrollListener)
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', scrollListener, { passive: true })
+      return () => window.removeEventListener('scroll', scrollListener)
+    }
   }, [handleScroll])
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = 'unset'
-    }
-    return () => {
-      document.body.style.overflow = 'unset'
+    if (typeof document !== 'undefined') {
+      if (isOpen) {
+        document.body.style.overflow = 'hidden'
+      } else {
+        document.body.style.overflow = 'unset'
+      }
+      return () => {
+        document.body.style.overflow = 'unset'
+      }
     }
   }, [isOpen])
 

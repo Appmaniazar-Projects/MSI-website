@@ -84,9 +84,21 @@ export default function GetInvolved() {
   useEffect(() => {
     // Reset form data when application type changes
     const defaultFormData = {
-      name: '',
-      email: '',
-      phone: '',
+      name: formData.name || '',
+      email: formData.email || '',
+      phone: formData.phone || '',
+      // Initialize all fields with empty strings to prevent uncontrolled/controlled warning
+      mathGrade: '',
+      scienceGrade: '',
+      tertiaryQualification: '',
+      teachingQualification: '',
+      availability: '',
+      interests: '',
+      grade: '',
+      subjects: '',
+      organization: '',
+      sponsorshipType: '',
+      message: '',
     };
     
     // Only include fields relevant to the selected application type

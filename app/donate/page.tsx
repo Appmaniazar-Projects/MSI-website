@@ -60,9 +60,11 @@ export default function DonatePage() {
         setErrorMessage('');
         setSelectedAmount(null);
       } else {
+        setAmount(''); // Set to empty string instead of undefined
         setErrorMessage('Amount must be greater than 0');
       }
     } else {
+      // Don't change the amount value for invalid input
       setErrorMessage('Only numbers are allowed');
     }
   };

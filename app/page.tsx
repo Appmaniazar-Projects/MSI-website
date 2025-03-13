@@ -166,42 +166,75 @@ export default function Home() {
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {latestPosts.map((post) => (
-              <div 
-                key={post.slug} 
-                className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300"
+            {latestPosts.map((post, index) => (
+              <motion.div
+                key={post.slug}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+                className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all transform hover:-translate-y-1 duration-300"
               >
-                {post.frontmatter.image && (
-                  <Image 
-                    src={post.frontmatter.image} 
-                    alt={post.frontmatter.title}
-                    width={400}
-                    height={250}
-                    className="w-full h-48 object-cover"
-                  />
-                )}
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                    {post.frontmatter.title}
-                  </h3>
-                  <p className="text-gray-600 mb-4">
-                    {post.frontmatter.excerpt}
-                  </p>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-500">
-                      {post.frontmatter.date}
-                    </span>
-                    <div className="flex space-x-3">
-                      <Link 
-                        href={`/blog/post?slug=${post.slug}`} 
-                        className="text-red-600 hover:text-red-800 font-medium"
-                      >
-                        Read More
-                      </Link>
+                <Link href={`/blog/post?slug=${post.slug}`} className="block h-full">
+                  <div className="relative">
+                    {post.frontmatter.image ? (
+                      <div className="relative h-52">
+                        <Image
+                          src={post.frontmatter.image}
+                          alt={post.frontmatter.title}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                        />
+                      </div>
+                    ) : (
+                      <div className="bg-gray-200 h-52 flex items-center justify-center">
+                        <span className="text-gray-400">No image</span>
+                      </div>
+                    )}
+                    <div className="absolute top-4 right-4 flex flex-wrap gap-2 justify-end">
+                      {post.frontmatter.tags && post.frontmatter.tags.slice(0, 2).map(tag => (
+                        <span 
+                          key={tag} 
+                          className="bg-red-600 text-navy-blue text-xs font-bold px-2 py-1 rounded"
+                        >
+                          {tag}
+                        </span>
+                      ))}
                     </div>
                   </div>
-                </div>
-              </div>
+                  
+                  <div className="p-6">
+                    <div className="flex items-center text-sm text-gray-500 mb-3">
+                      <span>{post.frontmatter.date}</span>
+                      {post.readingTime && (
+                        <>
+                          <span className="mx-2">•</span>
+                          <span>{post.readingTime} min read</span>
+                        </>
+                      )}
+                    </div>
+                    
+                    <h2 className="text-xl font-semibold text-gray-800 mb-3 line-clamp-2">
+                      {post.frontmatter.title}
+                    </h2>
+                    
+                    <p className="text-gray-600 mb-5 line-clamp-3">
+                      {post.frontmatter.excerpt}
+                    </p>
+                    
+                    <div className="flex items-center justify-between mt-auto">
+                      <div className="flex items-center">
+                        <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-gray-600">
+                          {post.frontmatter.author && post.frontmatter.author.charAt(0)}
+                        </div>
+                        <span className="ml-2 text-sm text-gray-700">{post.frontmatter.author}</span>
+                      </div>
+                      
+                      <span className="text-red-600 font-medium text-sm">Read more →</span>
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
             ))}
           </div>
 

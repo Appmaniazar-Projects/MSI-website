@@ -9,9 +9,9 @@ import { Book, FileText, Video, Download, Search, Filter, X, ChevronDown } from 
 export default function PastPapers() {
   // State for filtering and mobile view
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedGrade, setSelectedGrade] = useState<string | null>(null);
-  const [selectedYear, setSelectedYear] = useState<number | null>(null);
-  const [selectedTerm, setSelectedTerm] = useState<string | null>(null);
+  const [selectedGrade, setSelectedGrade] = useState('');
+  const [selectedYear, setSelectedYear] = useState('');
+  const [selectedTerm, setSelectedTerm] = useState('');
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
 
   // Existing data structure
@@ -143,21 +143,34 @@ export default function PastPapers() {
 
   // Memoized filtering logic
   const filteredPapers = useMemo(() => {
-    return gradesPapers.filter(gradeGroup => 
-      (!selectedGrade || gradeGroup.grade === selectedGrade) &&
-      gradeGroup.years.some(yearGroup => 
-        (!selectedYear || yearGroup.year === selectedYear) &&
-        yearGroup.terms.some(termGroup => 
-          (!selectedTerm || termGroup.term === selectedTerm) &&
-          termGroup.subjects.some(subject => 
-            subject.items.some(item => 
-              item.name.toLowerCase().includes(searchTerm.toLowerCase())
-            )
-          )
-        )
-      )
-    );
-  }, [searchTerm, selectedGrade, selectedYear, selectedTerm]);
+    return gradesPapers
+      .filter(gradePaper => !selectedGrade || gradePaper.grade === selectedGrade)
+      .map(gradePaper => ({
+        ...gradePaper,
+        years: gradePaper.years
+          .filter(yearData => !selectedYear || yearData.year.toString() === selectedYear)
+          .map(yearData => ({
+            ...yearData,
+            terms: yearData.terms
+              .filter(termData => !selectedTerm || termData.term === selectedTerm)
+              .map(termData => ({
+                ...termData,
+                subjects: termData.subjects
+                  .map(subject => ({
+                    ...subject,
+                    items: subject.items.filter(item => 
+                      !searchTerm || 
+                      item.name.toLowerCase().includes(searchTerm.toLowerCase())
+                    )
+                  }))
+                  .filter(subject => subject.items.length > 0)
+              }))
+              .filter(termData => termData.subjects.length > 0)
+          }))
+          .filter(yearData => yearData.terms.length > 0)
+      }))
+      .filter(gradePaper => gradePaper.years.length > 0);
+  }, [gradesPapers, selectedGrade, selectedYear, selectedTerm, searchTerm]);
 
   // Download handler
   const handleDownload = (item: { name: string, type: string, size: string }) => {
@@ -167,12 +180,24 @@ export default function PastPapers() {
     link.click();
   };
 
-  // Reset all filters
+  // Update the onChange handlers
+  const handleGradeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedGrade(e.target.value);
+  };
+
+  const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedYear(e.target.value);
+  };
+
+  const handleTermChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedTerm(e.target.value);
+  };
+
   const resetFilters = () => {
     setSearchTerm('');
-    setSelectedGrade(null);
-    setSelectedYear(null);
-    setSelectedTerm(null);
+    setSelectedGrade('');
+    setSelectedYear('');
+    setSelectedTerm('');
     setIsMobileFiltersOpen(false);
   };
 
@@ -239,8 +264,8 @@ export default function PastPapers() {
               {/* Grade Dropdown */}
               <div className="relative">
                 <select 
-                  value={selectedGrade || ''} 
-                  onChange={(e) => setSelectedGrade(e.target.value || null)}
+                  value={selectedGrade} 
+                  onChange={handleGradeChange}
                   className="w-full appearance-none pl-4 pr-8 py-2 border rounded-lg focus:ring-2 focus:ring-red-500"
                 >
                   <option value="">All Grades</option>
@@ -254,13 +279,13 @@ export default function PastPapers() {
               {/* Year Dropdown */}
               <div className="relative">
                 <select 
-                  value={selectedYear || ''} 
-                  onChange={(e) => setSelectedYear(e.target.value ? Number(e.target.value) : null)}
+                  value={selectedYear} 
+                  onChange={handleYearChange}
                   className="w-full appearance-none pl-4 pr-8 py-2 border rounded-lg focus:ring-2 focus:ring-red-500"
                 >
                   <option value="">All Years</option>
                   {uniqueYears.map((year) => (
-                    <option key={year} value={year}>{year}</option>
+                    <option key={year} value={year.toString()}>{year}</option>
                   ))}
                 </select>
                 <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
@@ -269,8 +294,8 @@ export default function PastPapers() {
               {/* Term Dropdown */}
               <div className="relative">
                 <select 
-                  value={selectedTerm || ''} 
-                  onChange={(e) => setSelectedTerm(e.target.value || null)}
+                  value={selectedTerm} 
+                  onChange={handleTermChange}
                   className="w-full appearance-none pl-4 pr-8 py-2 border rounded-lg focus:ring-2 focus:ring-red-500"
                 >
                   <option value="">All Terms</option>
@@ -301,9 +326,9 @@ export default function PastPapers() {
             <div className="flex flex-wrap gap-2 mb-6">
               {[
                 { label: 'Search', value: searchTerm, clear: () => setSearchTerm('') },
-                { label: 'Grade', value: selectedGrade, clear: () => setSelectedGrade(null) },
-                { label: 'Year', value: selectedYear, clear: () => setSelectedYear(null) },
-                { label: 'Term', value: selectedTerm, clear: () => setSelectedTerm(null) }
+                { label: 'Grade', value: selectedGrade, clear: () => setSelectedGrade('') },
+                { label: 'Year', value: selectedYear, clear: () => setSelectedYear('') },
+                { label: 'Term', value: selectedTerm, clear: () => setSelectedTerm('') }
               ].filter(filter => filter.value).map((filter) => (
                 <div 
                   key={filter.label} 
