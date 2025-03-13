@@ -8,21 +8,16 @@ export async function POST(request) {
     
     // Configure nodemailer with your email service
     const transporter = nodemailer.createTransport({
-      // Use your email service configuration here
-      // Example with Gmail:
-      service: 'gmail',
+      host: 'mail.appmaniazar.co.za',
+      port: 465,
+      secure: true,
       auth: {
         user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD,
+        pass: process.env.EMAIL_PASSWORD
       },
-      // Or SMTP configuration:
-      // host: process.env.SMTP_HOST,
-      // port: process.env.SMTP_PORT,
-      // secure: true, // true for 465, false for other ports
-      // auth: {
-      //   user: process.env.SMTP_USER,
-      //   pass: process.env.SMTP_PASSWORD
-      // }
+      tls: {
+        rejectUnauthorized: false
+      }
     });
 
     // Format application data for email
@@ -30,11 +25,13 @@ export async function POST(request) {
       let formattedData = '';
       
       for (const [key, value] of Object.entries(formData)) {
-        // Format keys from camelCase to Title Case with spaces
-        const formattedKey = key.replace(/([A-Z])/g, ' $1')
-          .replace(/^./, str => str.toUpperCase());
-          
-        formattedData += `<p><strong>${formattedKey}:</strong> ${value}</p>`;
+        if (value && value.toString().trim() !== '') {
+          const formattedKey = key
+            .replace(/([A-Z])/g, ' $1')
+            .replace(/^./, str => str.toUpperCase());
+
+          formattedData += `<p><strong>${formattedKey}:</strong> ${value}</p>`;
+        }
       }
       
       return formattedData;
@@ -44,11 +41,12 @@ export async function POST(request) {
     const mailOptions = {
       from: `MSI Website <${process.env.EMAIL_USER}>`,
       to: to || process.env.DEFAULT_EMAIL_TO,
-      subject: `New ${applicationType.charAt(0).toUpperCase() + applicationType.slice(1)} Application from MSI Website`,
-      text: `New ${applicationType} application received. Please check the details in the HTML version.`,
+      subject: `New Message from Contact Form - ${formData.subject || 'No Subject'}`,
+      text: `New contact form message received:\n\n${JSON.stringify(formData, null, 2)}`,
       html: `
-        <h2>New ${applicationType.charAt(0).toUpperCase() + applicationType.slice(1)} Application</h2>
+        <h2>New Contact Form Submission</h2>
         <div>${formatApplicationData()}</div>
+        <p>Submitted at: ${new Date().toLocaleString()}</p>
       `,
     };
 
@@ -56,7 +54,7 @@ export async function POST(request) {
     await transporter.sendMail(mailOptions);
 
     return NextResponse.json(
-      { success: true, message: 'Application submitted successfully' },
+      { success: true, message: 'Message sent successfully' },
       { status: 200 }
     );
   } catch (error) {

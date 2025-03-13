@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import Modal from '@/components/Modal'
-import { Construction, Upload, Users, GraduationCap, Handshake, CheckCircle } from 'lucide-react'
+import { Construction, Upload, Users, GraduationCap, Handshake, CheckCircle, XCircle } from 'lucide-react'
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -81,6 +81,67 @@ export default function GetInvolved() {
   const [submissionSuccess, setSubmissionSuccess] = useState(false)
   const [submissionError, setSubmissionError] = useState<string | null>(null)
 
+  useEffect(() => {
+    // Reset form data when application type changes
+    const defaultFormData = {
+      name: '',
+      email: '',
+      phone: '',
+    };
+    
+    // Only include fields relevant to the selected application type
+    if (applicationType === 'tutor') {
+      setFormData({
+        ...defaultFormData,
+        mathGrade: '',
+        scienceGrade: '',
+        tertiaryQualification: '',
+        teachingQualification: '',
+      });
+    } else if (applicationType === 'volunteer') {
+      setFormData({
+        ...defaultFormData,
+        availability: '',
+        interests: '',
+      });
+    } else if (applicationType === 'student') {
+      setFormData({
+        ...defaultFormData,
+        grade: '',
+        subjects: '',
+      });
+    } else if (applicationType === 'sponsor') {
+      setFormData({
+        ...defaultFormData,
+        organization: '',
+        sponsorshipType: '',
+        message: '',
+      });
+    }
+    
+    // Reset all file uploads when changing application type
+    setFiles({
+      cv: null,
+      id: null,
+      workPermit: null,
+      matric: null,
+      transcript: null,
+      sace: null,
+    });
+    
+    // Clear any errors
+    setFileErrors({
+      cv: null,
+      id: null,
+      workPermit: null,
+      matric: null,
+      transcript: null,
+      sace: null,
+    });
+    setQualificationError(null);
+    setSubmissionError(null);
+  }, [applicationType]);
+
   const validatePdfFile = (file: File | null): boolean => {
     if (!file) return true; // No file is valid (for optional fields)
     
@@ -142,19 +203,32 @@ export default function GetInvolved() {
     
     try {
       // Prepare form data for submission
-      const dataToSubmit = {
-        ...formData,
-        to: 'appmaniazar@gmail.co.za',
-        applicationType
+      const formPayload = new FormData();
+      formPayload.append('applicationType', applicationType);
+      
+      // Append all form data
+      Object.entries(formData).forEach(([key, value]) => {
+        formPayload.append(key, value);
+      });
+      
+      // Append files based on application type
+      if (applicationType === 'tutor') {
+        // Only append files relevant to tutors
+        if (files.cv) formPayload.append('files', files.cv, `cv-${files.cv.name}`);
+        if (files.id) formPayload.append('files', files.id, `id-${files.id.name}`);
+        if (files.workPermit) formPayload.append('files', files.workPermit, `workPermit-${files.workPermit.name}`);
+        if (files.matric) formPayload.append('files', files.matric, `matric-${files.matric.name}`);
+        if (files.transcript) formPayload.append('files', files.transcript, `transcript-${files.transcript.name}`);
+        if (files.sace) formPayload.append('files', files.sace, `sace-${files.sace.name}`);
+      } else if (applicationType === 'volunteer') {
+        // Only append CV for volunteers
+        if (files.cv) formPayload.append('files', files.cv, `cv-${files.cv.name}`);
       }
       
       // Send data to API endpoint
       const response = await fetch('/api/applications', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dataToSubmit),
+        body: formPayload,
       })
       
       if (!response.ok) {
@@ -189,34 +263,42 @@ export default function GetInvolved() {
             <h1 className="text-4xl font-bold text-gray-900 mb-8 text-center">Get Involved</h1>
             
             {/* Application Type Selector */}
-            <div className="flex gap-4 justify-center mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 justify-center mb-8 w-full max-w-5xl mx-auto">
               <Button
                 variant={applicationType === 'tutor' ? 'default' : 'outline'}
                 onClick={() => setApplicationType('tutor')}
                 size="lg"
+                className="w-full flex justify-center items-center"
               >
-                <GraduationCap className="w-5 h-5 mr-2" /> Tutor Application
+                <GraduationCap className="w-5 h-5 mr-2 flex-shrink-0" /> 
+                <span className="whitespace-nowrap">Tutor Application</span>
               </Button>
               <Button
                 variant={applicationType === 'volunteer' ? 'default' : 'outline'}
                 onClick={() => setApplicationType('volunteer')}
                 size="lg"
+                className="w-full flex justify-center items-center"
               >
-                <Users className="w-5 h-5 mr-2" /> Volunteer Application
+                <Users className="w-5 h-5 mr-2 flex-shrink-0" /> 
+                <span className="whitespace-nowrap">Volunteer Application</span>
               </Button>
               <Button
                 variant={applicationType === 'student' ? 'default' : 'outline'}
                 onClick={() => setApplicationType('student')}
                 size="lg"
+                className="w-full flex justify-center items-center"
               >
-                <GraduationCap className="w-5 h-5 mr-2" /> Student Application
+                <GraduationCap className="w-5 h-5 mr-2 flex-shrink-0" /> 
+                <span className="whitespace-nowrap">Student Application</span>
               </Button>
               <Button
                 variant={applicationType === 'sponsor' ? 'default' : 'outline'}
                 onClick={() => setApplicationType('sponsor')}
                 size="lg"
+                className="w-full flex justify-center items-center"
               >
-                <Handshake className="w-5 h-5 mr-2" /> Sponsorship Inquiry
+                <Handshake className="w-5 h-5 mr-2 flex-shrink-0" /> 
+                <span className="whitespace-nowrap">Sponsorship Inquiry</span>
               </Button>
             </div>
 
@@ -510,14 +592,18 @@ export default function GetInvolved() {
         <div className="text-center">
           <div className="text-4xl mb-4">
             {submissionSuccess ? (
-              <CheckCircle className="w-16 h-16 mx-auto text-green-500" />
+              <CheckCircle className="w-16 h-16 mx-auto text-red-600" />
             ) : (
-              <Construction className="w-16 h-16 mx-auto text-yellow-500" />
+              <XCircle className="w-16 h-16 mx-auto text-yellow-500" />
             )}
           </div>
-          <h3 className="text-xl font-semibold mb-4">Application Submitted!</h3>
+          <h3 className="text-xl font-semibold mb-4">
+            {submissionSuccess ? 'Application Submitted!' : 'Error'}
+          </h3>
           <p className="text-gray-600">
-            Thank you for your interest. We will review your application and contact you soon.
+            {submissionSuccess 
+              ? 'Thank you for your interest. We will review your application and contact you soon.' 
+              : 'There was a problem submitting your application. Please try again.'}
           </p>
         </div>
       </Modal>

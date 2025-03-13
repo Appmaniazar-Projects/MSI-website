@@ -5,7 +5,9 @@ import { motion } from 'framer-motion'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { Button } from "@/components/ui/button"
-//import emailjs from '@emailjs/browser'
+import Modal from '@/components/Modal'
+import { CheckCircle, XCircle } from 'lucide-react'
+
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -15,6 +17,8 @@ export default function ContactPage() {
     message: ''
   })
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
+  const [showModal, setShowModal] = useState(false)
+  const [submissionSuccess, setSubmissionSuccess] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,7 +32,7 @@ export default function ContactPage() {
         },
         body: JSON.stringify({
           ...formData,
-          to: 'appmaniazar@gmail.co.za',
+          to: process.env.DEFAULT_EMAIL_TO,
           applicationType: 'contact'
         }),
       });
@@ -39,32 +43,15 @@ export default function ContactPage() {
       
       setStatus('success');
       setFormData({ name: '', email: '', subject: '', message: '' });
+      setSubmissionSuccess(true);
+      setShowModal(true);
     } catch (error) {
       console.error('Error sending message:', error);
       setStatus('error');
+      setSubmissionSuccess(false);
+      setShowModal(true);
     }
   };
-    /*try {
-      await emailjs.send(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
-        {
-          from_name: formData.name,
-          from_email: formData.email,
-          subject: formData.subject,
-          message: formData.message,
-          to_email: 'support@appmaniazar.co.za',
-        },
-        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
-      );
-
-      setStatus('success');
-      setFormData({ name: '', email: '', subject: '', message: '' });
-    } catch (error) {
-      console.error('Error sending message:', error);
-      setStatus('error');
-    }
-  };*/
 
   const socialLinks = [
     {
@@ -243,18 +230,6 @@ export default function ContactPage() {
                   {status === 'sending' ? 'Sending...' : 'Send Message'}
                 </button>
               </form>
-
-              {status === 'success' && (
-                <div className="mt-4 text-green-600 text-center">
-                  Message sent successfully!
-                </div>
-              )}
-
-              {status === 'error' && (
-                <div className="mt-4 text-red-600 text-center">
-                  Failed to send message. Please try again.
-                </div>
-              )}
             </motion.div>
 
             {/* Contact Information */}
@@ -316,6 +291,26 @@ export default function ContactPage() {
       </section>
 
       <Footer />
+
+      <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+        <div className="text-center">
+          <div className="text-4xl mb-4">
+            {submissionSuccess ? (
+              <CheckCircle className="w-16 h-16 mx-auto text-red-600" />
+            ) : (
+              <XCircle className="w-16 h-16 mx-auto text-yellow-500" />
+            )}
+          </div>
+          <h3 className="text-xl font-semibold mb-4">
+            {submissionSuccess ? 'Message Sent!' : 'Error'}
+          </h3>
+          <p className="text-gray-600">
+            {submissionSuccess 
+              ? 'Thank you for your message. We will get back to you shortly.' 
+              : 'There was a problem sending your message. Please try again.'}
+          </p>
+        </div>
+      </Modal>
     </div>
   )
 }
