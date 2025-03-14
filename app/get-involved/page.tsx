@@ -170,6 +170,63 @@ export default function GetInvolved() {
     setSubmissionError(null);
   }, [applicationType]);
 
+  // Add a new useEffect to reset the form after successful submission
+  useEffect(() => {
+    if (submissionSuccess) {
+      // Reset form data to defaults after successful submission
+      const defaultFormData = {
+        name: '',
+        email: '',
+        phone: '',
+        // Initialize all fields with empty strings
+        mathGrade: '',
+        scienceGrade: '',
+        tertiaryQualification: '',
+        teachingQualification: '',
+        availability: '',
+        interests: '',
+        position: '',
+        experience: '',
+        education: '',
+        coverLetter: '',
+        organization: '',
+        sponsorshipType: '',
+        message: '',
+      };
+      
+      setFormData(defaultFormData);
+      
+      // Reset file uploads
+      setFiles({
+        cv: null,
+        id: null,
+        workPermit: null,
+        matric: null,
+        transcript: null,
+        sace: null,
+      });
+      
+      // Clear errors
+      setFileErrors({
+        cv: null,
+        id: null,
+        workPermit: null,
+        matric: null,
+        transcript: null,
+        sace: null,
+      });
+      setQualificationError(null);
+      setSubmissionError(null);
+      
+      // Reset job selection if in careers section
+      if (applicationType === 'careers') {
+        setShowJobDetails(false);
+        setShowApplicationForm(false);
+        setSelectedJob(null);
+      }
+    }
+  }, [submissionSuccess, applicationType]);
+
   const validatePdfFile = (file: File | null): boolean => {
     if (!file) return true; // No file is valid (for optional fields)
     
@@ -228,6 +285,7 @@ export default function GetInvolved() {
 
     setIsSubmitting(true)
     setSubmissionError(null)
+    setSubmissionSuccess(false) // Reset success state before submission
     
     try {
       // Prepare form data for submission
@@ -252,12 +310,15 @@ export default function GetInvolved() {
         // Only append CV for volunteers
         if (files.cv) formPayload.append('files', files.cv, `cv-${files.cv.name}`);
       } else if (applicationType === 'careers') {
-        // Only append CV for career applications
+        // Only append CV and ID for career applications
         if (files.cv) formPayload.append('files', files.cv, `cv-${files.cv.name}`);
+        if (files.id) formPayload.append('files', files.id, `id-${files.id.name}`);
       } else if (applicationType === 'sponsor') {
         // Only append files relevant to sponsors
         if (files.cv) formPayload.append('files', files.cv, `cv-${files.cv.name}`);
       }
+      
+      console.log(`Submitting ${applicationType} application`);
       
       // Send data to API endpoint
       const response = await fetch('/api/applications', {
@@ -266,14 +327,21 @@ export default function GetInvolved() {
       })
       
       if (!response.ok) {
-        throw new Error('Failed to submit application')
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        console.error('Server error response:', errorData);
+        throw new Error(errorData.details || errorData.error || 'Failed to submit application');
       }
+      
+      const result = await response.json();
+      console.log('Submission successful:', result);
       
       setSubmissionSuccess(true)
       setShowModal(true)
     } catch (error) {
       console.error('Error submitting application:', error)
-      setSubmissionError('There was a problem submitting your application. Please try again.')
+      setSubmissionSuccess(false)
+      setSubmissionError(error instanceof Error ? error.message : 'There was a problem submitting your application. Please try again.')
+      setShowModal(true)
     } finally {
       setIsSubmitting(false)
     }
@@ -869,7 +937,7 @@ export default function GetInvolved() {
                     <div className="text-sm text-gray-600">
                       <p>For inquiries, please contact:</p>
                       <p>073 230 5457 / 073 174 5664</p>
-                      <p>Applications will be sent to: support@appmaniazar.co.za</p>
+                      <p>Applications will be sent to: careers@mathsandscienceinfinity.org.za</p>
                       {applicationType === 'tutor' && (
                         <p className="mt-2">Note: Shortlisted tutor applicants will be invited for an induction and content workshop.</p>
                       )}

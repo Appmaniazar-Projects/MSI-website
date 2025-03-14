@@ -117,7 +117,6 @@ const Header = () => {
 
   return (  
     <header className={`fixed w-full z-50 transition-all duration-300 bg-white shadow-md`}>
-      {/*isScrolled || isResourcePage || isTutorPage || isBlogPost || isErrorPage ? 'bg-white shadow-md' : 'bg-transparent'*/}
       
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-4">

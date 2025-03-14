@@ -10,7 +10,7 @@ export async function POST(request) {
     
     // Configure nodemailer with your email service
     const transporter = nodemailer.createTransport({
-      host: 'mail.appmaniazar.co.za', // cPanel mail server
+      host: 'mail.mathsandscienceinfinity.org.za', // cPanel mail server
       port: 465, // Standard secure port for cPanel
       secure: true,
       auth: {
@@ -44,7 +44,7 @@ export async function POST(request) {
     // Create email content
     const mailOptions = {
       from: `MSI Website <${process.env.EMAIL_USER}>`,
-      to: process.env.DEFAULT_EMAIL_TO,
+      to: 'careers@mathsandscienceinfinity.org.za',
       subject: `New ${applicationType} Application - ${formDataObj.name} from MSI Website`,
       text: `New ${applicationType} application received:\n\n${JSON.stringify(formDataObj, null, 2)}`,
       html: `

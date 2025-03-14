@@ -8,7 +8,7 @@ export async function POST(request) {
     
     // Configure nodemailer with your email service
     const transporter = nodemailer.createTransport({
-      host: 'mail.appmaniazar.co.za',
+      host: 'mail.mathsandscienceinfinity.org.za',
       port: 465,
       secure: true,
       auth: {
@@ -40,7 +40,7 @@ export async function POST(request) {
     // Create email content
     const mailOptions = {
       from: `MSI Website <${process.env.EMAIL_USER}>`,
-      to: to || process.env.DEFAULT_EMAIL_TO,
+      to: 'info@mathsandscienceinfinity.org.za',
       subject: `New Message from Contact Form - ${formData.subject || 'No Subject'}`,
       text: `New contact form message received:\n\n${JSON.stringify(formData, null, 2)}`,
       html: `

@@ -42,10 +42,10 @@ const Counter = ({ number, label }: { number: string; label: string }) => {
 
 export default function Impact() {
   const stats = [
-    { number: '5000+', label: 'Students Reached' },
-    { number: '50+', label: 'Schools Partnered' },
-    { number: '100+', label: 'Workshops Conducted' },
-    { number: '90%', label: 'Student Satisfaction' }
+    { number: '15+', label: 'Years of Experience' },
+    { number: '700000+', label: 'Beneficiaries Reached' },
+    { number: '160+', label: 'Schools Partnered' },
+    { number: '400+', label: 'Dedicated Tutors' }
   ];
 
   return (
