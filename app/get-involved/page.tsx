@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { Button } from '@/components/ui/button'
@@ -9,14 +9,16 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import Modal from '@/components/Modal'
-import { Construction, Upload, Users, GraduationCap, Handshake, CheckCircle, XCircle } from 'lucide-react'
+import { Construction, Upload, Users, GraduationCap, Handshake, CheckCircle, XCircle, ChevronRight, ArrowLeft } from 'lucide-react'
+import { JobListing, jobListings } from '../data/jobListings'
+import HorizontalSlider from '../components/HorizontalSlider'
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0 },
 }
 
-type ApplicationType = 'tutor' | 'volunteer' | 'student' | 'sponsor';
+type ApplicationType = 'tutor' | 'volunteer' | 'careers' | 'sponsor';
 
 interface FormData {
   name: string;
@@ -30,9 +32,11 @@ interface FormData {
   // Volunteer specific fields
   availability?: string;
   interests?: string;
-  // Student specific fields
-  grade?: string;
-  subjects?: string;
+  // Remove student fields and add career application fields
+  position?: string;
+  experience?: string;
+  education?: string;
+  coverLetter?: string;
   // Sponsor specific fields
   organization?: string;
   sponsorshipType?: string;
@@ -55,8 +59,11 @@ export default function GetInvolved() {
     teachingQualification: '',
     availability: '',
     interests: '',
-    grade: '',
-    subjects: '',
+    // Replace grade/subjects with career fields
+    position: '',
+    experience: '',
+    education: '',
+    coverLetter: '',
     organization: '',
     sponsorshipType: '',
     message: '',
@@ -80,6 +87,10 @@ export default function GetInvolved() {
   const [qualificationError, setQualificationError] = useState<string | null>(null)
   const [submissionSuccess, setSubmissionSuccess] = useState(false)
   const [submissionError, setSubmissionError] = useState<string | null>(null)
+  const [selectedJob, setSelectedJob] = useState<JobListing | null>(null)
+  const [showJobDetails, setShowJobDetails] = useState(false)
+  const [showApplicationForm, setShowApplicationForm] = useState(false)
+  const applicationFormRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     // Reset form data when application type changes
@@ -94,8 +105,11 @@ export default function GetInvolved() {
       teachingQualification: '',
       availability: '',
       interests: '',
-      grade: '',
-      subjects: '',
+      // Replace grade/subjects with career fields
+      position: '',
+      experience: '',
+      education: '',
+      coverLetter: '',
       organization: '',
       sponsorshipType: '',
       message: '',
@@ -116,11 +130,13 @@ export default function GetInvolved() {
         availability: '',
         interests: '',
       });
-    } else if (applicationType === 'student') {
+    } else if (applicationType === 'careers') {
       setFormData({
         ...defaultFormData,
-        grade: '',
-        subjects: '',
+        position: '',
+        experience: '',
+        education: '',
+        coverLetter: '',
       });
     } else if (applicationType === 'sponsor') {
       setFormData({
@@ -235,6 +251,12 @@ export default function GetInvolved() {
       } else if (applicationType === 'volunteer') {
         // Only append CV for volunteers
         if (files.cv) formPayload.append('files', files.cv, `cv-${files.cv.name}`);
+      } else if (applicationType === 'careers') {
+        // Only append CV for career applications
+        if (files.cv) formPayload.append('files', files.cv, `cv-${files.cv.name}`);
+      } else if (applicationType === 'sponsor') {
+        // Only append files relevant to sponsors
+        if (files.cv) formPayload.append('files', files.cv, `cv-${files.cv.name}`);
       }
       
       // Send data to API endpoint
@@ -255,6 +277,37 @@ export default function GetInvolved() {
     } finally {
       setIsSubmitting(false)
     }
+  }
+
+  const handleJobSelect = (job: JobListing) => {
+    setSelectedJob(job)
+    setShowJobDetails(true)
+    setShowApplicationForm(false)
+  }
+
+  const handleApplyNow = () => {
+    if (selectedJob) {
+      setFormData({
+        ...formData,
+        position: selectedJob.title
+      })
+      setShowApplicationForm(true)
+      
+      // Wait for state update and then scroll
+      setTimeout(() => {
+        applicationFormRef.current?.scrollIntoView({ behavior: 'smooth' })
+      }, 100)
+    }
+  }
+
+  const handleBackToJobs = () => {
+    setShowJobDetails(false)
+    setShowApplicationForm(false)
+    setSelectedJob(null)
+  }
+
+  const handleBackToJobDetails = () => {
+    setShowApplicationForm(false)
   }
 
   return (
@@ -295,13 +348,13 @@ export default function GetInvolved() {
                 <span className="whitespace-nowrap">Volunteer Application</span>
               </Button>
               <Button
-                variant={applicationType === 'student' ? 'default' : 'outline'}
-                onClick={() => setApplicationType('student')}
+                variant={applicationType === 'careers' ? 'default' : 'outline'}
+                onClick={() => setApplicationType('careers')}
                 size="lg"
                 className="w-full flex justify-center items-center"
               >
                 <GraduationCap className="w-5 h-5 mr-2 flex-shrink-0" /> 
-                <span className="whitespace-nowrap">Student Application</span>
+                <span className="whitespace-nowrap">Careers</span>
               </Button>
               <Button
                 variant={applicationType === 'sponsor' ? 'default' : 'outline'}
@@ -316,285 +369,514 @@ export default function GetInvolved() {
 
             {/* Application Forms */}
             <div className="bg-white rounded-lg shadow-md p-8">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Common Fields */}
-                <div className="space-y-4">
-                  <div>
-                    <Label htmlFor="name">Full Name</Label>
-                    <Input
-                      id="name"
-                      value={formData.name}
-                      onChange={(e) => handleInputChange('name', e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="email">Email Address</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => handleInputChange('email', e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="phone">Phone Number</Label>
-                    <Input
-                      id="phone"
-                      value={formData.phone}
-                      onChange={(e) => handleInputChange('phone', e.target.value)}
-                      required
-                    />
-                  </div>
-                </div>
-
-                {/* Tutor-specific Fields */}
-                {applicationType === 'tutor' && (
-                  <div className="space-y-4">
-                    <div>
-                      <Label htmlFor="mathGrade">Grade 12 Mathematics Level (%)</Label>
-                      <Input
-                        id="mathGrade"
-                        type="number"
-                        min="0"
-                        max="100"
-                        value={formData.mathGrade}
-                        onChange={(e) => handleInputChange('mathGrade', e.target.value)}
-                        required
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="scienceGrade">Grade 12 Physical Sciences Level (%)</Label>
-                      <Input
-                        id="scienceGrade"
-                        type="number"
-                        min="0"
-                        max="100"
-                        value={formData.scienceGrade}
-                        onChange={(e) => handleInputChange('scienceGrade', e.target.value)}
-                        required
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="tertiaryQualification">Tertiary Qualification</Label>
-                      <Input
-                        id="tertiaryQualification"
-                        value={formData.tertiaryQualification}
-                        onChange={(e) => handleInputChange('tertiaryQualification', e.target.value)}
-                        required
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="teachingQualification">Teaching Qualification (if applicable)</Label>
-                      <Input
-                        id="teachingQualification"
-                        value={formData.teachingQualification}
-                        onChange={(e) => handleInputChange('teachingQualification', e.target.value)}
-                      />
-                    </div>
+              {/* Careers Section - Replace student form with job listings */}
+              {applicationType === 'careers' ? (
+                <div className="space-y-6">
+                  {/* Breadcrumbs Navigation */}
+                  <div className="flex items-center text-sm text-gray-600 mb-4">
+                    <button 
+                      onClick={handleBackToJobs} 
+                      className={`flex items-center ${!showJobDetails && !showApplicationForm ? 'font-semibold text-gray-900' : 'hover:text-gray-900'}`}
+                    >
+                      Job Opportunities
+                    </button>
                     
-                    {/* Document Upload Section */}
-                    <div className="space-y-4">
-                      <h3 className="text-lg font-semibold mb-4">Required Documents <span className="text-sm font-normal text-red-600">(PDF files only)</span></h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                          <Label htmlFor="cv">CV/Resume</Label>
-                          <Input
-                            id="cv"
-                            type="file"
-                            accept=".pdf,application/pdf"
-                            onChange={(e) => handleFileChange('cv', e.target.files?.[0] || null)}
-                            required
-                          />
-                          {fileErrors.cv && (
-                            <p className="text-red-600 text-sm mt-1">{fileErrors.cv}</p>
-                          )}
+                    {(showJobDetails || showApplicationForm) && (
+                      <>
+                        <ChevronRight className="w-4 h-4 mx-2" />
+                        <button 
+                          onClick={() => {
+                            setShowJobDetails(true)
+                            setShowApplicationForm(false)
+                          }}
+                          className={`flex items-center ${showJobDetails && !showApplicationForm ? 'font-semibold text-gray-900' : 'hover:text-gray-900'}`}
+                        >
+                          {selectedJob?.title}
+                        </button>
+                      </>
+                    )}
+                    
+                    {showApplicationForm && (
+                      <>
+                        <ChevronRight className="w-4 h-4 mx-2" />
+                        <span className="font-semibold text-gray-900">Apply</span>
+                      </>
+                    )}
+                  </div>
+                  
+                  {/* Job Listings Grid */}
+                  {!showJobDetails && !showApplicationForm && (
+                    <>
+                      <h2 className="text-2xl font-bold text-gray-900 mb-6">Current Opportunities</h2>
+                      
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                        {jobListings.map((job) => (
+                          <motion.div 
+                            key={job.id}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-300"
+                          >
+                            <div className="p-4">
+                              <h3 className="text-lg font-semibold text-gray-900 mb-1">{job.title}</h3>
+                              <p className="text-gray-600 text-sm mb-2">{job.location}</p>
+                              <p className="text-gray-700 text-sm mb-3">{job.employmentType} • {job.salary}</p>
+                              
+                              <Button 
+                                onClick={() => handleJobSelect(job)}
+                                className="w-full bg-red-600 hover:bg-red-700 text-white text-sm py-1"
+                                size="sm"
+                              >
+                                View Details
+                              </Button>
+                            </div>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </>
+                  )}
+                  
+                  {/* Job Details View */}
+                  {showJobDetails && selectedJob && !showApplicationForm && (
+                    <div className="space-y-6">
+                      <div className="flex items-center mb-6">
+                        <button 
+                          onClick={handleBackToJobs}
+                          className="inline-flex items-center text-gray-600 hover:text-gray-900 mr-4"
+                        >
+                          <ArrowLeft className="w-5 h-5 mr-1" />
+                          Back to jobs
+                        </button>
+                      </div>
+                      
+                      <div className="border border-gray-200 rounded-lg p-6">
+                        <h2 className="text-2xl font-bold text-gray-900 mb-2">{selectedJob.title}</h2>
+                        <p className="text-gray-700 mb-2">{selectedJob.company}</p>
+                        <p className="text-gray-600 mb-4">{selectedJob.location}</p>
+                        
+                        <div className="flex items-center justify-between mb-4">
+                          <span className="text-gray-600 bg-gray-100 px-3 py-1 rounded-full text-sm">{selectedJob.employmentType}</span>
+                          <span className="text-gray-700 font-medium">{selectedJob.salary}</span>
                         </div>
-                        <div>
-                          <Label htmlFor="id">ID Copy/Passport</Label>
-                          <Input
-                            id="id"
-                            type="file"
-                            accept=".pdf,application/pdf"
-                            onChange={(e) => handleFileChange('id', e.target.files?.[0] || null)}
-                            required
-                          />
-                          {fileErrors.id && (
-                            <p className="text-red-600 text-sm mt-1">{fileErrors.id}</p>
-                          )}
+                        
+                        {selectedJob.responseTime && (
+                          <div className="flex items-center text-sm text-gray-500 mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                            {selectedJob.responseTime}
+                          </div>
+                        )}
+                        
+                        <div className="my-6">
+                          <h3 className="text-lg font-semibold mb-3">Key Responsibilities</h3>
+                          <ul className="list-disc pl-5 space-y-2 text-gray-600">
+                            {selectedJob.description.map((point, index) => (
+                              <li key={index}>{point}</li>
+                            ))}
+                          </ul>
                         </div>
-                        <div>
-                          <Label htmlFor="workPermit">Work Permit (if applicable)</Label>
-                          <Input
-                            id="workPermit"
-                            type="file"
-                            accept=".pdf,application/pdf"
-                            onChange={(e) => handleFileChange('workPermit', e.target.files?.[0] || null)}
-                          />
-                          {fileErrors.workPermit && (
-                            <p className="text-red-600 text-sm mt-1">{fileErrors.workPermit}</p>
-                          )}
-                        </div>
-                        <div>
-                          <Label htmlFor="matric">Matric Certificate</Label>
-                          <Input
-                            id="matric"
-                            type="file"
-                            accept=".pdf,application/pdf"
-                            onChange={(e) => handleFileChange('matric', e.target.files?.[0] || null)}
-                            required
-                          />
-                          {fileErrors.matric && (
-                            <p className="text-red-600 text-sm mt-1">{fileErrors.matric}</p>
-                          )}
-                        </div>
-                        <div>
-                          <Label htmlFor="transcript">Academic Transcript</Label>
-                          <Input
-                            id="transcript"
-                            type="file"
-                            accept=".pdf,application/pdf"
-                            onChange={(e) => handleFileChange('transcript', e.target.files?.[0] || null)}
-                            required
-                          />
-                          {fileErrors.transcript && (
-                            <p className="text-red-600 text-sm mt-1">{fileErrors.transcript}</p>
-                          )}
-                        </div>
-                        <div>
-                          <Label htmlFor="sace">SACE Certificate (if applicable)</Label>
-                          <Input
-                            id="sace"
-                            type="file"
-                            accept=".pdf,application/pdf"
-                            onChange={(e) => handleFileChange('sace', e.target.files?.[0] || null)}
-                          />
-                          {fileErrors.sace && (
-                            <p className="text-red-600 text-sm mt-1">{fileErrors.sace}</p>
-                          )}
-                        </div>
+                        
+                        <p className="text-sm text-gray-500 mb-6">Posted {selectedJob.datePosted}</p>
+                        
+                        <Button 
+                          onClick={handleApplyNow}
+                          className="w-full bg-red-600 hover:bg-red-700 text-white"
+                        >
+                          Apply for this position
+                        </Button>
                       </div>
                     </div>
-                    
-                    {qualificationError && (
-                      <p className="text-red-600 text-sm">{qualificationError}</p>
-                    )}
-                  </div>
-                )}
-
-                {/* Volunteer-specific Fields */}
-                {applicationType === 'volunteer' && (
-                  <div className="space-y-4">
-                    <div>
-                      <Label htmlFor="availability">Availability</Label>
-                      <Input
-                        id="availability"
-                        value={formData.availability}
-                        onChange={(e) => handleInputChange('availability', e.target.value)}
-                        required
-                        placeholder="e.g., Weekdays afternoons, Weekends"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="interests">Areas of Interest</Label>
-                      <Textarea
-                        id="interests"
-                        value={formData.interests}
-                        onChange={(e) => handleInputChange('interests', e.target.value)}
-                        required
-                        placeholder="What areas would you like to contribute to?"
-                      />
-                    </div>
-                  </div>
-                )}
-
-                {/* Student-specific Fields */}
-                {applicationType === 'student' && (
-                  <div className="space-y-4">
-                    <div>
-                      <Label htmlFor="grade">Current Grade/Level</Label>
-                      <Input
-                        id="grade"
-                        value={formData.grade}
-                        onChange={(e) => handleInputChange('grade', e.target.value)}
-                        required
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="subjects">Subjects Needing Assistance</Label>
-                      <Textarea
-                        id="subjects"
-                        value={formData.subjects}
-                        onChange={(e) => handleInputChange('subjects', e.target.value)}
-                        required
-                        placeholder="List the subjects you need help with"
-                      />
-                    </div>
-                  </div>
-                )}
-
-                {/* Sponsor-specific Fields */}
-                {applicationType === 'sponsor' && (
-                  <div className="space-y-4">
-                    <div>
-                      <Label htmlFor="organization">Organization Name</Label>
-                      <Input
-                        id="organization"
-                        value={formData.organization}
-                        onChange={(e) => handleInputChange('organization', e.target.value)}
-                        required
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="sponsorshipType">Sponsorship Type</Label>
-                      <Input
-                        id="sponsorshipType"
-                        value={formData.sponsorshipType}
-                        onChange={(e) => handleInputChange('sponsorshipType', e.target.value)}
-                        required
-                        placeholder="e.g., Monetary, Resources, Other"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="message">Message/Inquiry</Label>
-                      <Textarea
-                        id="message"
-                        value={formData.message}
-                        onChange={(e) => handleInputChange('message', e.target.value)}
-                        required
-                        placeholder="Please provide details about your sponsorship inquiry"
-                      />
-                    </div>
-                  </div>
-                )}
-
-                {/* Error message display */}
-                {submissionError && (
-                  <div className="p-4 bg-red-50 text-red-600 rounded-md">
-                    {submissionError}
-                  </div>
-                )}
-
-                <div className="space-y-4">
-                  <Button 
-                    type="submit" 
-                    className="w-full"
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? 'Submitting...' : 'Submit Application'}
-                  </Button>
+                  )}
                   
-                  <div className="text-sm text-gray-600">
-                    <p>For inquiries, please contact:</p>
-                    <p>073 230 5457 / 073 174 5664</p>
-                    <p>Applications will be sent to: support@appmaniazar.co.za</p>
-                    {applicationType === 'tutor' && (
-                      <p className="mt-2">Note: Shortlisted tutor applicants will be invited for an induction and content workshop.</p>
-                    )}
-                  </div>
+                  {/* Application Form */}
+                  {showApplicationForm && selectedJob && (
+                    <div ref={applicationFormRef} className="space-y-6">
+                      <div className="flex items-center mb-6">
+                        <button 
+                          onClick={handleBackToJobDetails}
+                          className="inline-flex items-center text-gray-600 hover:text-gray-900 mr-4"
+                        >
+                          <ArrowLeft className="w-5 h-5 mr-1" />
+                          Back to job details
+                        </button>
+                      </div>
+                      
+                      <h3 className="text-xl font-semibold text-gray-900 mb-6">Apply for: {selectedJob.title}</h3>
+                      
+                      <form onSubmit={handleSubmit} className="space-y-6">
+                        {/* Common Fields */}
+                        <div className="space-y-4">
+                          <div>
+                            <Label htmlFor="name">Full Name</Label>
+                            <Input
+                              id="name"
+                              value={formData.name}
+                              onChange={(e) => handleInputChange('name', e.target.value)}
+                              required
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="email">Email Address</Label>
+                            <Input
+                              id="email"
+                              type="email"
+                              value={formData.email}
+                              onChange={(e) => handleInputChange('email', e.target.value)}
+                              required
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="phone">Phone Number</Label>
+                            <Input
+                              id="phone"
+                              value={formData.phone}
+                              onChange={(e) => handleInputChange('phone', e.target.value)}
+                              required
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="position">Position Applying For</Label>
+                            <Input
+                              id="position"
+                              value={formData.position}
+                              onChange={(e) => handleInputChange('position', e.target.value)}
+                              required
+                              readOnly
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="experience">Years of Experience</Label>
+                            <Input
+                              id="experience"
+                              value={formData.experience}
+                              onChange={(e) => handleInputChange('experience', e.target.value)}
+                              required
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="education">Highest Education Level</Label>
+                            <Input
+                              id="education"
+                              value={formData.education}
+                              onChange={(e) => handleInputChange('education', e.target.value)}
+                              required
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="coverLetter">Cover Letter</Label>
+                            <Textarea
+                              id="coverLetter"
+                              value={formData.coverLetter}
+                              onChange={(e) => handleInputChange('coverLetter', e.target.value)}
+                              required
+                              rows={6}
+                              placeholder="Tell us why you're the perfect fit for this position"
+                            />
+                          </div>
+                        </div>
+                        
+                        {/* Document Upload Section */}
+                        <div className="space-y-4">
+                          <h3 className="text-lg font-semibold mb-4">Required Documents <span className="text-sm font-normal text-red-600">(PDF files only)</span></h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                              <Label htmlFor="cv">CV/Resume</Label>
+                              <Input
+                                id="cv"
+                                type="file"
+                                accept=".pdf,application/pdf"
+                                onChange={(e) => handleFileChange('cv', e.target.files?.[0] || null)}
+                                required
+                              />
+                              {fileErrors.cv && (
+                                <p className="text-red-600 text-sm mt-1">{fileErrors.cv}</p>
+                              )}
+                            </div>
+                            <div>
+                              <Label htmlFor="id">ID Copy/Passport</Label>
+                              <Input
+                                id="id"
+                                type="file"
+                                accept=".pdf,application/pdf"
+                                onChange={(e) => handleFileChange('id', e.target.files?.[0] || null)}
+                                required
+                              />
+                              {fileErrors.id && (
+                                <p className="text-red-600 text-sm mt-1">{fileErrors.id}</p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <Button 
+                          type="submit" 
+                          className="w-full"
+                          disabled={isSubmitting}
+                        >
+                          {isSubmitting ? 'Submitting...' : 'Submit Application'}
+                        </Button>
+                      </form>
+                    </div>
+                  )}
                 </div>
-              </form>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  {/* Common Fields */}
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="name">Full Name</Label>
+                      <Input
+                        id="name"
+                        value={formData.name}
+                        onChange={(e) => handleInputChange('name', e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="email">Email Address</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={(e) => handleInputChange('email', e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="phone">Phone Number</Label>
+                      <Input
+                        id="phone"
+                        value={formData.phone}
+                        onChange={(e) => handleInputChange('phone', e.target.value)}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  {/* Tutor-specific Fields */}
+                  {applicationType === 'tutor' && (
+                    <div className="space-y-4">
+                      <div>
+                        <Label htmlFor="mathGrade">Grade 12 Mathematics Level (%)</Label>
+                        <Input
+                          id="mathGrade"
+                          type="number"
+                          min="0"
+                          max="100"
+                          value={formData.mathGrade}
+                          onChange={(e) => handleInputChange('mathGrade', e.target.value)}
+                          required
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="scienceGrade">Grade 12 Physical Sciences Level (%)</Label>
+                        <Input
+                          id="scienceGrade"
+                          type="number"
+                          min="0"
+                          max="100"
+                          value={formData.scienceGrade}
+                          onChange={(e) => handleInputChange('scienceGrade', e.target.value)}
+                          required
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="tertiaryQualification">Tertiary Qualification</Label>
+                        <Input
+                          id="tertiaryQualification"
+                          value={formData.tertiaryQualification}
+                          onChange={(e) => handleInputChange('tertiaryQualification', e.target.value)}
+                          required
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="teachingQualification">Teaching Qualification (if applicable)</Label>
+                        <Input
+                          id="teachingQualification"
+                          value={formData.teachingQualification}
+                          onChange={(e) => handleInputChange('teachingQualification', e.target.value)}
+                        />
+                      </div>
+                      
+                      {/* Document Upload Section */}
+                      <div className="space-y-4">
+                        <h3 className="text-lg font-semibold mb-4">Required Documents <span className="text-sm font-normal text-red-600">(PDF files only)</span></h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div>
+                            <Label htmlFor="cv">CV/Resume</Label>
+                            <Input
+                              id="cv"
+                              type="file"
+                              accept=".pdf,application/pdf"
+                              onChange={(e) => handleFileChange('cv', e.target.files?.[0] || null)}
+                              required
+                            />
+                            {fileErrors.cv && (
+                              <p className="text-red-600 text-sm mt-1">{fileErrors.cv}</p>
+                            )}
+                          </div>
+                          <div>
+                            <Label htmlFor="id">ID Copy/Passport</Label>
+                            <Input
+                              id="id"
+                              type="file"
+                              accept=".pdf,application/pdf"
+                              onChange={(e) => handleFileChange('id', e.target.files?.[0] || null)}
+                              required
+                            />
+                            {fileErrors.id && (
+                              <p className="text-red-600 text-sm mt-1">{fileErrors.id}</p>
+                            )}
+                          </div>
+                          <div>
+                            <Label htmlFor="workPermit">Work Permit (if applicable)</Label>
+                            <Input
+                              id="workPermit"
+                              type="file"
+                              accept=".pdf,application/pdf"
+                              onChange={(e) => handleFileChange('workPermit', e.target.files?.[0] || null)}
+                            />
+                            {fileErrors.workPermit && (
+                              <p className="text-red-600 text-sm mt-1">{fileErrors.workPermit}</p>
+                            )}
+                          </div>
+                          <div>
+                            <Label htmlFor="matric">Matric Certificate</Label>
+                            <Input
+                              id="matric"
+                              type="file"
+                              accept=".pdf,application/pdf"
+                              onChange={(e) => handleFileChange('matric', e.target.files?.[0] || null)}
+                              required
+                            />
+                            {fileErrors.matric && (
+                              <p className="text-red-600 text-sm mt-1">{fileErrors.matric}</p>
+                            )}
+                          </div>
+                          <div>
+                            <Label htmlFor="transcript">Academic Transcript</Label>
+                            <Input
+                              id="transcript"
+                              type="file"
+                              accept=".pdf,application/pdf"
+                              onChange={(e) => handleFileChange('transcript', e.target.files?.[0] || null)}
+                              required
+                            />
+                            {fileErrors.transcript && (
+                              <p className="text-red-600 text-sm mt-1">{fileErrors.transcript}</p>
+                            )}
+                          </div>
+                          <div>
+                            <Label htmlFor="sace">SACE Certificate (if applicable)</Label>
+                            <Input
+                              id="sace"
+                              type="file"
+                              accept=".pdf,application/pdf"
+                              onChange={(e) => handleFileChange('sace', e.target.files?.[0] || null)}
+                            />
+                            {fileErrors.sace && (
+                              <p className="text-red-600 text-sm mt-1">{fileErrors.sace}</p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {qualificationError && (
+                        <p className="text-red-600 text-sm">{qualificationError}</p>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Volunteer-specific Fields */}
+                  {applicationType === 'volunteer' && (
+                    <div className="space-y-4">
+                      <div>
+                        <Label htmlFor="availability">Availability</Label>
+                        <Input
+                          id="availability"
+                          value={formData.availability}
+                          onChange={(e) => handleInputChange('availability', e.target.value)}
+                          required
+                          placeholder="e.g., Weekdays afternoons, Weekends"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="interests">Areas of Interest</Label>
+                        <Textarea
+                          id="interests"
+                          value={formData.interests}
+                          onChange={(e) => handleInputChange('interests', e.target.value)}
+                          required
+                          placeholder="What areas would you like to contribute to?"
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Sponsor-specific Fields */}
+                  {applicationType === 'sponsor' && (
+                    <div className="space-y-4">
+                      <div>
+                        <Label htmlFor="organization">Organization Name</Label>
+                        <Input
+                          id="organization"
+                          value={formData.organization}
+                          onChange={(e) => handleInputChange('organization', e.target.value)}
+                          required
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="sponsorshipType">Sponsorship Type</Label>
+                        <Input
+                          id="sponsorshipType"
+                          value={formData.sponsorshipType}
+                          onChange={(e) => handleInputChange('sponsorshipType', e.target.value)}
+                          required
+                          placeholder="e.g., Monetary, Resources, Other"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="message">Message/Inquiry</Label>
+                        <Textarea
+                          id="message"
+                          value={formData.message}
+                          onChange={(e) => handleInputChange('message', e.target.value)}
+                          required
+                          placeholder="Please provide details about your sponsorship inquiry"
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Error message display */}
+                  {submissionError && (
+                    <div className="p-4 bg-red-50 text-red-600 rounded-md">
+                      {submissionError}
+                    </div>
+                  )}
+
+                  <div className="space-y-4">
+                    <Button 
+                      type="submit" 
+                      className="w-full"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? 'Submitting...' : 'Submit Application'}
+                    </Button>
+                    
+                    <div className="text-sm text-gray-600">
+                      <p>For inquiries, please contact:</p>
+                      <p>073 230 5457 / 073 174 5664</p>
+                      <p>Applications will be sent to: support@appmaniazar.co.za</p>
+                      {applicationType === 'tutor' && (
+                        <p className="mt-2">Note: Shortlisted tutor applicants will be invited for an induction and content workshop.</p>
+                      )}
+                    </div>
+                  </div>
+                </form>
+              )}
             </div>
           </motion.div>
         </div>
