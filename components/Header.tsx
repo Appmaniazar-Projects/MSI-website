@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu"
+import { ComingSoonModal } from '@/components/ui/coming-soon-modal'
 
 const menuVariants = {
   closed: {
@@ -52,6 +53,8 @@ const backdropVariants = {
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
+  const [showComingSoon, setShowComingSoon] = useState(false)
+  const [comingSoonTitle, setComingSoonTitle] = useState('')
   const pathname = usePathname()
   const isResourcePage = pathname.startsWith('/resources')
   const isTutorPage = pathname.startsWith('/become-a-tutor')
@@ -107,10 +110,88 @@ const Header = () => {
     setIsOpen(!isOpen)
   }
 
+  const handleResourceClick = (e: React.MouseEvent, title: string) => {
+    e.preventDefault();
+    setComingSoonTitle(title);
+    setShowComingSoon(true);
+  };
+
   const resourcesItems = [
-    { name: 'Past Papers', href: '/resources/past-papers' },
-    { name: 'Student Portal', href: '/resources/student-portal' },
-    { name: 'Study Materials', href: '/resources/study-materials' }
+    { 
+      name: 'MSI Curriculum Materials', 
+      href: '/resources/curriculum',
+      comingSoon: true,
+      children: [
+        {
+          name: 'Mathematics',
+          href: '/resources/curriculum/mathematics',
+          children: [
+            { name: 'Grade 10', href: '/resources/curriculum/mathematics/grade-10' },
+            { name: 'Grade 11', href: '/resources/curriculum/mathematics/grade-11' },
+            { name: 'Grade 12', href: '/resources/curriculum/mathematics/grade-12' }
+          ]
+        },
+        {
+          name: 'Physical Science',
+          href: '/resources/curriculum/physical-science',
+          children: [
+            { name: 'Grade 10', href: '/resources/curriculum/physical-science/grade-10' },
+            { name: 'Grade 11', href: '/resources/curriculum/physical-science/grade-11' },
+            { name: 'Grade 12', href: '/resources/curriculum/physical-science/grade-12' }
+          ]
+        }
+      ]
+    },
+    { 
+      name: 'National/Provincial Papers', 
+      href: '/resources/past-papers',
+      comingSoon: true,
+      children: [
+        {
+          name: 'Mathematics',
+          href: '/resources/past-papers/mathematics',
+          children: [
+            { name: 'Grade 10', href: '/resources/past-papers/mathematics/grade-10' },
+            { name: 'Grade 11', href: '/resources/past-papers/mathematics/grade-11' },
+            { name: 'Grade 12', href: '/resources/past-papers/mathematics/grade-12' }
+          ]
+        },
+        {
+          name: 'Physical Science',
+          href: '/resources/past-papers/physical-science',
+          children: [
+            { name: 'Grade 10', href: '/resources/past-papers/physical-science/grade-10' },
+            { name: 'Grade 11', href: '/resources/past-papers/physical-science/grade-11' },
+            { name: 'Grade 12', href: '/resources/past-papers/physical-science/grade-12' }
+          ]
+        }
+      ]
+    },
+    { 
+      name: 'Videos', 
+      href: '/resources/videos',
+      comingSoon: true,
+      children: [
+        {
+          name: 'Mathematics',
+          href: '/resources/videos/mathematics',
+          children: [
+            { name: 'Grade 10', href: '/resources/videos/mathematics/grade-10' },
+            { name: 'Grade 11', href: '/resources/videos/mathematics/grade-11' },
+            { name: 'Grade 12', href: '/resources/videos/mathematics/grade-12' }
+          ]
+        },
+        {
+          name: 'Physical Science',
+          href: '/resources/videos/physical-science',
+          children: [
+            { name: 'Grade 10', href: '/resources/videos/physical-science/grade-10' },
+            { name: 'Grade 11', href: '/resources/videos/physical-science/grade-11' },
+            { name: 'Grade 12', href: '/resources/videos/physical-science/grade-12' }
+          ]
+        }
+      ]
+    }
   ]
 
   const navItems = ['Home', 'About', 'Services', 'Resources', 'Gallery', 'Blog', 'Get Involved', 'Contact'];
@@ -140,28 +221,45 @@ const Header = () => {
                   <DropdownMenu
                     key={item}
                     trigger={
-                      <span className={cn(
-                        "text-sm font-medium transition-colors hover:text-gray-900",
-                        "text-gray-600",
-                        pathname.startsWith('/resources') && (pathname.startsWith('/resources') ? "text-red-600" : "text-red-400")
-                      )}>
+                      <Link
+                        href="/resources"
+                        className={cn(
+                          "text-sm font-medium transition-colors hover:text-gray-900",
+                          "text-gray-600",
+                          pathname === '/resources' ? "text-red-600" : pathname.startsWith('/resources') ? "text-red-400" : ""
+                        )}
+                      >
                         Resources
-                      </span>
+                      </Link>
                     }
                     align="right"
                   >
-                    {resourcesItems.map((resource) => (
-                      <DropdownMenuItem 
-                        key={resource.name} 
-                        href={resource.href}
-                        className={cn(
-                          "text-gray-600 hover:text-gray-900",
-                          pathname === resource.href && "text-red-600"
-                        )}
-                      >
-                        {resource.name}
-                      </DropdownMenuItem>
-                    ))}
+                    {resourcesItems.map((resource) => 
+                      resource.comingSoon ? (
+                        <div key={resource.name} onClick={(e) => handleResourceClick(e, resource.name)}>
+                          <DropdownMenuItem 
+                            href="#"
+                            className={cn(
+                              "text-gray-600 hover:text-gray-900 font-medium",
+                              pathname === resource.href && "text-red-600"
+                            )}
+                          >
+                            {resource.name}
+                          </DropdownMenuItem>
+                        </div>
+                      ) : (
+                        <DropdownMenuItem 
+                          key={resource.name}
+                          href={resource.href}
+                          className={cn(
+                            "text-gray-600 hover:text-gray-900 font-medium",
+                            pathname === resource.href && "text-red-600"
+                          )}
+                        >
+                          {resource.name}
+                        </DropdownMenuItem>
+                      )
+                    )}
                   </DropdownMenu>
                 );
               }
@@ -261,22 +359,33 @@ const Header = () => {
 
                   {/* Mobile Resources Dropdown */}
                   <div className="relative">
-                    <span className={cn(
-                      "text-lg font-medium",
-                      pathname.startsWith('/resources') ? "text-red-600" : "text-gray-600"
-                    )}>
+                    <Link
+                      href="/resources"
+                      className={cn(
+                        "text-lg font-medium block mb-2",
+                        pathname === '/resources' ? "text-red-600" : pathname.startsWith('/resources') ? "text-red-400" : "text-gray-600"
+                      )}
+                      onClick={toggleMenu}
+                    >
                       Resources
-                    </span>
+                    </Link>
                     <div className="mt-2 space-y-2 pl-4">
                       {resourcesItems.map((item) => (
                         <Link
                           key={item.name}
-                          href={item.href}
+                          href={item.comingSoon ? "#" : item.href}
                           className={cn(
-                            "block text-sm",
+                            "block text-sm font-medium",
                             pathname === item.href ? "text-red-600" : "text-gray-600"
                           )}
-                          onClick={toggleMenu}
+                          onClick={(e) => {
+                            if (item.comingSoon) {
+                              e.preventDefault();
+                              setComingSoonTitle(item.name);
+                              setShowComingSoon(true);
+                            }
+                            toggleMenu();
+                          }}
                         >
                           {item.name}
                         </Link>
@@ -309,6 +418,12 @@ const Header = () => {
           )}
         </AnimatePresence>
       </div>
+
+      <ComingSoonModal 
+        isOpen={showComingSoon} 
+        title={comingSoonTitle} 
+        onClose={() => setShowComingSoon(false)} 
+      />
     </header>
   )
 }
