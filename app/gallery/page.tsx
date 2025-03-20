@@ -6,7 +6,7 @@ import Image from 'next/image'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { galleryImages, categories } from '@/lib/gallery-data'
-import HorizontalSlider from '../components/HorizontalSlider'
+import HorizontalSlider from '@/components/HorizontalSlider'
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -133,14 +133,16 @@ export default function Gallery() {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1, transition: { delay: 0.1 } }}
                 exit={{ y: 20, opacity: 0 }}
-                className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/90 to-black/40"
+                className="absolute bottom-0 left-0 right-0 p-6"
               >
-                <h3 className="text-2xl font-bold text-white mb-2">
-                  {selectedImage.title}
-                </h3>
-                <p className="text-gray-200">
-                  {selectedImage.description}
-                </p>
+                <div className="bg-black/40 backdrop-blur-sm rounded-lg p-4">
+                  <h3 className="text-2xl font-bold text-white mb-2">
+                    {selectedImage.title}
+                  </h3>
+                  <p className="text-gray-200">
+                    {selectedImage.description}
+                  </p>
+                </div>
               </motion.div>
             </motion.div>
           </motion.div>

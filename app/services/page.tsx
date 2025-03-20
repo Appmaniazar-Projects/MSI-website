@@ -150,7 +150,7 @@ export default function Services() {
       {/* Categories Overview */}
       <section className="py-24">
         <div className="container mx-auto px-4">
-          <motion.div
+          {/* <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
@@ -163,7 +163,7 @@ export default function Services() {
             <p className="text-xl text-gray-600">
             Innovative educational services designed to inspire future leaders and help students excel.
             </p>
-          </motion.div>
+          </motion.div> */}
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
             {categories.map((category, index) => (

@@ -120,7 +120,6 @@ const Header = () => {
     { 
       name: 'MSI Curriculum Materials', 
       href: '/resources/curriculum',
-      comingSoon: true,
       children: [
         {
           name: 'Mathematics',
@@ -145,7 +144,6 @@ const Header = () => {
     { 
       name: 'National/Provincial Papers', 
       href: '/resources/past-papers',
-      comingSoon: true,
       children: [
         {
           name: 'Mathematics',
@@ -170,7 +168,6 @@ const Header = () => {
     { 
       name: 'Videos', 
       href: '/resources/videos',
-      comingSoon: true,
       children: [
         {
           name: 'Mathematics',
@@ -234,32 +231,18 @@ const Header = () => {
                     }
                     align="right"
                   >
-                    {resourcesItems.map((resource) => 
-                      resource.comingSoon ? (
-                        <div key={resource.name} onClick={(e) => handleResourceClick(e, resource.name)}>
-                          <DropdownMenuItem 
-                            href="#"
-                            className={cn(
-                              "text-gray-600 hover:text-gray-900 font-medium",
-                              pathname === resource.href && "text-red-600"
-                            )}
-                          >
-                            {resource.name}
-                          </DropdownMenuItem>
-                        </div>
-                      ) : (
-                        <DropdownMenuItem 
-                          key={resource.name}
-                          href={resource.href}
-                          className={cn(
-                            "text-gray-600 hover:text-gray-900 font-medium",
-                            pathname === resource.href && "text-red-600"
-                          )}
-                        >
-                          {resource.name}
-                        </DropdownMenuItem>
-                      )
-                    )}
+                    {resourcesItems.map((resource) => (
+                      <DropdownMenuItem 
+                        key={resource.name}
+                        onClick={() => handleResourceClick(new Event('click') as any, resource.name)}
+                        className={cn(
+                          "text-gray-600 hover:text-gray-900 font-medium",
+                          pathname === resource.href && "text-red-600"
+                        )}
+                      >
+                        {resource.name}
+                      </DropdownMenuItem>
+                    ))}
                   </DropdownMenu>
                 );
               }
@@ -371,24 +354,19 @@ const Header = () => {
                     </Link>
                     <div className="mt-2 space-y-2 pl-4">
                       {resourcesItems.map((item) => (
-                        <Link
+                        <button
                           key={item.name}
-                          href={item.comingSoon ? "#" : item.href}
-                          className={cn(
-                            "block text-sm font-medium",
-                            pathname === item.href ? "text-red-600" : "text-gray-600"
-                          )}
                           onClick={(e) => {
-                            if (item.comingSoon) {
-                              e.preventDefault();
-                              setComingSoonTitle(item.name);
-                              setShowComingSoon(true);
-                            }
+                            handleResourceClick(e, item.name);
                             toggleMenu();
                           }}
+                          className={cn(
+                            "block text-sm font-medium w-full text-left",
+                            pathname === item.href ? "text-red-600" : "text-gray-600"
+                          )}
                         >
                           {item.name}
-                        </Link>
+                        </button>
                       ))}
                     </div>
                   </div>

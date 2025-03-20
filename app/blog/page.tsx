@@ -147,7 +147,7 @@ export default function BlogPage() {
                         {post.frontmatter.tags.slice(0, 2).map(tag => (
                           <span 
                             key={tag} 
-                            className="bg-red-600 text-navy-blue text-xs font-bold px-2 py-1 rounded"
+                            className="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded"
                           >
                             {tag}
                           </span>

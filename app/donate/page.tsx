@@ -13,6 +13,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { fadeInUp, fadeInDown } from '@/utils/animations'
 import { cn } from '@/lib/utils'
 import Modal from '@/components/Modal'
+import PayFastForm from '@/components/PayFastForm'
 import { 
   BookOpen, 
   Laptop, 
@@ -38,7 +39,7 @@ export default function DonatePage() {
   const [donationType, setDonationType] = useState<'money' | 'other'>('money')
   const [showFrequencyModal, setShowFrequencyModal] = useState(false)
   const [donationFrequency, setDonationFrequency] = useState<'monthly' | 'once-off' | null>(null)
-  const [showFeatureModal, setShowFeatureModal] = useState(false)
+  const [showPayFastForm, setShowPayFastForm] = useState(false)
 
   const donationTypes = [
     { icon: <BookOpen className="w-8 h-8" />, title: 'Educational Materials', description: 'Books, stationery, and learning resources' },
@@ -48,7 +49,6 @@ export default function DonatePage() {
     { icon: <Palette className="w-8 h-8" />, title: 'Art Supplies', description: 'Art materials and creative resources' },
     { icon: <Apple className="w-8 h-8" />, title: 'Food & Nutrition', description: 'Non-perishable food items' }
   ]
-
 
   const handleCustomAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -76,7 +76,12 @@ export default function DonatePage() {
   const handleFrequencySelect = (frequency: 'monthly' | 'once-off') => {
     setDonationFrequency(frequency)
     setShowFrequencyModal(false)
-    setShowFeatureModal(true)
+    setShowPayFastForm(true)
+  }
+
+  const handleBack = () => {
+    setShowPayFastForm(false)
+    setDonationFrequency(null)
   }
 
   return (
@@ -135,63 +140,58 @@ export default function DonatePage() {
             className="space-y-8"
           >
             {donationType === 'money' ? (
-              <Card className="p-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                  Make a Monetary Donation
-                </h2>
-                <div className="space-y-6">
-                <div>
-                <Label htmlFor="custom-amount" className="text-lg mb-2 block">
-                  Custom Amount (R)
-                </Label>
-                <Input
-                  id="custom-amount"
-                  type="text" // Use type="text" to handle validation in JavaScript
-                  placeholder="Enter custom amount"
-                  value={amount}
-                  onChange={handleCustomAmount}
-                  className="text-lg h-12"
+              showPayFastForm ? (
+                <PayFastForm 
+                  amount={amount}
+                  frequency={donationFrequency as 'monthly' | 'once-off'}
+                  onBack={handleBack}
                 />
-                {errorMessage && (
-                  <p className="text-red-600 text-sm mt-2">{errorMessage}</p>
-                )}
-              </div>
-              <Button
-                className="w-full h-14 text-lg"
-                disabled={!amount || parseFloat(amount) <= 0}
-                onClick={handlePaymentClick}
-              >
-                Continue to Payment
-              </Button>
-                  {/* Frequency Modal */}
-                  <Modal isOpen={showFrequencyModal} onClose={() => setShowFrequencyModal(false)}>
-                    <div className="text-center">
-                      <h3 className="text-xl font-semibold mb-4">Choose Donation Frequency</h3>
-                      <div className="flex gap-4 justify-center">
-                        <Button onClick={() => handleFrequencySelect('monthly')} variant="default">
-                          Monthly
-                        </Button>
-                        <Button onClick={() => handleFrequencySelect('once-off')} variant="default">
-                          Once-Off
-                        </Button>
-                      </div>
+              ) : (
+                <Card className="p-8">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                    Make a Monetary Donation
+                  </h2>
+                  <div className="space-y-6">
+                    <div>
+                      <Label htmlFor="custom-amount" className="text-lg mb-2 block">
+                        Custom Amount (R)
+                      </Label>
+                      <Input
+                        id="custom-amount"
+                        type="text"
+                        placeholder="Enter custom amount"
+                        value={amount}
+                        onChange={handleCustomAmount}
+                        className="text-lg h-12"
+                      />
+                      {errorMessage && (
+                        <p className="text-red-600 text-sm mt-2">{errorMessage}</p>
+                      )}
                     </div>
-                  </Modal>
-                  {/* Feature Modal */}
-                  <Modal isOpen={showFeatureModal} onClose={() => setShowFeatureModal(false)}>
-                    <div className="text-center">
-                      <div className="text-4xl mb-4">
-                        <Construction className="w-16 h-16 mx-auto text-yellow-500" />
+                    <Button
+                      className="w-full h-14 text-lg"
+                      disabled={!amount || parseFloat(amount) <= 0}
+                      onClick={handlePaymentClick}
+                    >
+                      Continue to Payment
+                    </Button>
+                    {/* Frequency Modal */}
+                    <Modal isOpen={showFrequencyModal} onClose={() => setShowFrequencyModal(false)}>
+                      <div className="text-center">
+                        <h3 className="text-xl font-semibold mb-4">Choose Donation Frequency</h3>
+                        <div className="flex gap-4 justify-center">
+                          <Button onClick={() => handleFrequencySelect('monthly')} variant="default">
+                            Monthly
+                          </Button>
+                          <Button onClick={() => handleFrequencySelect('once-off')} variant="default">
+                            Once-Off
+                          </Button>
+                        </div>
                       </div>
-                      <h3 className="text-xl font-semibold mb-4">Feature Coming Soon!</h3>
-                      <p className="text-gray-600">
-                        We're currently working on integrating our payment system. 
-                        This feature will be available soon. Thank you for your patience!
-                      </p>
-                    </div>
-                  </Modal>
-                </div>
-              </Card>
+                    </Modal>
+                  </div>
+                </Card>
+              )
             ) : (
               <Card className="p-8">
                 {/* Non-Monetary Donation Code*/}

@@ -161,12 +161,14 @@ const Gallery = () => {
                         transition: { duration: 0.3 }
                       }}
                     >
-                      <h3 className="text-lg font-semibold text-white truncate">
-                        {image.title}
-                      </h3>
-                      <p className="text-gray-200 text-sm line-clamp-2">
-                        {image.description}
-                      </p>
+                      <div className="bg-black/40 backdrop-blur-sm rounded-lg p-3">
+                        <h3 className="text-lg font-semibold text-white truncate">
+                          {image.title}
+                        </h3>
+                        <p className="text-gray-200 text-sm line-clamp-2">
+                          {image.description}
+                        </p>
+                      </div>
                     </motion.div>
                   </motion.div>
                 </motion.div>
