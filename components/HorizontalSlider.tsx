@@ -36,14 +36,43 @@ const HorizontalSlider = ({ images, title, onImageClick, className }: Horizontal
   useEffect(() => {
     const slider = sliderRef.current
     if (!slider) return
-    slider.scrollLeft = slider.clientWidth * 0.25
+    
+    // Calculate the appropriate scroll position based on screen size
+    const scrollWidth = getItemWidth(slider) * 1
+    slider.scrollLeft = scrollWidth
+    
+    // Check if we need to show arrows based on content width
+    updateArrowVisibility()
+    
+    // Add resize listener to update slider on window resize
+    window.addEventListener('resize', updateArrowVisibility)
+    return () => window.removeEventListener('resize', updateArrowVisibility)
   }, [])
+
+  // Helper function to get the width of a single item based on screen size
+  const getItemWidth = (container: HTMLElement) => {
+    const containerWidth = container.clientWidth
+    // Adjust the divisor based on screen width for better responsiveness
+    if (containerWidth < 640) return containerWidth * 0.85 // 1 item on small screens
+    if (containerWidth < 1024) return containerWidth * 0.5 // 2 items on medium screens
+    return containerWidth * 0.25 // 4 items on large screens
+  }
+
+  const updateArrowVisibility = () => {
+    const slider = sliderRef.current
+    if (!slider) return
+    
+    // Only show arrows if content is wider than container
+    const hasOverflow = slider.scrollWidth > slider.clientWidth
+    setShowLeftArrow(hasOverflow)
+    setShowRightArrow(hasOverflow)
+  }
 
   const scrollRow = (direction: 'left' | 'right') => {
     const row = sliderRef.current
     if (!row) return
     
-    const itemWidth = row.clientWidth * 0.25
+    const itemWidth = getItemWidth(row)
     const newScrollPosition = direction === 'left' 
       ? row.scrollLeft - itemWidth
       : row.scrollLeft + itemWidth
@@ -72,8 +101,7 @@ const HorizontalSlider = ({ images, title, onImageClick, className }: Horizontal
   const handleScroll = () => {
     const row = sliderRef.current
     if (!row) return
-    setShowLeftArrow(true)
-    setShowRightArrow(true)
+    updateArrowVisibility()
   }
 
   const handleMouseDown = () => setIsDragging(true)
@@ -89,7 +117,7 @@ const HorizontalSlider = ({ images, title, onImageClick, className }: Horizontal
 
   return (
     <div className={cn("relative group", className)}>
-      <h3 className="text-2xl font-bold text-navy-blue mb-6">{title}</h3>
+      {title && <h3 className="text-2xl font-bold text-navy-blue mb-6">{title}</h3>}
       
       {/* Left Scroll Button */}
       <AnimatePresence>
@@ -123,13 +151,13 @@ const HorizontalSlider = ({ images, title, onImageClick, className }: Horizontal
         {loopedImages.map((image, index) => (
           <motion.div
             key={`${image.id}-${index}`}
-            className="relative flex-none w-[25%] snap-start group/card cursor-pointer"
+            className="relative flex-none w-full sm:w-1/2 lg:w-1/4 snap-start group/card cursor-pointer px-2"
             onHoverStart={() => setHoveredIndex(index)}
             onHoverEnd={() => setHoveredIndex(null)}
             onClick={(e) => handleImageClick(image, e)}
           >
             <motion.div 
-              className="relative aspect-video overflow-hidden rounded-lg shadow-lg mx-2"
+              className="relative aspect-video overflow-hidden rounded-lg shadow-lg"
               animate={{ 
                 scale: hoveredIndex === index ? 1.05 : 1,
                 zIndex: hoveredIndex === index ? 10 : 0,
@@ -140,7 +168,7 @@ const HorizontalSlider = ({ images, title, onImageClick, className }: Horizontal
                 src={image.src}
                 alt={image.alt}
                 fill
-                sizes="25vw"
+                sizes="(max-width: 640px) 85vw, (max-width: 1024px) 50vw, 25vw"
                 className="object-cover w-full h-full transform transition-transform duration-300"
                 placeholder="blur"
                 blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN88P/BfwAJhAPYe9tsaAAAAABJRU5ErkJggg=="
@@ -151,28 +179,30 @@ const HorizontalSlider = ({ images, title, onImageClick, className }: Horizontal
                 className="absolute inset-0 bg-gradient-to-t from-navy-blue/90 via-navy-blue/30 to-transparent"
                 initial={{ opacity: 0 }}
                 animate={{ 
-                  opacity: hoveredIndex === index ? 1 : 0.4,
+                  opacity: hoveredIndex === index ? 1 : 0,
                   transition: { duration: 0.3 }
                 }}
               >
-                <motion.div 
-                  className="absolute bottom-0 left-0 right-0 p-4"
-                  initial={{ y: 10, opacity: 0 }}
-                  animate={{ 
-                    y: hoveredIndex === index ? 0 : 10,
-                    opacity: hoveredIndex === index ? 1 : 0,
-                    transition: { duration: 0.3 }
-                  }}
-                >
-                  <div className="bg-black/40 backdrop-blur-sm rounded-lg p-3">
-                    <h3 className="text-lg font-semibold text-white truncate">
-                      {image.title}
-                    </h3>
-                    <p className="text-gray-200 text-sm line-clamp-2">
-                      {image.description}
-                    </p>
-                  </div>
-                </motion.div>
+                {hoveredIndex === index && (
+                  <motion.div 
+                    className="absolute bottom-0 left-0 right-0 p-4"
+                    initial={{ y: 10, opacity: 0 }}
+                    animate={{ 
+                      y: 0,
+                      opacity: 1,
+                      transition: { duration: 0.3 }
+                    }}
+                  >
+                    <div className="bg-black/40 backdrop-blur-sm rounded-lg p-3">
+                      <h3 className="text-lg font-semibold text-white truncate">
+                        {image.title}
+                      </h3>
+                      <p className="text-gray-200 text-sm line-clamp-2">
+                        {image.description}
+                      </p>
+                    </div>
+                  </motion.div>
+                )}
               </motion.div>
             </motion.div>
           </motion.div>
@@ -198,4 +228,4 @@ const HorizontalSlider = ({ images, title, onImageClick, className }: Horizontal
   )
 }
 
-export default HorizontalSlider 
+export default HorizontalSlider

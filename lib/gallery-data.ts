@@ -139,7 +139,7 @@ export const galleryImages: GalleryImage[] = [
         },
         {
           id: 15,
-          src: '/images/msi-teaching.JPG',
+          src: '/images/msi-teaching.jpg',
           alt: 'Educator in action',
           category: 'classes',
           title: 'Inspiring Teaching Moment',
@@ -227,7 +227,7 @@ export const galleryImages: GalleryImage[] = [
         },
         {
           id: 25,
-          src: '/images/msi-tutor-development.JPG',
+          src: '/images/msi-tutor-development.jpg',
           alt: 'Tutor development session',
           category: 'workshops',
           title: 'Tutor Development Workshop',

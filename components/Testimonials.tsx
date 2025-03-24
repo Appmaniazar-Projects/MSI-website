@@ -6,10 +6,10 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 
 const testimonials = [
-  { image: '/images/msi-testimonial-1.jpg' },
-  { image: '/images/msi-testimonial-2.jpg' },
-  { image: '/images/msi-testimonial.jpg' },
-  { image: '/images/msi-testimonial-4.jpg' },
+  { image: '/images/testimonals/msi-testimonial-1.jpg' },
+  { image: '/images/testimonals/msi-testimonial-2.jpg' },
+  { image: '/images/testimonals/msi-testimonial.jpg' },
+  { image: '/images/testimonals/msi-testimonial-4.jpg' },
 ]
 
 const Testimonials = () => {
