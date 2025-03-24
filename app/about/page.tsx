@@ -154,7 +154,7 @@ export default function About() {
 
       {/* Why Choose Us */}
       <section className="py-24 bg-gray-900 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/msi-hero.jpg')] opacity-40 bg-cover bg-center"></div>
+        <div className="absolute inset-0 bg-[url('/images/gallery/msi-hero.jpg')] opacity-40 bg-cover bg-center"></div>
         <div className="container relative mx-auto px-4">
           <motion.h2 
             initial="hidden"
