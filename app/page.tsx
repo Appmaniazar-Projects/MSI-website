@@ -40,7 +40,7 @@ export default function Home() {
       <section className="relative h-screen flex items-center justify-center bg-gradient-to-r from-red-600 to-red-800 text-white overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image
-            src="/images/msi-hero.jpg"
+            src="/images/gallery/msi-hero.jpg"
             alt="Students learning"
             layout="fill"
             objectFit="cover"
