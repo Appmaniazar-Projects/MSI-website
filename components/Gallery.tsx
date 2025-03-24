@@ -8,12 +8,12 @@ import { Button } from './ui/button'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 const images = [
-  { id: 1, src: '/images/msi-Outdoor.jpg', alt: 'MSI outdoor signup booth', title: 'Community Outreach', description: 'Engaging with our community through outdoor events' },
-  { id: 2, src: '/images/msi-learner.png', alt: 'Student engaged in individual learning', title: 'Individual Learning', description: 'Personalized attention for optimal learning outcomes' },
-  { id: 3, src: '/images/msi-learners.jpg', alt: 'STEM camp outdoor activity', title: 'STEM Activities', description: 'Hands-on learning experiences in STEM' },
-  { id: 4, src: '/images/msi-talks.jpg', alt: 'School outreach program', title: 'Educational Talks', description: 'Inspiring the next generation of STEM leaders' },
-  { id: 5, src: '/images/msi-classroom-1.jpg', alt: 'Group of students learning together', title: 'Collaborative Learning', description: 'Students working together to solve complex problems' },
-  { id: 6, src: '/images/msi-donations.jpg', alt: 'Community outreach program', title: 'Community Impact', description: 'Making a difference in our local communities' },
+  { id: 1, src: '/images/gallery/msi-Outdoor.jpg', alt: 'MSI outdoor signup booth', title: 'Community Outreach', description: 'Engaging with our community through outdoor events' },
+  { id: 2, src: '/images/gallery/msi-lab-1.jpg', alt: 'Students in laboratory session', title: 'Practical Science', description: 'Hands-on experimentation in our well-equipped laboratory' },
+  { id: 3, src: '/images/gallery/msi-learners.jpg', alt: 'STEM camp outdoor activity', title: 'STEM Activities', description: 'Hands-on learning experiences in STEM' },
+  { id: 4, src: '/images/gallery/msi-talks.jpg', alt: 'School outreach program', title: 'Educational Talks', description: 'Inspiring the next generation of STEM leaders' },
+  { id: 5, src: '/images/gallery/msi-classroom-1.jpg', alt: 'Group of students learning together', title: 'Collaborative Learning', description: 'Students working together to solve complex problems' },
+  { id: 6, src: '/images/gallery/msi-donations.jpg', alt: 'Community outreach program', title: 'Community Impact', description: 'Making a difference in our local communities' },
 ]
 
 const Gallery = () => {
@@ -23,18 +23,12 @@ const Gallery = () => {
   const [showLeftArrow, setShowLeftArrow] = useState(false)
   const [showRightArrow, setShowRightArrow] = useState(true)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
-  const [currentIndex, setCurrentIndex] = useState(1)
-
-  // Create circular array for infinite loop
-  const loopedImages = [...images.slice(-1), ...images, ...images.slice(0, 1)]
+  const dragStartX = useRef(0)
+  const scrollLeftStart = useRef(0)
 
   useEffect(() => {
     const slider = sliderRef.current
     if (!slider) return
-    
-    // Calculate the appropriate scroll position based on screen size
-    const scrollWidth = getItemWidth(slider) * 1
-    slider.scrollLeft = scrollWidth
     
     // Check if we need to show arrows based on content width
     updateArrowVisibility()
@@ -59,8 +53,8 @@ const Gallery = () => {
     
     // Only show arrows if content is wider than container
     const hasOverflow = slider.scrollWidth > slider.clientWidth
-    setShowLeftArrow(hasOverflow)
-    setShowRightArrow(hasOverflow)
+    setShowLeftArrow(hasOverflow && slider.scrollLeft > 0)
+    setShowRightArrow(hasOverflow && slider.scrollLeft < slider.scrollWidth - slider.clientWidth - 5)
   }
 
   const scrollRow = (direction: 'left' | 'right') => {
@@ -69,28 +63,13 @@ const Gallery = () => {
     
     const itemWidth = getItemWidth(row)
     const newScrollPosition = direction === 'left' 
-      ? row.scrollLeft - itemWidth
-      : row.scrollLeft + itemWidth
+      ? Math.max(0, row.scrollLeft - itemWidth)
+      : Math.min(row.scrollWidth - row.clientWidth, row.scrollLeft + itemWidth)
       
     row.scrollTo({
       left: newScrollPosition,
       behavior: 'smooth'
     })
-
-    // Handle infinite loop
-    if (direction === 'left' && currentIndex === 1) {
-      setTimeout(() => {
-        row.scrollTo({ left: itemWidth * (images.length), behavior: 'auto' })
-        setCurrentIndex(images.length)
-      }, 300)
-    } else if (direction === 'right' && currentIndex === images.length) {
-      setTimeout(() => {
-        row.scrollTo({ left: itemWidth, behavior: 'auto' })
-        setCurrentIndex(1)
-      }, 300)
-    } else {
-      setCurrentIndex(prev => direction === 'left' ? prev - 1 : prev + 1)
-    }
   }
 
   const handleScroll = () => {
@@ -99,7 +78,20 @@ const Gallery = () => {
     updateArrowVisibility()
   }
 
-  const handleMouseDown = () => setIsDragging(true)
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true)
+    dragStartX.current = e.clientX
+    if (sliderRef.current) {
+      scrollLeftStart.current = sliderRef.current.scrollLeft
+    }
+  }
+  
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !sliderRef.current) return
+    const dx = e.clientX - dragStartX.current
+    sliderRef.current.scrollLeft = scrollLeftStart.current - dx
+  }
+
   const handleMouseUp = () => setIsDragging(false)
   const handleMouseLeave = () => setIsDragging(false)
 
@@ -137,15 +129,16 @@ const Gallery = () => {
             ref={sliderRef}
             onScroll={handleScroll}
             onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
             onMouseLeave={handleMouseLeave}
-            className="flex overflow-x-auto scrollbar-hide snap-x snap-mandatory py-4 px-0 scroll-smooth"
+            className="flex overflow-x-auto scrollbar-hide py-4 px-0 scroll-smooth"
             style={{ 
               scrollbarWidth: 'none', 
               msOverflowStyle: 'none'
             }}
           >
-            {loopedImages.map((image, index) => (
+            {images.map((image, index) => (
               <motion.div
                 key={`${image.id}-${index}`}
                 className="relative flex-none w-full sm:w-1/2 lg:w-1/4 snap-start group/card cursor-pointer px-2"
@@ -221,46 +214,34 @@ const Gallery = () => {
           </AnimatePresence>
         </div>
 
-        <div className="text-center mt-12">
-          <Button
-            asChild
-            size="lg"
-            className="bg-red-600 text-white hover:bg-red-700"
-          >
-            <Link href="/gallery">
+        <div className="mt-8 text-center">
+          <Link href="/gallery" passHref>
+            <Button className="bg-navy-blue hover:bg-blue-700 text-white font-semibold">
               View Full Gallery
-            </Link>
-          </Button>
+            </Button>
+          </Link>
         </div>
       </div>
 
-      {/* Enhanced Image Modal with Pop Effect */}
+      {/* Image Modal */}
       <AnimatePresence>
         {selectedImage && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
             onClick={() => setSelectedImage(null)}
           >
             <motion.div
-              initial={{ scale: 0.5, opacity: 0 }}
+              initial={{ scale: 0.8, opacity: 0 }}
               animate={{ 
                 scale: 1, 
                 opacity: 1,
-                transition: { 
-                  type: "spring", 
-                  stiffness: 300, 
-                  damping: 30 
-                } 
+                transition: { type: "spring", stiffness: 300, damping: 30 } 
               }}
-              exit={{ 
-                scale: 0.5, 
-                opacity: 0,
-                transition: { duration: 0.3 } 
-              }}
-              className="relative max-w-5xl w-full max-h-[85vh] rounded-lg overflow-hidden"
+              exit={{ scale: 0.8, opacity: 0 }}
+              className="relative max-w-4xl w-full rounded-lg overflow-hidden"
               onClick={e => e.stopPropagation()}
             >
               <div className="relative w-full" style={{ height: "70vh" }}>
@@ -269,39 +250,25 @@ const Gallery = () => {
                   alt={selectedImage.alt}
                   fill
                   className="object-contain"
-                  sizes="(max-width: 768px) 100vw, 80vw"
                   priority
-                  quality={95}
                 />
               </div>
               <motion.button
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1, transition: { delay: 0.2 } }}
-                exit={{ scale: 0.8, opacity: 0 }}
                 whileHover={{ scale: 1.1 }}
                 onClick={() => setSelectedImage(null)}
-                className="absolute top-4 right-4 bg-black/60 hover:bg-red-600 text-white rounded-full p-2 transition-colors duration-300"
+                className="absolute top-4 right-4 bg-black/50 hover:bg-red-600 text-white rounded-full p-2 transition-colors duration-300"
                 aria-label="Close modal"
               >
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </motion.button>
-              <motion.div
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1, transition: { delay: 0.1 } }}
-                exit={{ y: 20, opacity: 0 }}
-                className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/90 to-black/40"
-              >
-                <div className="bg-black/40 backdrop-blur-sm rounded-lg p-4">
-                  <h3 className="text-2xl font-bold text-white mb-2">
-                    {selectedImage.title}
-                  </h3>
-                  <p className="text-gray-200">
-                    {selectedImage.description}
-                  </p>
-                </div>
-              </motion.div>
+              <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/90 to-black/0">
+                <h3 className="text-2xl font-bold text-white mb-2">{selectedImage.title}</h3>
+                <p className="text-gray-200">{selectedImage.description}</p>
+              </div>
             </motion.div>
           </motion.div>
         )}

@@ -28,18 +28,13 @@ const HorizontalSlider = ({ images, title, onImageClick, className }: Horizontal
   const [showLeftArrow, setShowLeftArrow] = useState(false)
   const [showRightArrow, setShowRightArrow] = useState(true)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
-  const [currentIndex, setCurrentIndex] = useState(1)
-
-  // Create circular array for infinite loop
-  const loopedImages = [...images.slice(-1), ...images, ...images.slice(0, 1)]
+  const [initialScrollSet, setInitialScrollSet] = useState(false)
+  const dragStartX = useRef(0)
+  const scrollLeftStart = useRef(0)
 
   useEffect(() => {
     const slider = sliderRef.current
     if (!slider) return
-    
-    // Calculate the appropriate scroll position based on screen size
-    const scrollWidth = getItemWidth(slider) * 1
-    slider.scrollLeft = scrollWidth
     
     // Check if we need to show arrows based on content width
     updateArrowVisibility()
@@ -64,8 +59,8 @@ const HorizontalSlider = ({ images, title, onImageClick, className }: Horizontal
     
     // Only show arrows if content is wider than container
     const hasOverflow = slider.scrollWidth > slider.clientWidth
-    setShowLeftArrow(hasOverflow)
-    setShowRightArrow(hasOverflow)
+    setShowLeftArrow(hasOverflow && slider.scrollLeft > 0)
+    setShowRightArrow(hasOverflow && slider.scrollLeft < slider.scrollWidth - slider.clientWidth - 5)
   }
 
   const scrollRow = (direction: 'left' | 'right') => {
@@ -74,28 +69,13 @@ const HorizontalSlider = ({ images, title, onImageClick, className }: Horizontal
     
     const itemWidth = getItemWidth(row)
     const newScrollPosition = direction === 'left' 
-      ? row.scrollLeft - itemWidth
-      : row.scrollLeft + itemWidth
+      ? Math.max(0, row.scrollLeft - itemWidth)
+      : Math.min(row.scrollWidth - row.clientWidth, row.scrollLeft + itemWidth)
       
     row.scrollTo({
       left: newScrollPosition,
       behavior: 'smooth'
     })
-
-    // Handle infinite loop
-    if (direction === 'left' && currentIndex === 1) {
-      setTimeout(() => {
-        row.scrollTo({ left: itemWidth * (images.length), behavior: 'auto' })
-        setCurrentIndex(images.length)
-      }, 300)
-    } else if (direction === 'right' && currentIndex === images.length) {
-      setTimeout(() => {
-        row.scrollTo({ left: itemWidth, behavior: 'auto' })
-        setCurrentIndex(1)
-      }, 300)
-    } else {
-      setCurrentIndex(prev => direction === 'left' ? prev - 1 : prev + 1)
-    }
   }
 
   const handleScroll = () => {
@@ -104,7 +84,20 @@ const HorizontalSlider = ({ images, title, onImageClick, className }: Horizontal
     updateArrowVisibility()
   }
 
-  const handleMouseDown = () => setIsDragging(true)
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true)
+    dragStartX.current = e.clientX
+    if (sliderRef.current) {
+      scrollLeftStart.current = sliderRef.current.scrollLeft
+    }
+  }
+  
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !sliderRef.current) return
+    const dx = e.clientX - dragStartX.current
+    sliderRef.current.scrollLeft = scrollLeftStart.current - dx
+  }
+  
   const handleMouseUp = () => setIsDragging(false)
   const handleMouseLeave = () => setIsDragging(false)
 
@@ -140,15 +133,16 @@ const HorizontalSlider = ({ images, title, onImageClick, className }: Horizontal
         ref={sliderRef}
         onScroll={handleScroll}
         onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseLeave}
-        className="flex overflow-x-auto scrollbar-hide snap-x snap-mandatory py-4 px-0 scroll-smooth"
+        className="flex overflow-x-auto scrollbar-hide py-4 px-0 scroll-smooth"
         style={{ 
           scrollbarWidth: 'none', 
           msOverflowStyle: 'none'
         }}
       >
-        {loopedImages.map((image, index) => (
+        {images.map((image, index) => (
           <motion.div
             key={`${image.id}-${index}`}
             className="relative flex-none w-full sm:w-1/2 lg:w-1/4 snap-start group/card cursor-pointer px-2"
