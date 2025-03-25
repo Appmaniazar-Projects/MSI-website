@@ -38,7 +38,7 @@ export default async function Home() {
       <nav className="border-b py-4">
         <div className="container mx-auto flex justify-between items-center px-4">
           <Image 
-            src="/placeholder.svg" 
+            src="/images/msi_logo.png" 
             alt="MSI Logo" 
             width={100} 
             height={50}

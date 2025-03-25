@@ -34,6 +34,7 @@ export default function PayFastForm() {
     cell_number: '',
   })
   const [errors, setErrors] = useState<Record<string, string>>({})
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {}
@@ -63,7 +64,7 @@ export default function PayFastForm() {
     return Object.keys(newErrors).length === 0
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
     // Amount validation directly in handleSubmit
@@ -74,64 +75,70 @@ export default function PayFastForm() {
     }
     
     if (!validateForm()) return
+    
+    setIsSubmitting(true)
 
-    // Get merchant details from environment
-    const receiver = process.env.NEXT_PUBLIC_PAYFAST_MERCHANT_ID || ''
-    
-    // Get URLs
-    const return_url = `${window.location.origin}/donate/thank-you`
-    const cancel_url = `${window.location.origin}/donate`
-    const notify_url = `${window.location.origin}/api/payfast/notify`
-
-    // Create PayFast form and submit it
-    const form = document.createElement('form')
-    form.method = 'POST'
-    form.action = 'https://payment.payfast.io/eng/process' // Use PayFast's correct endpoint
-    form.name = 'PayFastPayNowForm'
-    
-    // Add required PayFast fields
-    const fields: Record<string, string> = {
-      cmd: '_paynow',
-      receiver: receiver,
-      amount: parseFloat(amount).toFixed(2),
-      item_name: `MSI Donation - ${frequency === 'monthly' ? 'Monthly' : 'Once-off'}`,
-      return_url: return_url,
-      cancel_url: cancel_url,
-      notify_url: notify_url,
-      name_first: formData.name_first,
-      name_last: formData.name_last,
-      email_address: formData.email_address,
-      cell_number: formData.cell_number || '',
-    }
-    
-    // Add subscription fields if monthly donation
-    if (frequency === 'monthly') {
-      fields['subscription_type'] = '2'
-      fields['frequency'] = '3' // Monthly
-      fields['cycles'] = '0' // Ongoing
+    try {
+      // Create form directly - no client-side signature generation
+      const form = document.createElement('form')
+      form.method = 'POST'
+      form.action = 'https://www.payfast.co.za/eng/process'
       
-      // Set billing date to the first day of the next month
-      const today = new Date()
-      const nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1)
-      fields['billing_date'] = nextMonth.toISOString().split('T')[0] // Format as YYYY-MM-DD
+      // Basic required PayFast fields
+      const formFields = {
+        // Merchant details
+        merchant_id: process.env.NEXT_PUBLIC_PAYFAST_MERCHANT_ID || '',
+        merchant_key: process.env.NEXT_PUBLIC_PAYFAST_MERCHANT_KEY || '',
+        
+        // Transaction details
+        amount: numAmount.toFixed(2),
+        item_name: 'MSI Donation',
+        
+        // Customer details
+        name_first: formData.name_first,
+        name_last: formData.name_last,
+        email_address: formData.email_address,
+        
+        // URLs
+        return_url: `${window.location.origin}/donate/thank-you`,
+        cancel_url: `${window.location.origin}/donate`,
+        notify_url: `${window.location.origin}/api/payfast/notify`,
+      }
+      
+      // Add optional fields
+      if (formData.cell_number) {
+        formFields['cell_number'] = formData.cell_number
+      }
+      
+      // Add subscription fields for monthly donations
+      if (frequency === 'monthly') {
+        formFields['subscription_type'] = '1'
+        formFields['frequency'] = '3'
+        formFields['cycles'] = '0'
+      }
+      
+      // Add all fields to form
+      Object.entries(formFields).forEach(([name, value]) => {
+        const input = document.createElement('input')
+        input.type = 'hidden'
+        input.name = name
+        input.value = String(value)
+        form.appendChild(input)
+      })
+      
+      console.log('Submitting payment to PayFast with fields:', {
+        ...formFields,
+        merchant_key: '[REDACTED]'
+      })
+      
+      // Submit form
+      document.body.appendChild(form)
+      form.submit()
+    } catch (error) {
+      console.error('Error submitting payment form:', error)
+      alert('An error occurred while processing your payment. Please try again later.')
+      setIsSubmitting(false)
     }
-    
-    // Create form inputs
-    Object.entries(fields).forEach(([key, value]) => {
-      const input = document.createElement('input')
-      input.type = 'hidden'
-      input.name = key
-      input.value = String(value)
-      form.appendChild(input)
-    })
-
-    // Log the data for debugging
-    console.log('PayFast form data:', fields)
-    
-    // Submit the form
-    document.body.appendChild(form)
-    form.submit()
-    document.body.removeChild(form)
   }
   
   // Handle amount input to ensure only valid numbers
@@ -260,8 +267,12 @@ export default function PayFastForm() {
             </Label>
           </div>
 
-          <Button type="submit" className="w-full bg-red-600 hover:bg-red-700">
-            Proceed to Payment
+          <Button 
+            type="submit" 
+            className="w-full bg-red-600 hover:bg-red-700"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? 'Processing...' : 'Proceed to Payment'}
           </Button>
         </form>
       </Card>

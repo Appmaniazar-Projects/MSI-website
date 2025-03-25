@@ -1,54 +1,41 @@
 import { NextResponse } from 'next/server'
-import crypto from 'crypto'
 
 export async function POST(request: Request) {
   try {
     const formData = await request.formData()
     const data = Object.fromEntries(formData.entries())
     
-    // Verify the payment signature
-    const signature = data.signature as string
-    const merchantKey = process.env.PAYFAST_MERCHANT_KEY
-    const merchantId = process.env.PAYFAST_MERCHANT_ID
+    // Log the incoming data for debugging (remove in production)
+    console.log('PayFast notification received:', {
+      ...data,
+      signature: data.signature ? '[REDACTED]' : 'missing',
+      merchant_key: '[REDACTED]'
+    })
     
-    // Create the signature string
-    const signatureString = Object.entries(data)
-      .filter(([key]) => key !== 'signature')
-      .map(([key, value]) => `${key}=${encodeURIComponent(value as string)}`)
-      .join('&')
-    
-    // Generate the signature
-    const generatedSignature = crypto
-      .createHash('md5')
-      .update(signatureString + merchantKey)
-      .digest('hex')
-    
-    // Verify the signature
-    if (signature !== generatedSignature) {
-      console.error('Invalid signature')
-      return NextResponse.json({ error: 'Invalid signature' }, { status: 400 })
-    }
-    
-    // Process the payment notification
+    // Extract important payment information
     const paymentStatus = data.payment_status as string
-    const paymentId = data.m_payment_id as string
     const amount = data.amount as string
     const email = data.email_address as string
+    const transactionId = data.pf_payment_id as string || 'unknown'
+    
+    // Process the payment notification
+    console.log('Payment Notification:', {
+      transactionId,
+      paymentStatus,
+      amount,
+      email
+    })
     
     // Here you would typically:
     // 1. Update your database with the payment status
     // 2. Send confirmation emails
     // 3. Update subscription status if applicable
-    console.log('Payment Notification:', {
-      paymentStatus,
-      paymentId,
-      amount,
-      email
-    })
     
-    return NextResponse.json({ success: true })
+    // PayFast expects a 200 response with empty body
+    // See: https://developers.payfast.co.za/docs#notify-page
+    return new Response(null, { status: 200 })
   } catch (error) {
-    console.error('Error processing payment notification:', error)
+    console.error('Error processing PayFast notification:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
-} 
+}
