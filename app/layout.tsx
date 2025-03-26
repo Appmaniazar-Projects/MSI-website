@@ -3,13 +3,20 @@ import { Inter } from 'next/font/google'
 import BackToTop from '@/components/BackToTop'
 import WhatsAppButton from '@/components/WhatsAppButton'
 import { siteConfig } from './metadata'
-import { Metadata } from 'next'
+import { Metadata, Viewport } from 'next'
 
 const inter = Inter({ 
   subsets: ['latin'],
   display: 'swap',
   preload: true
 })
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: '#dc2626',
+}
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -53,8 +60,6 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  viewport: 'width=device-width, initial-scale=1, maximum-scale=5',
-  themeColor: '#dc2626',
   manifest: '/manifest.json',
   icons: {
     icon: '/favicon.ico',
