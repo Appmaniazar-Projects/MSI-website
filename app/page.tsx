@@ -60,23 +60,10 @@ export default function Home() {
             }}
             className="text-5xl md:text-7xl font-bold mb-6"
           >
-            Empowering Future Leaders Through Innovative STEM Education
+            Empowering Minds, Transforming Futures
           </motion.h2>
           
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ 
-              type: "spring", 
-              stiffness: 100, 
-              damping: 10,
-              duration: 0.5,
-              delay: 0.2 
-            }}
-            className="text-xl md:text-2xl mb-8"
-          >
-            Black Founded & Youth Managed Non-Profit Organization
-          </motion.p>
+          
           
           <motion.div 
             initial={{ opacity: 0, y: 20 }}

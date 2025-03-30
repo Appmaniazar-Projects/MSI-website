@@ -120,24 +120,30 @@ export default function DonatePage() {
                   ))}
                 </div>
                 <div className="bg-gray-100 p-6 rounded-lg">
-                  <h3 className="text-xl font-bold mb-4">How to Donate Items</h3>
-                  <div className="space-y-4">
-                    <p>
-                      To donate physical items, please contact us to arrange a drop-off or collection:
-                    </p>
-                    <div className="flex items-center gap-2">
-                      <Mail className="w-5 h-5 text-red-600" />
-                      <span>donations@msiafrica.org</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Phone className="w-5 h-5 text-red-600" />
-                      <span>+27 (0)12 123 4567</span>
-                    </div>
-                    <div className="mt-4">
-                      <h4 className="font-semibold mb-2">Our Physical Address:</h4>
-                      <p>123 Main Street<br />Pretoria<br />South Africa<br />0001</p>
-                    </div>
+                <h3 className="text-xl font-semibold text-center">How to Donate Items</h3>
+                  <p className="text-gray-600 text-center">
+                    To arrange a non-monetary donation, please contact us through any of these channels:
+                  </p>
+                  <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
+                    <Button variant="outline" size="lg" asChild>
+                      <a href="mailto:info@mathsandscienceinfinity.org.za">
+                        <Mail className="w-5 h-5 mr-2" /> Email Us
+                      </a>
+                    </Button>
+                    <Button variant="outline" size="lg" asChild>
+                      <a href="tel:+27437262171">
+                        <Phone className="w-5 h-5 mr-2" /> Call Us
+                      </a>
+                    </Button>
+                    <Button variant="outline" size="lg" asChild>
+                      <a href="https://wa.me/27437262171">
+                        <MessageCircle className="w-5 h-5 mr-2" /> WhatsApp
+                      </a>
+                    </Button>
                   </div>
+                  <p className="text-sm text-gray-500 mt-4 text-center">
+                    Our team will assist you with the donation process and arrange collection or delivery.
+                    </p>
                 </div>
               </Card>
             )}
