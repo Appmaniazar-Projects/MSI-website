@@ -351,7 +351,7 @@ export default function About() {
                   a brighter future for our youth."
                 </p>
                 <div>
-                  <h3 className="text-2xl font-bold">Zenith Yengwa</h3>
+                  <h3 className="text-2xl font-bold">Zenith Tsengwa</h3>
                   <p className="text-red-500 text-lg">CEO & Founder</p>
                 </div>
               </div>

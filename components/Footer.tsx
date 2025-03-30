@@ -102,18 +102,33 @@ const Footer = () => {
           <motion.div variants={fadeInUp} className="space-y-4">
             <h3 className="text-lg font-semibold text-white">Contact Us</h3>
             <ul className="space-y-3">
+              <span>Address</span>
               <li className="flex items-start space-x-3">
                 <FaMapMarkerAlt className="w-5 h-5 text-red-500 mt-1" />
-                <a href="https://maps.app.goo.gl/CiouhET31DgDygem9" 
+                <a href="https://maps.app.goo.gl/o1zsynzNxkq25LHT7" 
                 className="hover:text-red-500 transition-colors duration-300">
-                <span>East London, Eastern Cape, South Africa</span>
+                <span>1 Scherwitz Road, Berea, East London</span>
+                </a>
+              </li>
+              <li className="flex items-start space-x-3">
+                <FaMapMarkerAlt className="w-5 h-5 text-red-500 mt-1" />
+                <a href="https://maps.app.goo.gl/qUpZ8p9zCyEu1WSf8" 
+                className="hover:text-red-500 transition-colors duration-300">
+                <span>4th Flour, West Tower, Nelson Mandela Square, Sandtan City, Johannesburg</span>
                 </a>
               </li>
               <li className="flex items-center space-x-3">
                 <FaPhone className="w-4 h-4 text-red-500" />
                 <a href="tel:+27437262171" 
                 className="hover:text-red-500 transition-colors duration-300">
-                <span>+27 43 726 2171</span>
+                <span> EL Office: +27 43 726 2171</span>
+                </a>
+              </li>
+              <li className="flex items-center space-x-3">
+                <FaPhone className="w-4 h-4 text-red-500" />
+                <a href="tel:+27115684332" 
+                className="hover:text-red-500 transition-colors duration-300">
+                <span> JHB Office: +27 11 568 4332</span>
                 </a>
               </li>
               <li className="flex items-center space-x-3">
@@ -138,7 +153,7 @@ const Footer = () => {
               </li>
               <li className="flex justify-between">
                 <span>Saturday:</span>
-                <span>9:00 AM - 1:00 PM</span>
+                <span>Closed</span>
               </li>
               <li className="flex justify-between">
                 <span>Sunday:</span>

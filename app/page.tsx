@@ -93,19 +93,19 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
             { 
-              title: 'Student Development', 
-              icon: <Image src="/images/icons/msi_student_icon.svg" alt="Student Development" width={100} height={100} />, 
-              description: 'Providing customized support for students struggling in mathematics and science, helping them build confidence and achieve academic success.' 
+              title: 'Learner Development', 
+              icon: <Image src="/images/icons/msi_student_icon.svg" alt="Learner Development" width={100} height={100} />, 
+              description: "Providing academic support, tutoring, and enrichment programs to enhance learners' performance in maths and science." 
             },
             { 
-              title: 'Professional Development', 
-              icon: <Image src="/images/icons/msi_developing.svg" alt="Professional Development" width={100} height={100} />, 
-              description: 'Enhancing the skills of maths and science tutors and teachers through targeted training and professional development programs.' 
+              title: 'Teacher Development', 
+              icon: <Image src="/images/icons/msi_developing.svg" alt="Teacher Development" width={100} height={100} />, 
+              description: 'Training and upskilling educators to improve teaching methodologies and subject mastery.' 
             },
             { 
               title: 'Career Guidance & Role Modelling', 
               icon: <Image src="/images/icons/msi_development_icon.svg" alt="Career Guidance" width={100} height={100} />, 
-              description: 'Inspiring students with career guidance and exposure to role models in STEM fields, opening doors to future opportunities.' 
+              description: ' Connecting learners with industry professionals to inspire and guide their career choices.' 
             },
 
             ].map((service, index) => (

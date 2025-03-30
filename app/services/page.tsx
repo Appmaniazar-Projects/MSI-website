@@ -13,8 +13,8 @@ const fadeIn = {
 
 const services = [
   {
-    title: "Student Support",
-    description: "Providing support to students, especially those struggling with mathematics and science, through customized learning programs and student development initiatives.",
+    title: "Learner Development",
+    description: " Providing academic support, tutoring, and enrichment programs to enhance learners' performance in maths and science.",
     highlightTerms: ["student development"],
     features: [
       "Tailored support for struggling students",
@@ -26,7 +26,7 @@ const services = [
   },
   {
     title: "Tutor Development",
-    description: "Enhancing the skills and effectiveness of maths and science tutors through professional development and training programs.",
+    description: "Equipping tutors with the necessary skills and resources to effectively support learners.",
     features: [
       "Training in advanced teaching techniques",
       "Focused workshops for science and mathematics",
@@ -37,7 +37,7 @@ const services = [
   },
   {
     title: "Teacher Development",
-    description: "Supporting teachers in their professional growth, ensuring they have the necessary skills and resources to teach maths and science effectively.",
+    description: "Training and upskilling educators to improve teaching methodologies and subject mastery.",
     features: [
       "Access to innovative teaching resources",
       "Workshops on effective classroom strategies",
@@ -48,7 +48,7 @@ const services = [
   },
   {
     title: "Career Guidance & Role Modelling",
-    description: "Offering guidance and role models in the fields of maths and science to inspire and inform students about potential career paths.",
+    description: "Connecting learners with industry professionals to inspire and guide their career choices.",
     features: [
       "Career counseling sessions",
       "Exposure to STEM role models",
@@ -59,7 +59,7 @@ const services = [
   },
   {
     title: "Mobile Laboratories",
-    description: "Bringing science education to underserved areas through mobile labs that provide hands-on learning experiences.",
+    description: "Bringing practical science experiments to schools with limited laboratory facilities.",
     features: [
       "Fully equipped mobile labs",
       "Practical experiments for students",
@@ -69,8 +69,30 @@ const services = [
     //category: "Science Outreach"
   },
   {
-    title: "Online Tutorial Sessions",
-    description: "Providing flexible, structured online tutorials to support students in their studies.",
+    title: "Project Management",
+    description: "Overseeing and implementing educational projects and initiatives.",
+    features: [
+      "Structured lesson plans",
+      "Real-time virtual support",
+      "Progress tracking and feedback"
+    ],
+    image: "/images/msi-tutor.jpg",
+    //category: "Digital Learning"
+  },
+  {
+    title: "Research & Development",
+    description: "Conducting studies and developing innovative strategies to improve STEM education.",
+    features: [
+      "Structured lesson plans",
+      "Real-time virtual support",
+      "Progress tracking and feedback"
+    ],
+    image: "/images/msi-tutor.jpg",
+    //category: "Digital Learning"
+  },
+  {
+    title: "E-Learning",
+    description: "Providing digital learning platforms and resources for accessible and interactive education.",
     features: [
       "Structured lesson plans",
       "Real-time virtual support",
