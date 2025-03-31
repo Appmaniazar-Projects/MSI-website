@@ -14,115 +14,150 @@ const fadeIn = {
 const services = [
   {
     title: "Learner Development",
-    description: " Providing academic support, tutoring, and enrichment programs to enhance learners' performance in maths and science.",
-    highlightTerms: ["student development"],
+    description: "Providing comprehensive academic support, personalized tutoring, and enrichment programs to enhance learners' performance in mathematics and science subjects.",
+    highlightTerms: ["academic support", "personalized tutoring", "enrichment programs"],
     features: [
-      "Tailored support for struggling students",
-      "Curriculum-aligned resources",
-      "Focus on building confidence and understanding"
+      "Tailored support programs for struggling students",
+      "Advanced enrichment for high-performing learners",
+      "Curriculum-aligned resources and materials",
+      "Focus on building confidence and deep conceptual understanding"
     ],
-    image: "/images/msi-classroom-learners.jpg",
-    //category: "Student Support"
+    image: "/images/gallery/msi-classroom-learners.jpg",
+    category: "Learner Development"
   },
   {
     title: "Tutor Development",
-    description: "Equipping tutors with the necessary skills and resources to effectively support learners.",
+    description: "Equipping tutors with the necessary pedagogical skills, subject knowledge, and resources to effectively support and inspire learners in STEM subjects.",
+    highlightTerms: ["pedagogical skills", "subject knowledge"],
     features: [
-      "Training in advanced teaching techniques",
-      "Focused workshops for science and mathematics",
-      "Ongoing mentorship and evaluation"
+      "Training in advanced teaching techniques and methodologies",
+      "Subject-specific workshops for science and mathematics tutors",
+      "Ongoing mentorship and performance evaluation",
+      "Resource development and sharing platforms"
     ],
-    image: "/images/msi-talks.jpg",
-    //category: "Professional Development"
+    image: "/images/gallery/msi-talks.jpg",
+    category: "Tutor Development"
   },
   {
     title: "Teacher Development",
-    description: "Training and upskilling educators to improve teaching methodologies and subject mastery.",
+    description: "Training and upskilling educators to improve teaching methodologies, enhance subject mastery, and implement innovative classroom strategies for better student outcomes.",
+    highlightTerms: ["upskilling educators", "innovative classroom strategies"],
     features: [
-      "Access to innovative teaching resources",
-      "Workshops on effective classroom strategies",
-      "Regular assessment and feedback"
+      "Access to cutting-edge teaching resources and methodologies",
+      "Workshops on effective STEM classroom strategies",
+      "Subject-specific professional development courses",
+      "Regular assessment and constructive feedback mechanisms"
     ],
-    image: "/images/msi-tutor workshop.png",
-    //category: "Professional Development"
+    image: "/images/gallery/msi-tutor workshop.png",
+    category: "Teacher Development"
   },
   {
     title: "Career Guidance & Role Modelling",
-    description: "Connecting learners with industry professionals to inspire and guide their career choices.",
+    description: "Connecting learners with industry professionals and academics to inspire and guide their career choices in STEM fields through mentorship and exposure programs.",
+    highlightTerms: ["mentorship", "exposure programs"],
     features: [
-      "Career counseling sessions",
-      "Exposure to STEM role models",
-      "Workshops on future career opportunities"
+      "Personalized career counseling sessions with field experts",
+      "Exposure to diverse STEM role models and pathways",
+      "Interactive workshops on future career opportunities",
+      "Industry site visits and shadowing experiences"
     ],
-    image: "/images/msi-councelling.jpg",
-    //category: "Student Support"
+    image: "/images/gallery/msi-councelling.jpg",
+    category: "Career Guidance & Role Modelling"
   },
   {
     title: "Mobile Laboratories",
-    description: "Bringing practical science experiments to schools with limited laboratory facilities.",
+    description: "Bringing fully-equipped, practical science experiments to schools and communities with limited laboratory facilities, ensuring hands-on learning experiences for all students.",
+    highlightTerms: ["fully-equipped", "hands-on learning"],
     features: [
-      "Fully equipped mobile labs",
-      "Practical experiments for students",
-      "Community outreach programs"
+      "State-of-the-art mobile laboratory units for physics, chemistry, and biology",
+      "Curriculum-aligned practical experiments for students of all levels",
+      "Community outreach programs for underserved areas",
+      "Training for local teachers on practical science instruction"
     ],
-    image: "/images/msi-mobile-laboratories.jpg",
-    //category: "Science Outreach"
+    image: "/images/gallery/msi-mobile-laboratories.jpg",
+    category: "Mobile Laboratories"
   },
   {
     title: "Project Management",
-    description: "Overseeing and implementing educational projects and initiatives.",
+    description: "Overseeing and implementing educational projects and initiatives with comprehensive planning, monitoring, and evaluation to ensure maximum impact and sustainability.",
+    highlightTerms: ["comprehensive planning", "monitoring", "evaluation"],
     features: [
-      "Structured lesson plans",
-      "Real-time virtual support",
-      "Progress tracking and feedback"
+      "End-to-end management of educational interventions",
+      "Stakeholder engagement and communication",
+      "Resource allocation and optimization",
+      "Impact assessment and reporting"
     ],
-    image: "/images/msi-tutor.jpg",
-    //category: "Digital Learning"
+    image: "/images/gallery/msi-tutor.jpg",
+    category: "Project Management"
   },
   {
     title: "Research & Development",
-    description: "Conducting studies and developing innovative strategies to improve STEM education.",
+    description: "Conducting rigorous studies and developing innovative strategies to improve STEM education through evidence-based approaches and continuous improvement.",
+    highlightTerms: ["evidence-based approaches", "continuous improvement"],
     features: [
-      "Structured lesson plans",
-      "Real-time virtual support",
-      "Progress tracking and feedback"
+      "Educational research design and implementation",
+      "Data collection and analysis on learning outcomes",
+      "Development of new teaching methodologies and resources",
+      "Publication and dissemination of research findings"
     ],
-    image: "/images/msi-tutor.jpg",
-    //category: "Digital Learning"
+    image: "/images/gallery/msi-teaching.jpg",
+    category: "Research & Development"
   },
   {
     title: "E-Learning",
-    description: "Providing digital learning platforms and resources for accessible and interactive education.",
+    description: "Providing comprehensive digital learning platforms and interactive resources for accessible, flexible, and engaging education that reaches students regardless of location.",
+    highlightTerms: ["interactive resources", "flexible", "engaging education"],
     features: [
-      "Structured lesson plans",
-      "Real-time virtual support",
-      "Progress tracking and feedback"
+      "Custom-designed digital learning content and assessments",
+      "Real-time virtual support and interactive sessions",
+      "Progress tracking and personalized feedback systems",
+      "Blended learning approaches that combine digital and traditional methods"
     ],
-    image: "/images/msi-tutor.jpg",
-    //category: "Digital Learning"
+    image: "/images/gallery/msi-online-learning.jpg",
+    category: "E-Learning"
   }
 ]
 
 const categories = [
   {
-    name: "Student Support",
-    icon: <Image src="/images/icons/msi_students_service_page_icon.svg" alt="Student Support" width={100} height={100} />, 
-    description: "Tailored programs to help students excel in mathematics and science."
+    name: "Learner Development",
+    icon: <Image src="/images/icons/msi_students_service_page_icon.svg" alt="Learner Development" width={100} height={100} />, 
+    description: "Comprehensive programs designed to help students excel in mathematics and science through personalized support and enrichment."
   },
   {
-    name: "Professional Development",
-    icon: <Image src="/images/icons/msi_profess_ser_page_icon.svg" alt="Professional Development" width={100} height={100} />, 
-    description: "Empowering tutors and teachers to achieve excellence in STEM education."
+    name: "Teacher Development",
+    icon: <Image src="/images/icons/msi_profess_ser_page_icon.svg" alt="Teacher Development" width={100} height={100} />, 
+    description: "Training and upskilling educators to improve teaching methodologies and enhance subject mastery for better student outcomes."
   },
   {
-    name: "Science Outreach",
-    icon: <Image src="/images/icons/msi_lab_icon.svg" alt="Science Outreach" width={100} height={100} />, 
-    description: "Bringing hands-on science education to underserved areas."
+    name: "Tutor Development",
+    icon: <Image src="/images/icons/msi_profess_ser_page_icon.svg" alt="Tutor Development" width={100} height={100} />, 
+    description: "Equipping tutors with the necessary skills and resources to effectively support and inspire learners in STEM subjects."
   },
   {
-    name: "Digital Learning",
-    icon: <Image src="/images/icons/msi_digital_icon.svg" alt="Digital Learning" width={100} height={100} />, 
-    description: "Flexible, online learning solutions to support education anywhere."
+    name: "Mobile Laboratories",
+    icon: <Image src="/images/icons/msi_lab_icon.svg" alt="Mobile Laboratories" width={100} height={100} />, 
+    description: "Bringing practical science experiments to schools with limited laboratory facilities for hands-on learning experiences."
+  },
+  {
+    name: "Career Guidance & Role Modelling",
+    icon: <Image src="/images/icons/msi_students_service_page_icon.svg" alt="Career Guidance & Role Modelling" width={100} height={100} />, 
+    description: "Connecting learners with industry professionals to inspire and guide their career choices in STEM fields."
+  },
+  {
+    name: "Project Management",
+    icon: <Image src="/images/icons/msi_profess_ser_page_icon.svg" alt="Project Management" width={100} height={100} />, 
+    description: "Overseeing and implementing educational projects and initiatives with comprehensive planning and evaluation."
+  },
+  {
+    name: "Research & Development",
+    icon: <Image src="/images/icons/msi_lab_icon.svg" alt="Research & Development" width={100} height={100} />, 
+    description: "Conducting studies and developing innovative strategies to improve STEM education through evidence-based approaches."
+  },
+  {
+    name: "E-Learning",
+    icon: <Image src="/images/icons/msi_digital_icon.svg" alt="E-Learning" width={100} height={100} />, 
+    description: "Providing digital learning platforms and resources for accessible, flexible, and engaging education anywhere."
   }
 ]
 
@@ -143,8 +178,8 @@ export default function Services() {
       <Header />
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20  text-navy-blue overflow-hidden">
-        <div className="absolute inset-0 "></div>
+      <section className="relative pt-32 pb-10 text-navy-blue overflow-hidden">
+        <div className="absolute inset-0"></div>
         <div className="container relative mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <motion.h1 
@@ -162,7 +197,7 @@ export default function Services() {
               transition={{ delay: 0.2 }}
               className="text-xl md:text-2xl opacity-90"
             >
-              Empowering students with tailored STEM education solutions to meet their unique needs.
+             Empowering students with tailored STEM education solutions to meet their unique needs.
             </motion.p>
           </div>
         </div>
@@ -172,25 +207,11 @@ export default function Services() {
       {/* Categories Overview */}
       <section className="py-24">
         <div className="container mx-auto px-4">
-          {/* <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeIn}
-            className="text-center max-w-2xl mx-auto mb-16"
-          >
-            <h2 className="text-4xl font-bold mb-6 text-gray-900">
-              What We Offer
-            </h2>
-            <p className="text-xl text-gray-600">
-            Innovative educational services designed to inspire future leaders and help students excel.
-            </p>
-          </motion.div> */}
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
-            {categories.map((category, index) => (
+            {categories.slice(0, 8).map((category, index) => (
               <motion.div
-                key={category.name}
+                key={`${category.name}-${index}`}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
@@ -251,8 +272,8 @@ export default function Services() {
                   </p>
                   <ul className="space-y-4">
                     {service.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-center gap-3 text-gray-700">
-                        <svg className="w-5 h-5 text-red-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <li key={featureIndex} className="flex items-start gap-3 text-gray-700">
+                        <svg className="w-5 h-5 text-red-600 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                         </svg>
                         {feature}
