@@ -16,6 +16,35 @@ import {
   Filter
 } from 'lucide-react'
 
+// First, add an interface for the video data structure
+interface VideoItem {
+  id: string;
+  title: string;
+  duration: string;
+  grade: number;
+  subject: string;
+  youtubeUrl: string;
+  thumbnail: string;
+}
+
+// Add sample video data (replace with your actual YouTube videos)
+const featuredVideos: VideoItem[] = [
+  {
+    id: '1',
+    title: 'Introduction to Algebra',
+    duration: '15:30',
+    grade: 12,
+    subject: 'Mathematics',
+    youtubeUrl: 'https://youtube.com/watch?v=your-video-id',
+    thumbnail: 'https://img.youtube.com/vi/your-video-id/maxresdefault.jpg'
+  },
+  // Add more videos...
+];
+
+// Define constants for subjects and grades
+const SUBJECTS = ['mathematics', 'physical-science'];
+const GRADES = [10, 11, 12];
+
 export default function VideosPage() {
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -191,27 +220,40 @@ export default function VideosPage() {
           >
             <h2 className="text-2xl font-bold text-navy-blue mb-6">Featured Videos</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[1, 2, 3].map((video) => (
-                <div key={video} className="bg-gray-50 rounded-lg overflow-hidden">
+              {featuredVideos.map((video) => (
+                <a 
+                  key={video.id}
+                  href={video.youtubeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block bg-gray-50 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300"
+                >
                   <div className="relative aspect-video bg-gray-200">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <Play className="w-12 h-12 text-red-600" />
+                    <img 
+                      src={video.thumbnail}
+                      alt={video.title}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 hover:opacity-100 transition-opacity">
+                      <Play className="w-12 h-12 text-white" />
                     </div>
                   </div>
                   <div className="p-4">
-                    <h3 className="font-semibold text-gray-800 mb-2">Sample Video Title {video}</h3>
+                    <h3 className="font-semibold text-gray-800 mb-2">{video.title}</h3>
                     <div className="flex items-center text-sm text-gray-600 mb-2">
                       <Clock className="w-4 h-4 mr-1" />
-                      <span>15:30</span>
+                      <span>{video.duration}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-500">Grade 12 • Mathematics</span>
+                      <span className="text-sm text-gray-500">
+                        Grade {video.grade} • {video.subject}
+                      </span>
                       <button className="text-gray-400 hover:text-red-600 transition-colors">
                         <Bookmark className="w-5 h-5" />
                       </button>
                     </div>
                   </div>
-                </div>
+                </a>
               ))}
             </div>
           </motion.div>
@@ -259,4 +301,4 @@ export default function VideosPage() {
       <Footer />
     </div>
   )
-} 
+}
