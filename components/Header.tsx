@@ -199,19 +199,20 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-4">
           <Link href="/">
-            <Image 
-              src="/images/msi_logo.png" 
-              alt="MSI Logo" 
-              width={100} 
-              height={50} 
-              className="h-12 w-auto"
-              priority
-              loading="eager"
-            />
+          <Image 
+          src="/images/msi_logo.png" 
+          alt="MSI Logo" 
+          width={100} 
+          height={50} 
+          className="h-12 w-auto"
+          priority
+          loading="eager"
+          unoptimized
+        />
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8">
+          <nav className="hidden lg:flex space-x-8">
             {navItems.map((item) => {
               if (item === 'Resources') {
                 return (
@@ -292,7 +293,7 @@ const Header = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={toggleMenu}
-            className="md:hidden p-2 focus:outline-none"
+            className="lg:hidden p-2 focus:outline-none"
           >
             <Bars3Icon className="h-6 w-6 text-gray-900" />
           </button>
@@ -397,11 +398,11 @@ const Header = () => {
         </AnimatePresence>
       </div>
 
-      <ComingSoonModal 
+      {/* <ComingSoonModal 
         isOpen={showComingSoon} 
         title={comingSoonTitle} 
         onClose={() => setShowComingSoon(false)} 
-      />
+      /> */}
     </header>
   )
 }

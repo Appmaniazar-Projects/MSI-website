@@ -7,6 +7,7 @@ import Footer from '@/components/Footer'
 import { Button } from "@/components/ui/button"
 import Modal from '@/components/Modal'
 import { CheckCircle, XCircle } from 'lucide-react'
+import { FaPhone, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 
 
 export default function ContactPage() {
@@ -91,40 +92,62 @@ export default function ContactPage() {
       url: 'https://www.linkedin.com/company/maths-and-science-infinity/'
     }
   ]
+  
 
-  const contactInfo = [
+  interface ContactDetail {
+    info: string;
+    icon: JSX.Element;
+    href: string;
+  }
+  
+  interface ContactInfo {
+    title: string;
+    details: ContactDetail[];
+  }
+  
+  const contactInfo: ContactInfo[] = [
     {
-      title: 'Email',
-      info: 'info@mathsandscienceinfinity.org.za',
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-        </svg>
-      ),
-      href: "mailto:info@mathsandscienceinfinity.org.za"
+      title: "Johannesburg Office",
+      details: [
+        {
+          info: "4th Floor, West Tower, Nelson Mandela Square, Sandton City, Johannesburg",
+          icon: <FaMapMarkerAlt className="text-red-500 text-xl" />,
+          href: "https://maps.app.goo.gl/qUpZ8p9zCyEu1WSf8"
+        },
+        {
+          info: "+27 11 568 4332",
+          icon: <FaPhone className="text-red-500 text-xl" />,
+          href: "tel:+27115684332"
+        }
+      ]
     },
     {
-      title: 'Phone',
-      info: '+27 (0)43 726 2171',
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-        </svg>
-      ),
-      href: "tel:+27437262171" 
+      title: "East London Office",
+      details: [
+        {
+          info: "1 Scherwitz Road, Berea, East London",
+          icon: <FaMapMarkerAlt className="text-red-500 text-xl" />,
+          href: "https://maps.app.goo.gl/o1zsynzNxkq25LHT7"
+        },
+        {
+          info: "+27 43 726 2171",
+          icon: <FaPhone className="text-red-500 text-xl" />,
+          href: "tel:+27437262171"
+        }
+      ]
     },
     {
-      title: 'Location',
-      info: 'East London, Eastern Cape, South Africa',
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-        </svg>
-      ),
-      href: "https://maps.app.goo.gl/CiouhET31DgDygem9" 
+      title: "Email",
+      details: [
+        {
+          info: "info@mathsandscienceinfinity.org.za",
+          icon: <FaEnvelope className="text-red-500 text-xl" />,
+          href: "mailto:info@mathsandscienceinfinity.org.za"
+        }
+      ]
     }
-  ]
+  ];
+  
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -242,26 +265,26 @@ export default function ContactPage() {
               >
                 <h2 className="text-3xl font-bold mb-8">Contact Information</h2>
                 <div className="space-y-6">
-                  {contactInfo.map((item, index) => (
-                    <div key={index} className="flex items-start space-x-4">
-                      <div className="flex-shrink-0 w-12 h-12 bg-red-100 rounded-full flex items-center justify-center text-red-600">
-                        {item.icon}
-                      </div>
-                      <div className="ml-4">
-                        <h3 className="text-lg font-medium text-gray-900">{item.title}</h3>
-                        <a 
-                          href={item.href} 
-                          className="mt-2 text-base text-gray-600 hover:text-red-600 transition-colors"
-                          target={item.title === 'Location' ? '_blank' : undefined}
-                          rel={item.title === 'Location' ? 'noopener noreferrer' : undefined}
-                        >
-                          {item.info}
-                        </a>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                {contactInfo.map((office) => (
+                  <div key={office.title} className="mb-6">
+                    <h2 className="text-xl font-bold">{office.title}</h2>
+                    <ul className="mt-2 space-y-4">
+                      {office.details.map((detail) => (
+                        <li key={detail.info} className="flex items-center space-x-4">
+                          <span>{detail.icon}</span>
+                          <span>
+                            <a href={detail.href}>
+                              {detail.info}
+                            </a>
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+                </div>  
               </motion.div>
+                  
 
               {/* Social Media */}
               <motion.div

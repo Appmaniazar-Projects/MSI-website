@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import { fadeInUp, staggerContainer } from '@/utils/animations'
 import { useState, useEffect } from 'react'
 
+
 const Footer = () => {
   const [currentYear, setCurrentYear] = useState('2025')
   
@@ -49,6 +50,9 @@ const Footer = () => {
               alt="MSI Logo" 
               width={140} 
               height={70} 
+              priority
+              loading="eager"
+              unoptimized
               className="mb-4 bg-white p-2 rounded-lg" 
             />
             <p className="text-sm leading-relaxed">
@@ -103,7 +107,6 @@ const Footer = () => {
             <h3 className="text-lg font-semibold text-white">Contact Us</h3>
             <ul className="space-y-3">
               <span>Johannesburg Office: </span>
-              
               <li className="flex items-start space-x-3">
                 <FaMapMarkerAlt className="w-8 h-8 text-red-500 mt-1" />
                 <a href="https://maps.app.goo.gl/qUpZ8p9zCyEu1WSf8" 
@@ -118,7 +121,9 @@ const Footer = () => {
                 <span> +27 11 568 4332</span>
                 </a>
               </li>
-              <span  className="space-y-3">East London Office: </span>
+              <li className="space-y-3">
+              </li>
+              <span>East London Office: </span>
               <li className="flex items-start space-x-3">
                 <FaMapMarkerAlt className="w-5 h-5 text-red-500 mt-1" />
                 <a href="https://maps.app.goo.gl/o1zsynzNxkq25LHT7" 
