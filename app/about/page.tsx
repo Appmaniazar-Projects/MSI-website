@@ -14,18 +14,19 @@ const fadeIn = {
 }
 
 const teamMembers = [
+   {
+    name: 'Dr Fikiswa Ngonyama',
+    role: 'Chairperson',
+    image: '/images/board_members/msi_board_Dr_Fikiswa_Ngonyama.jpg',
+    bio: 'Occupational Medical Practitioner and public health expert with over a decade of experience in healthcare management and policy.',
+  },
   {
     name: 'Zenith Tsengwa',
     role: 'Board Member',
     image: '/images/board_members/msi_board_Mr_Zenith_Tsengwa.webp',
     bio: 'Dynamic business leader with expertise in project management, strategy, and investment, and a passion for education and community upliftment.',
   },
-  {
-    name: 'Dr Fikiswa Ngonyama',
-    role: 'Chairperson',
-    image: '/images/board_members/msi_board_Dr_Fikiswa_Ngonyama.jpg',
-    bio: 'Occupational Medical Practitioner and public health expert with over a decade of experience in healthcare management and policy.',
-  },
+ 
   {
     name: 'Mr Lindele Mondliwa',
     role: 'Board Member',
@@ -117,7 +118,7 @@ export default function About() {
                   <div className="text-4xl mb-6">
                   <Image src="/images/icons/msi_developing_icon.svg" alt="Mission" width={100} height={100} />
                   </div>
-                  <h2 className="text-3xl font-bold mb-6 text-gray-900">Our Mission</h2>
+                  <h2 className="text-3xl font-bold mb-6 text-navy-blue">Our Mission</h2>
                   <p className="text-gray-600 leading-relaxed text-lg">
                   We aim to revolutionize STEM education by offering tailored support to 
                   students and educators. Our goal is to empower students, particularly 
@@ -142,7 +143,7 @@ export default function About() {
                   <div className="text-4xl mb-6">
                   <Image src="/images/icons/msi_developing_icon.svg" alt="Vision" width={100} height={100} />
                   </div>
-                  <h2 className="text-3xl font-bold mb-6 text-gray-900">Our Vision</h2>
+                  <h2 className="text-3xl font-bold mb-6 text-navy-blue">Our Vision</h2>
                   <p className="text-gray-600 leading-relaxed text-lg">
                   Leading the way in pioneering premier STEM educational initiatives 
                   that foster the development of future global leaders by providing 
@@ -164,7 +165,7 @@ export default function About() {
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeIn}
-            className="text-4xl md:text-5xl font-bold text-center mb-16"
+            className="text-3xl font-bold text-center mb-12 text-navy-blue"
           >
             Why Choose MSI?
           </motion.h2>
@@ -216,7 +217,7 @@ export default function About() {
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeIn}
-            className="text-4xl md:text-5xl font-bold text-center mb-16 text-gray-900"
+            className="text-3xl font-bold text-center mb-12 text-navy-blue"
           >
             Our Values
           </motion.h2>
@@ -253,10 +254,10 @@ export default function About() {
             variants={fadeIn}
             className="text-center max-w-2xl mx-auto mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">
+            <h2 className="text-3xl font-bold text-center mb-12 text-navy-blue">
             Maths and Science Infinity Board
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-xl text-navy-blue">
               Passionate educators and professionals dedicated to transforming STEM education
             </p>
           </motion.div>

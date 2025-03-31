@@ -102,16 +102,10 @@ const Footer = () => {
           <motion.div variants={fadeInUp} className="space-y-4">
             <h3 className="text-lg font-semibold text-white">Contact Us</h3>
             <ul className="space-y-3">
-              <span>Address</span>
+              <span>Johannesburg Office: </span>
+              
               <li className="flex items-start space-x-3">
-                <FaMapMarkerAlt className="w-5 h-5 text-red-500 mt-1" />
-                <a href="https://maps.app.goo.gl/o1zsynzNxkq25LHT7" 
-                className="hover:text-red-500 transition-colors duration-300">
-                <span>1 Scherwitz Road, Berea, East London</span>
-                </a>
-              </li>
-              <li className="flex items-start space-x-3">
-                <FaMapMarkerAlt className="w-5 h-5 text-red-500 mt-1" />
+                <FaMapMarkerAlt className="w-8 h-8 text-red-500 mt-1" />
                 <a href="https://maps.app.goo.gl/qUpZ8p9zCyEu1WSf8" 
                 className="hover:text-red-500 transition-colors duration-300">
                 <span>4th Flour, West Tower, Nelson Mandela Square, Sandtan City, Johannesburg</span>
@@ -119,18 +113,27 @@ const Footer = () => {
               </li>
               <li className="flex items-center space-x-3">
                 <FaPhone className="w-4 h-4 text-red-500" />
-                <a href="tel:+27437262171" 
+                <a href="tel:+27115684332" 
                 className="hover:text-red-500 transition-colors duration-300">
-                <span> EL Office: +27 43 726 2171</span>
+                <span> +27 11 568 4332</span>
+                </a>
+              </li>
+              <span  className="space-y-3">East London Office: </span>
+              <li className="flex items-start space-x-3">
+                <FaMapMarkerAlt className="w-5 h-5 text-red-500 mt-1" />
+                <a href="https://maps.app.goo.gl/o1zsynzNxkq25LHT7" 
+                className="hover:text-red-500 transition-colors duration-300">
+                <span>1 Scherwitz Road, Berea, East London</span>
                 </a>
               </li>
               <li className="flex items-center space-x-3">
                 <FaPhone className="w-4 h-4 text-red-500" />
-                <a href="tel:+27115684332" 
+                <a href="tel:+27437262171" 
                 className="hover:text-red-500 transition-colors duration-300">
-                <span> JHB Office: +27 11 568 4332</span>
+                <span> +27 43 726 2171</span>
                 </a>
               </li>
+              
               <li className="flex items-center space-x-3">
                 <FaEnvelope className="w-5 h-5 text-red-500" />
                 <a 

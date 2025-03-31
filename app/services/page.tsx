@@ -236,7 +236,7 @@ export default function Services() {
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeIn}
-            className="text-4xl font-bold text-center mb-16 text-gray-900"
+            className="text-3xl font-bold text-center mb-12 text-navy-blue"
           >
             Detailed Services
           </motion.h2>
@@ -264,7 +264,7 @@ export default function Services() {
                   </div>
                 </div>
                 <div className="lg:w-1/2">
-                  <h3 className="text-3xl font-bold mt-2 mb-6 text-gray-900">
+                  <h3 className="text-2xl font-bold mt-2 mb-6 text-gray-900">
                     {service.title}
                   </h3>
                   <p className="text-xl text-gray-600 mb-8">

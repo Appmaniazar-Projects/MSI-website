@@ -216,8 +216,11 @@ const Gallery = () => {
 
         <div className="mt-8 text-center">
           <Link href="/gallery" passHref>
-            <Button className="bg-navy-blue hover:bg-blue-700 text-white font-semibold">
-              View Full Gallery
+            <Button
+              size="lg"
+              className="bg-red-600 text-white hover:bg-red-700"
+            >
+              View All Images
             </Button>
           </Link>
         </div>
